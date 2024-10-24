@@ -50,28 +50,28 @@ public abstract class PrimaryOpMode2324 extends LinearOpMode
   
   /* Declare OpMode members. */
   public DcMotor driveMotor = null;
-  public MastArm mast;
-  public AirplaneLauncher airplane;
+  /*public MastArm mast;
+  public AirplaneLauncher airplane;*/
   public MecanumDriveChassis driveChassis;
   public Prop_Sensors prop_sensors;
-  public PixelDropper purplePixelDropper;
-  public PixelDropper yellowPixelDropper;
-  public ArmControl arm;
-  public Blang blang;
+  //public PixelDropper purplePixelDropper;
+  //public PixelDropper yellowPixelDropper;
+  //public ArmControl arm;
+  //public Blang blang;
   
   public abstract void turnColor();
   
   @Override
   public void runOpMode()
   {
-    mast = new MastArm(hardwareMap, telemetry);
-    airplane = new AirplaneLauncher(hardwareMap, telemetry);
+    //mast = new MastArm(hardwareMap, telemetry);
+    //airplane = new AirplaneLauncher(hardwareMap, telemetry);
     driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
     prop_sensors = new Prop_Sensors(hardwareMap, telemetry);
-    purplePixelDropper = new PixelDropper(hardwareMap, telemetry, "pixelDropperPurple");
-    yellowPixelDropper = new PixelDropper(hardwareMap, telemetry, "pixelDropperYellow");
-    arm = new ArmControl(hardwareMap, telemetry);
-    blang = new Blang(hardwareMap);
+    //purplePixelDropper = new PixelDropper(hardwareMap, telemetry, "pixelDropperPurple");
+    //yellowPixelDropper = new PixelDropper(hardwareMap, telemetry, "pixelDropperYellow");
+    //arm = new ArmControl(hardwareMap, telemetry);
+    //blang = new Blang(hardwareMap);
     telemetry.addData(">", "Robot Ready. Press Play.");
     telemetry.addData(">", "Remember:stay skibidi. Devin is NOT a mewer.");
     telemetry.update();
@@ -79,16 +79,16 @@ public abstract class PrimaryOpMode2324 extends LinearOpMode
     
     // Wait for the game to start (driver presses PLAY)
     waitForStart();
-    arm.armLower(); //This actually raises it
-    sleep(650);
-    arm.armStop();
+    //driveChassis.testWheels();
+    //arm.armLower(); //This actually raises it
+    //sleep(650);
+    //arm.armStop();
     
     // run until the end of the match (driver presses STOP)
     //2 driver controls:
     while (opModeIsActive())
     {
-      if (gamepad2.right_trigger > 0.75 && gamepad2.left_trigger > 0.75 &&
-        gamepad1.right_trigger > 0.75 && gamepad1.left_trigger > 0.75)
+      /*  gamepad1.right_trigger > 0.75 && gamepad1.left_trigger > 0.75)
       {
         airplane.launch();
         sleep(2000);
@@ -97,16 +97,16 @@ public abstract class PrimaryOpMode2324 extends LinearOpMode
       if (gamepad2.right_trigger > 0.75 && gamepad2.x)
       {
         airplane.resetLauncher();
-      }
-      if (gamepad2.right_bumper && gamepad2.right_trigger > 0.75)
+      }*/
+      /*if (gamepad2.right_bumper && gamepad2.right_trigger > 0.75)
       {
         purplePixelDropper.drop_pixel();
       }
       if (gamepad2.left_bumper && gamepad2.left_trigger > 0.75)
       {
         yellowPixelDropper.drop_pixel();
-      }
-      if (gamepad2.dpad_up)
+      }*/
+      /*if (gamepad2.dpad_up)
       {
         mast.mastUp();
       } else if (gamepad2.dpad_down)
@@ -115,8 +115,8 @@ public abstract class PrimaryOpMode2324 extends LinearOpMode
       } else
       {
         mast.mastStop();
-      }
-      if (gamepad2.left_stick_y > 0.75)
+      }*/
+      /*if (gamepad2.left_stick_y > 0.75)
       {
         arm.armRaise();
       } else if (gamepad2.left_stick_y < -0.75)
@@ -130,15 +130,15 @@ public abstract class PrimaryOpMode2324 extends LinearOpMode
       {
         arm.toggleGripper();
         sleep(400);
-      }
-      if (gamepad2.left_bumper)
+      }*/
+      /*if (gamepad2.left_bumper)
       {
         purplePixelDropper.drop_Purple();
       }
       if (gamepad2.right_bumper)
       {
         purplePixelDropper.lift();
-      }
+      }*/
       
       telemetry.update();
       telemetry.addData("LStickY", gamepad1.left_stick_y * -1);
@@ -147,21 +147,21 @@ public abstract class PrimaryOpMode2324 extends LinearOpMode
       telemetry.update();
       if (gamepad1.left_bumper && gamepad1.right_bumper)
       {
-        driveChassis.drive(-gamepad1.left_stick_y, -gamepad1.right_stick_x,
-          -gamepad1.left_stick_x, false);
+        driveChassis.drive(-gamepad1.left_stick_y, -gamepad1.left_stick_x,
+          -gamepad1.right_stick_x, false);
       } else
       {
-        driveChassis.drive(gamepad1.left_stick_y, gamepad1.right_stick_x,
-          gamepad1.left_stick_x, gamepad1.left_bumper);
+        driveChassis.drive(gamepad1.left_stick_y, gamepad1.left_stick_x,
+          gamepad1.right_stick_x, gamepad1.left_bumper);
       }
 // Pace this loop so jaw action is reasonable speed.
       sleep(50);
     }
   }
   
-  public void positionForArm()
+  /*public void positionForArm()
   {
     driveChassis.moveBackward(prop_sensors.backDistance() - 1);
     arm.armRaise();
-  }
+  }*/
 }

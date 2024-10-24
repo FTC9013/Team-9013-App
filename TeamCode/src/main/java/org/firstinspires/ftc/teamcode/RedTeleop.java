@@ -29,9 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 /*
  * This OpMode executes a POV Game style Teleop for a direct drive robot
@@ -52,6 +50,6 @@ public class RedTeleop extends PrimaryOpMode2324
   
   public void turnColor()
   {
-    blang.turnRed();
+    //blang.turnRed();
   }
 }

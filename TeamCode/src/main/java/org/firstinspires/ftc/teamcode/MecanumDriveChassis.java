@@ -93,9 +93,9 @@ public class MecanumDriveChassis
     // A positive power number should drive the robot forward regardless of the motor's
     // position on the robot.
     leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-    leftRearDrive.setDirection(DcMotor.Direction.FORWARD);
+    leftRearDrive.setDirection(DcMotor.Direction.REVERSE);
     rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-    rightRearDrive.setDirection(DcMotor.Direction.REVERSE);
+    rightRearDrive.setDirection(DcMotor.Direction.FORWARD);
     // set motion parameters.
     inputSpeed = 0;
     thetaD = 0;
@@ -135,6 +135,39 @@ public class MecanumDriveChassis
     headingPID.setContinous(true);  // lets PID know we are working with a continuous range [0-360)
   }
   
+  /**
+   void testWheels()
+   {
+   try
+   {
+   rightRearDrive.setPower(0.3);
+   telemetry.addLine("Spinning right rear");
+   telemetry.update();
+   Thread.sleep(5000);
+   rightRearDrive.setPower(0);
+   
+   rightFrontDrive.setPower(0.3);
+   telemetry.addLine("Spinning right front");
+   telemetry.update();
+   Thread.sleep(5000);
+   rightFrontDrive.setPower(0);
+   
+   leftRearDrive.setPower(0.3);
+   telemetry.addLine("Spinning left rear");
+   telemetry.update();
+   Thread.sleep(5000);
+   leftRearDrive.setPower(0);
+   
+   leftFrontDrive.setPower(0.3);
+   telemetry.addLine("Spinning left front");
+   telemetry.update();
+   Thread.sleep(5000);
+   leftFrontDrive.setPower(0);
+   } catch (InterruptedException e)
+   {
+   }
+   }
+   **/
   // Left  Y = forward, backward movement
   // Left  X = side to side (strafe)
   // Right X = rotate in place
@@ -160,21 +193,21 @@ public class MecanumDriveChassis
     PowerToWheels();
   }
   
-  private void joystickToMotion(double leftStickY, double leftStickX, double rightStickX)
+  private void joystickToMotion(double directionY, double directionX, double rotationX)
   {
     // determines the translation speed by taking the hypotenuse of the vector created by
     // the X & Y components.
-    inputSpeed = Math.min(Math.sqrt(Math.pow(leftStickX, 2) + Math.pow(-leftStickY, 2)), 1);
+    inputSpeed = Math.min(Math.sqrt(Math.pow(directionX, 2) + Math.pow(-directionY, 2)), 1);
     // Converts the joystick inputs from cartesian to polar from 0 to +/- PI oriented
     // with 0 to the right of the robot. (standard polar plot)
-    thetaD = Math.atan2(-leftStickY, leftStickX);
+    thetaD = Math.atan2(-directionY, directionX);
     // orient to the robot by rotating PI/2 to make the joystick zero at the forward of bot.
     // instead of the right side.
     //thetaD = thetaD - Math.PI / 2;
     // simply takes the right stick X value and invert to use as a rotational speed.
     // inverted since we want CW rotation on a positive value.
     // which is opposite of what PowerToWheels() wants in polar positive rotation (CCW).
-    rotationalSpeed = rightStickX;
+    rotationalSpeed = rotationX;
   }
   
   private void PowerToWheels()
@@ -433,8 +466,8 @@ public class MecanumDriveChassis
     
     leftFrontDrive.setTargetPosition(-distance);
     rightFrontDrive.setTargetPosition(distance);
-    leftRearDrive.setTargetPosition(-distance);
-    rightRearDrive.setTargetPosition(distance);
+    leftRearDrive.setTargetPosition(distance);
+    rightRearDrive.setTargetPosition(-distance);
     
     leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -442,9 +475,9 @@ public class MecanumDriveChassis
     rightRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     
     leftFrontDrive.setPower(-autonomousPower);
-    leftRearDrive.setPower(-autonomousPower);
+    leftRearDrive.setPower(autonomousPower);
     rightFrontDrive.setPower(autonomousPower);
-    rightRearDrive.setPower(autonomousPower);
+    rightRearDrive.setPower(-autonomousPower);
     while (leftFrontDrive.isBusy() && rightFrontDrive.isBusy() && leftRearDrive.isBusy() && rightRearDrive.isBusy())
     {
       //Do nothing. Allows the motors to spin
@@ -472,8 +505,8 @@ public class MecanumDriveChassis
     
     leftFrontDrive.setTargetPosition(distance);
     rightFrontDrive.setTargetPosition(-distance);
-    leftRearDrive.setTargetPosition(distance);
-    rightRearDrive.setTargetPosition(-distance);
+    leftRearDrive.setTargetPosition(-distance);
+    rightRearDrive.setTargetPosition(distance);
     
     leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -481,9 +514,9 @@ public class MecanumDriveChassis
     rightRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     
     leftFrontDrive.setPower(autonomousPower);
-    leftRearDrive.setPower(autonomousPower);
+    leftRearDrive.setPower(-autonomousPower);
     rightFrontDrive.setPower(-autonomousPower);
-    rightRearDrive.setPower(-autonomousPower);
+    rightRearDrive.setPower(autonomousPower);
     while (leftFrontDrive.isBusy() && rightFrontDrive.isBusy() && leftRearDrive.isBusy() && rightRearDrive.isBusy())
     {
       //Do nothing. Allows the motors to spin
@@ -520,8 +553,8 @@ public class MecanumDriveChassis
     
     leftFrontDrive.setTargetPosition(-turnDistance);
     rightFrontDrive.setTargetPosition(turnDistance);
-    leftRearDrive.setTargetPosition(turnDistance);
-    rightRearDrive.setTargetPosition(-turnDistance);
+    leftRearDrive.setTargetPosition(-turnDistance);
+    rightRearDrive.setTargetPosition(turnDistance);
     
     leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -530,8 +563,8 @@ public class MecanumDriveChassis
     
     leftFrontDrive.setPower(-autonomousPower);
     leftRearDrive.setPower(autonomousPower);
-    rightFrontDrive.setPower(autonomousPower);
-    rightRearDrive.setPower(-autonomousPower);
+    rightFrontDrive.setPower(-autonomousPower);
+    rightRearDrive.setPower(autonomousPower);
     while (leftFrontDrive.isBusy() && rightFrontDrive.isBusy() && leftRearDrive.isBusy() && rightRearDrive.isBusy())
     {
       //Do nothing. Allows the motors to spin
@@ -561,8 +594,8 @@ public class MecanumDriveChassis
     
     leftFrontDrive.setTargetPosition(turnDistance);
     rightFrontDrive.setTargetPosition(-turnDistance);
-    leftRearDrive.setTargetPosition(-turnDistance);
-    rightRearDrive.setTargetPosition(turnDistance);
+    leftRearDrive.setTargetPosition(turnDistance);
+    rightRearDrive.setTargetPosition(-turnDistance);
     
     leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -570,8 +603,8 @@ public class MecanumDriveChassis
     rightRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     leftFrontDrive.setPower(autonomousPower);
     leftRearDrive.setPower(-autonomousPower);
-    rightFrontDrive.setPower(-autonomousPower);
-    rightRearDrive.setPower(autonomousPower);
+    rightFrontDrive.setPower(autonomousPower);
+    rightRearDrive.setPower(-autonomousPower);
     while (leftFrontDrive.isBusy() && rightFrontDrive.isBusy() && leftRearDrive.isBusy() && rightRearDrive.isBusy())
     {
       //Do nothing. Allows the motors to spin
@@ -596,8 +629,8 @@ public class MecanumDriveChassis
     
     leftFrontDrive.setTargetPosition(-turnDistanceYaw);
     rightFrontDrive.setTargetPosition(turnDistanceYaw);
-    leftRearDrive.setTargetPosition(turnDistanceYaw);
-    rightRearDrive.setTargetPosition(-turnDistanceYaw);
+    leftRearDrive.setTargetPosition(-turnDistanceYaw);
+    rightRearDrive.setTargetPosition(turnDistanceYaw);
     
     leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -606,8 +639,8 @@ public class MecanumDriveChassis
     
     leftFrontDrive.setPower(-autonomousPower);
     leftRearDrive.setPower(autonomousPower);
-    rightFrontDrive.setPower(autonomousPower);
-    rightRearDrive.setPower(-autonomousPower);
+    rightFrontDrive.setPower(-autonomousPower);
+    rightRearDrive.setPower(autonomousPower);
     while (leftFrontDrive.isBusy() && rightFrontDrive.isBusy() && leftRearDrive.isBusy() && rightRearDrive.isBusy())
     {
       YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();

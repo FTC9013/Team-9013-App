@@ -50,6 +50,6 @@ public class BlueTeleop extends PrimaryOpMode2324
   
   public void turnColor()
   {
-    blang.turnBlue();
+    //blang.turnBlue();
   }
 }
