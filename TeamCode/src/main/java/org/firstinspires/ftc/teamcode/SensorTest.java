@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class SensorTest extends LinearOpMode
 {
-  public Prop_Sensors propSensors;
+  public DistanceSensors propSensors;
   public PixelDropper pixelDropper;
   private final ElapsedTime runtime = new ElapsedTime();
   
@@ -17,7 +17,7 @@ public class SensorTest extends LinearOpMode
   public void runOpMode()
   {
     
-    propSensors = new Prop_Sensors(hardwareMap, telemetry);
+    propSensors = new DistanceSensors(hardwareMap, telemetry);
     pixelDropper = new PixelDropper(hardwareMap, telemetry, "pixelDropperPurple");
     telemetry.addData("Status", "Initialized");
     telemetry.update();

@@ -53,7 +53,7 @@ public abstract class PrimaryOpMode2324 extends LinearOpMode
   /*public MastArm mast;
   public AirplaneLauncher airplane;*/
   public MecanumDriveChassis driveChassis;
-  public Prop_Sensors prop_sensors;
+  public DistanceSensors distance_sensors;
   //public PixelDropper purplePixelDropper;
   //public PixelDropper yellowPixelDropper;
   //public ArmControl arm;
@@ -67,7 +67,7 @@ public abstract class PrimaryOpMode2324 extends LinearOpMode
     //mast = new MastArm(hardwareMap, telemetry);
     //airplane = new AirplaneLauncher(hardwareMap, telemetry);
     driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
-    prop_sensors = new Prop_Sensors(hardwareMap, telemetry);
+    distance_sensors = new DistanceSensors(hardwareMap, telemetry);
     //purplePixelDropper = new PixelDropper(hardwareMap, telemetry, "pixelDropperPurple");
     //yellowPixelDropper = new PixelDropper(hardwareMap, telemetry, "pixelDropperYellow");
     //arm = new ArmControl(hardwareMap, telemetry);

@@ -67,7 +67,7 @@ import androidx.annotation.NonNull;
  */
 
 
-public class Prop_Sensors
+public class DistanceSensors
 {
   
   public double frontDistance()
@@ -176,7 +176,7 @@ public class Prop_Sensors
   enum PropSide
   {Right, Left, Front, No}
   
-  Prop_Sensors(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry)
+  DistanceSensors(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry)
   {
     telemetry = theTelemetry;
     int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());

@@ -23,7 +23,7 @@ public class MecanumDriveChassis
   double tickPerCm = 17.7914;
   private ElapsedTime runTime = new ElapsedTime();
   double autonomousPower = 0.4;
-  int turnDistance = 860; // used to be 860
+  int turnDistance = 843;
   int turnDistanceYaw = 900;
   private final DcMotor leftFrontDrive;
   private final DcMotor leftRearDrive;
@@ -34,7 +34,7 @@ public class MecanumDriveChassis
   private static double leftRearDriveSpeed;
   private static double rightFrontDriveSpeed;
   private static double rightRearDriveSpeed;
-  public Prop_Sensors propSensors;
+  public DistanceSensors propSensors;
   // Robot speed [-1, 1].  (speed in any direction that is not rotational)
   // does not have any angular component, just scaler velocity.
   // combined with the angular component for motion.  Even if angle is 0 (forward).

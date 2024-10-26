@@ -8,7 +8,7 @@ public abstract class Autonomous extends LinearOpMode
 {
   public Blang blang;
   public MecanumDriveChassis driveChassis;
-  public Prop_Sensors propSensors;
+  public DistanceSensors propSensors;
   public PixelDropper pixelDropperPurple;
   public PixelDropper pixelDropperYellow;
   private final ElapsedTime runtime = new ElapsedTime();
@@ -29,10 +29,10 @@ public abstract class Autonomous extends LinearOpMode
   {
     
     blang = new Blang(hardwareMap);
-    propSensors = new Prop_Sensors(hardwareMap, telemetry);
+    propSensors = new DistanceSensors(hardwareMap, telemetry);
     pixelDropperPurple = new PixelDropper(hardwareMap, telemetry, "pixelDropperPurple");
     pixelDropperYellow = new PixelDropper(hardwareMap, telemetry, "pixelDropperYellow");
-    telemetry.addData("Status", "Initialized");
+    telemetry.addData("Status", "It's initialized, start the fricking robot already!");
     telemetry.update();
     // setup a instance of our drive system
     // Declare OpMode members.
@@ -46,11 +46,11 @@ public abstract class Autonomous extends LinearOpMode
     if (opModeIsActive())
     {
       driveChassis.moveForward(65);
-      Prop_Sensors.PropSide propLocation = Prop_Sensors.PropSide.No;
+      DistanceSensors.PropSide propLocation = DistanceSensors.PropSide.No;
       driveChassis.startMovingForward(20);
       while (driveChassis.stillMoving())
       {
-        if (propLocation == Prop_Sensors.PropSide.No)
+        if (propLocation == DistanceSensors.PropSide.No)
         {
           propLocation = propSensors.detectProp();
           telemetry.addLine("neo pruaup fuaund yeat");
@@ -67,14 +67,14 @@ public abstract class Autonomous extends LinearOpMode
       telemetry.update();
       
       
-      if (propLocation == Prop_Sensors.PropSide.Left)
+      if (propLocation == DistanceSensors.PropSide.Left)
       {
         driveChassis.turnLeft();
         driveChassis.moveForward(5);
         driveChassis.strafeLeft(8);
         pixelDropperPurple.drop_pixel();
         goLeft();
-      } else if (propLocation == Prop_Sensors.PropSide.Front)
+      } else if (propLocation == DistanceSensors.PropSide.Front)
       {
         telemetry.addLine("forward");
         telemetry.update();

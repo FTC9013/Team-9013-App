@@ -26,7 +26,7 @@ public abstract class AutonomousBlueFront extends Autonomous
     driveChassis.strafeRight(9);
     
     driveChassis.moveBackward(propSensors.backDistance() - 5);
-    wallDist = propSensors.backDistance();
+    //wallDist = propSensors.backDistance();
     while (wallDist > 5)
     {
       driveChassis.moveBackward(wallDist - 5);

@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Disabled
 public class PixelDropperTest extends LinearOpMode
 {
-  public Prop_Sensors propSensors;
+  public DistanceSensors propSensors;
   public PixelDropper pixelDropperPurple;
   public PixelDropper pixelDropperYellow;
   private final ElapsedTime runtime = new ElapsedTime();

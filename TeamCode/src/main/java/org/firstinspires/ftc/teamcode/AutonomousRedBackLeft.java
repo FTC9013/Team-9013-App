@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 // ticks per centemeter = 17.7914
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Red Back Left")
+//@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Red Back Left")
 public class AutonomousRedBackLeft extends AutonomousRedBack
 {
   @Override
