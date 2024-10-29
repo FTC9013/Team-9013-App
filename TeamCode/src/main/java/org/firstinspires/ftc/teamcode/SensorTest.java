@@ -18,7 +18,7 @@ public class SensorTest extends LinearOpMode
   {
     
     propSensors = new DistanceSensors(hardwareMap, telemetry);
-    pixelDropper = new PixelDropper(hardwareMap, telemetry, "pixelDropperPurple");
+    //pixelDropper = new PixelDropper(hardwareMap, telemetry, "pixelDropperPurple");
     telemetry.addData("Status", "Initialized");
     telemetry.update();
     // setup a instance of our drive system
