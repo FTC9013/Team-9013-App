@@ -11,7 +11,7 @@ public class IntoTheDepp extends LinearOpMode
   public MecanumDriveChassis driveChassis;
   public DistanceSensors distanceSensors;
   private final ElapsedTime runtime = new ElapsedTime();
-  public ArmControl arm;
+  //public ArmControl arm;
   int turnDistanceYaw = 900;
   IMU imu;
   
@@ -20,7 +20,7 @@ public class IntoTheDepp extends LinearOpMode
   @Override
   public void runOpMode()
   {
-    arm = new ArmControl(hardwareMap, telemetry);
+    //arm = new ArmControl(hardwareMap, telemetry);
     distanceSensors = new DistanceSensors(hardwareMap, telemetry);
     telemetry.addData("Status", "Initialized");
     telemetry.update();
@@ -35,40 +35,40 @@ public class IntoTheDepp extends LinearOpMode
     
     //arm.extendArm();
     //raise arm
-    arm.armRaise();
+    //arm.armRaise();
     //hang spaceminn witth a noose
     
     driveChassis.moveForward(20);
     
     //arm stuf heer
-    arm.toggleGripper();
+    //arm.toggleGripper();
     driveChassis.moveBackward(10);
     driveChassis.strafeLeft(100);
     goAwayFromLeftWall(60);
-    arm.armLower();
-    arm.toggleGripper();
+    //arm.armLower();
+    //arm.toggleGripper();
     //----------------------------------------------------------------------------------
     //Fistr grab
     //grabb sampil
     goTAwaysBackWall(10);
-    arm.armRaise();
+    //arm.armRaise();
     driveChassis.turnLeft();
     driveChassis.straighten(135);
     //arm go weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-    arm.toggleGripper();
+    //arm.toggleGripper();
     //arm dropp sampel n baskit
     //-----------------------------------------------------------------------------------
     //2d grabb
     driveChassis.straighten(0);
     goTAwaysBackWall(35);
-    arm.armLower();
-    arm.toggleGripper();
+    //arm.armLower();
+    //arm.toggleGripper();
     //grrab sampel
     goTAwaysBackWall(10);
-    arm.armRaise();
+    //arm.armRaise();
     driveChassis.turnLeft();
     driveChassis.straighten(135);
-    arm.toggleGripper();
+    //arm.toggleGripper();
     //arm dropp sampel n baskit
     //----------------------------------------------------------------------------------
     //3th grab
@@ -76,15 +76,15 @@ public class IntoTheDepp extends LinearOpMode
     goTAwaysBackWall(35);
     goAwayFromLeftWall(10);
     //grrab sampel
-    arm.armLower();
-    arm.toggleGripper();
+    //arm.armLower();
+    //arm.toggleGripper();
     goTAwaysBackWall(10);
-    arm.armRaise();
+    //arm.armRaise();
     driveChassis.turnLeft();
     driveChassis.straighten(135);
     //arm dropp sampel n baskit
     //----------------------------------------------------------------------------------
-    arm.toggleGripper();
+    //arm.toggleGripper();
     //go to see zone
     driveChassis.straighten(0);
     driveChassis.moveForward(20);
