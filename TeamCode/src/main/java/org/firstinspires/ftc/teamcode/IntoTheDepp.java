@@ -32,79 +32,80 @@ public class IntoTheDepp extends LinearOpMode
     runtime.reset();
     // run until the end of the match (driver presses STOP)
     
-    if (opModeIsActive())
+    
+    //arm.extendArm();
+    //raise arm
+    arm.armRaise();
+    //hang spaceminn witth a noose
+    
+    driveChassis.moveForward(20);
+    
+    //arm stuf heer
+    arm.toggleGripper();
+    driveChassis.moveBackward(10);
+    driveChassis.strafeLeft(100);
+    goAwayFromLeftWall(60);
+    arm.armLower();
+    arm.toggleGripper();
+    //----------------------------------------------------------------------------------
+    //Fistr grab
+    //grabb sampil
+    goTAwaysBackWall(10);
+    arm.armRaise();
+    driveChassis.turnLeft();
+    driveChassis.straighten(135);
+    //arm go weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+    arm.toggleGripper();
+    //arm dropp sampel n baskit
+    //-----------------------------------------------------------------------------------
+    //2d grabb
+    driveChassis.straighten(0);
+    goTAwaysBackWall(35);
+    arm.armLower();
+    arm.toggleGripper();
+    //grrab sampel
+    goTAwaysBackWall(10);
+    arm.armRaise();
+    driveChassis.turnLeft();
+    driveChassis.straighten(135);
+    arm.toggleGripper();
+    //arm dropp sampel n baskit
+    //----------------------------------------------------------------------------------
+    //3th grab
+    driveChassis.straighten(0);
+    goTAwaysBackWall(35);
+    goAwayFromLeftWall(10);
+    //grrab sampel
+    arm.armLower();
+    arm.toggleGripper();
+    goTAwaysBackWall(10);
+    arm.armRaise();
+    driveChassis.turnLeft();
+    driveChassis.straighten(135);
+    //arm dropp sampel n baskit
+    //----------------------------------------------------------------------------------
+    arm.toggleGripper();
+    //go to see zone
+    driveChassis.straighten(0);
+    driveChassis.moveForward(20);
+    driveChassis.strafeRight(260);
+    driveChassis.turnLeft();
+    goTAwaysBackWall(35);
+    driveChassis.turnRight();
+    driveChassis.moveBackward(20);
+    //done!!!! 😊😊😊😊😊😊😊😊☺☻☻☻ææææε♥!!♥♥♥♦♦♣♠!♥♥•◘○
+    telemetry.addLine("Moved Forward");
+    telemetry.update();
+    
+    while (opModeIsActive())
     {
-      //raise arm
-      arm.armRaise();
-      //hang sampel
-      
-      driveChassis.moveForward(20);
-      
-      //arm stuf heer
-      arm.toggleGripper();
-      driveChassis.moveBackward(10);
-      driveChassis.strafeLeft(60);
-      goAwayFromLeftWall(20);
-      arm.armLower();
-      arm.toggleGripper();
-      //grabb sampil
-      driveChassis.moveBackward(20);
-      arm.armRaise();
-      
-      driveChassis.turnLeft();
-      driveChassis.straighten(135);
-      
-      arm.toggleGripper();
-      
-      //arm dropp sampel n baskit
-      driveChassis.straighten(0);
-      driveChassis.moveForward(20);
-      arm.armLower();
-      arm.toggleGripper();
-      
-      //grrab sammpel
-      driveChassis.moveBackward(20);
-      arm.armRaise();
-      driveChassis.turnLeft();
-      driveChassis.straighten(135);
-      
-  
-  
-  
-      arm.toggleGripper();
-  
-      //arm dropp sampel n baskit
-      driveChassis.straighten(0);
-      driveChassis.moveForward(20);
-      //grrab sammpel
-      arm.armLower();
-      arm.toggleGripper();
-      driveChassis.moveBackward(20);
-      arm.armRaise();
-      driveChassis.turnLeft();
-      driveChassis.straighten(135);
-      //arm dropp sampel n baskit
-      arm.toggleGripper();
-      driveChassis.straighten(0);
-      driveChassis.moveForward(20);
-      driveChassis.strafeRight(260);
-      driveChassis.turnLeft();
-      goTowardsBackWall(60);
-      driveChassis.turnRight();
-      driveChassis.moveBackward(20);
-      
-      telemetry.addLine("Moved Forward");
-      telemetry.update();
-      
-      while (opModeIsActive())
-      {
-      
-      }
-      
-      
-      //telemetry.update();
       
     }
+    
+    
+    //telemetry.update();
+    
+    
   }
   
   
@@ -114,7 +115,8 @@ public class IntoTheDepp extends LinearOpMode
     double distTravel = distRight - distanceSensors.leftDistance();
     driveChassis.strafeRight(distTravel);
   }
-  public void goTowardsBackWall(double distBack)
+  
+  public void goTAwaysBackWall(double distBack)
   {
     double distTravel = distBack - distanceSensors.backDistance();
     driveChassis.moveBackward(distTravel);
