@@ -39,7 +39,13 @@ public class ArmControl
     extensionMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
   }
   
-  public void armLower()
+  public void reset()
+  {
+    armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    
+  }
+  
+  public void lowerArmTo(int distance)
   
   {
     
@@ -56,10 +62,19 @@ public class ArmControl
     
   }
   
-  public void armRaise()
+  public void moveArmTo(int distance)
   {
-    armMotor.setPower(-0.6);
-    telemetry.addData("Raising G R I P P E R", "True");
+    telemetry.addLine("raising the G R I P P E R arm");
+    telemetry.update();
+    armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    armMotor.setTargetPosition(distance);
+    armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    armMotor.setPower(0.5);
+    while (armMotor.isBusy())
+    {
+      //look into the void of nothingness and dispare
+    }
+    armMotor.setPower(0);
   }
   
   public void armStop()

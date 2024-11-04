@@ -22,7 +22,7 @@ public class MecanumDriveChassis
   double actualSpeed;
   double tickPerCm = 17.7914;
   private ElapsedTime runTime = new ElapsedTime();
-  double autonomousPower = 0.4;
+  double autonomousPower = 0.5;
   int turnDistance = 843;
   int turnDistanceYaw = 900;
   private final DcMotor leftFrontDrive;
@@ -337,8 +337,8 @@ public class MecanumDriveChassis
     // send the speeds to the motors
     rightFrontDrive.setPower(speeds.get(0));
     leftFrontDrive.setPower(speeds.get(1));
-    rightRearDrive.setPower(speeds.get(2));
-    leftRearDrive.setPower(speeds.get(3));
+    rightRearDrive.setPower(speeds.get(3));
+    leftRearDrive.setPower(speeds.get(2));
   }
   
   void RunWithoutEncoders()
@@ -475,8 +475,8 @@ public class MecanumDriveChassis
     rightRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     
     leftFrontDrive.setPower(-autonomousPower);
-    leftRearDrive.setPower(autonomousPower);
     rightFrontDrive.setPower(autonomousPower);
+    leftRearDrive.setPower(autonomousPower);
     rightRearDrive.setPower(-autonomousPower);
     while (leftFrontDrive.isBusy() && rightFrontDrive.isBusy() && leftRearDrive.isBusy() && rightRearDrive.isBusy())
     {
@@ -514,8 +514,8 @@ public class MecanumDriveChassis
     rightRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     
     leftFrontDrive.setPower(autonomousPower);
-    leftRearDrive.setPower(-autonomousPower);
     rightFrontDrive.setPower(-autonomousPower);
+    leftRearDrive.setPower(-autonomousPower);
     rightRearDrive.setPower(autonomousPower);
     while (leftFrontDrive.isBusy() && rightFrontDrive.isBusy() && leftRearDrive.isBusy() && rightRearDrive.isBusy())
     {
@@ -562,11 +562,16 @@ public class MecanumDriveChassis
     rightRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     
     leftFrontDrive.setPower(-autonomousPower);
-    leftRearDrive.setPower(autonomousPower);
-    rightFrontDrive.setPower(-autonomousPower);
+    rightFrontDrive.setPower(autonomousPower);
+    leftRearDrive.setPower(-autonomousPower);
     rightRearDrive.setPower(autonomousPower);
     while (leftFrontDrive.isBusy() && rightFrontDrive.isBusy() && leftRearDrive.isBusy() && rightRearDrive.isBusy())
     {
+      telemetry.addData("Left resr position", leftRearDrive.getCurrentPosition());
+      telemetry.addData("Left frunt position", leftFrontDrive.getCurrentPosition());
+      telemetry.addData("Right resr position", rightRearDrive.getCurrentPosition());
+      telemetry.addData("Right frunt position", rightFrontDrive.getCurrentPosition());
+      telemetry.update();
       //Do nothing. Allows the motors to spin
     }
     stop_motors();
@@ -602,8 +607,8 @@ public class MecanumDriveChassis
     leftRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     rightRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     leftFrontDrive.setPower(autonomousPower);
-    leftRearDrive.setPower(-autonomousPower);
-    rightFrontDrive.setPower(autonomousPower);
+    rightFrontDrive.setPower(-autonomousPower);
+    leftRearDrive.setPower(autonomousPower);
     rightRearDrive.setPower(-autonomousPower);
     while (leftFrontDrive.isBusy() && rightFrontDrive.isBusy() && leftRearDrive.isBusy() && rightRearDrive.isBusy())
     {
@@ -663,7 +668,7 @@ public class MecanumDriveChassis
     double yaw = orientation.getYaw(AngleUnit.DEGREES);
     telemetry.addData("Yaw is:", yaw);
     telemetry.update();
-    double ticksPerDegree = turnDistanceYaw / 90;
+    double ticksPerDegree = turnDistanceYaw / 90.0;
     double changedYaw = yaw - desiredYaw;
     int turnYawTicks = (int) (changedYaw * ticksPerDegree);
     if (changedYaw > 0 && changedYaw <= 25)
@@ -677,5 +682,6 @@ public class MecanumDriveChassis
     yaw = orientation.getYaw(AngleUnit.DEGREES);
     telemetry.addData("Yaw is changing to:", desiredYaw);
     telemetry.addData("Yaw is now:", yaw);
+    telemetry.update();
   }
 }
