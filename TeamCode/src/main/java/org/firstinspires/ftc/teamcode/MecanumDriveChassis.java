@@ -22,9 +22,9 @@ public class MecanumDriveChassis
   double actualSpeed;
   double tickPerCm = 17.7914;
   private ElapsedTime runTime = new ElapsedTime();
-  double autonomousPower = 0.5;
+  double autonomousPower = 0.7;
   int turnDistance = 843;
-  int turnDistanceYaw = 900;
+  int turnDistanceYaw = 843;
   private final DcMotor leftFrontDrive;
   private final DcMotor leftRearDrive;
   private final DcMotor rightFrontDrive;
@@ -671,11 +671,11 @@ public class MecanumDriveChassis
     double ticksPerDegree = turnDistanceYaw / 90.0;
     double changedYaw = yaw - desiredYaw;
     int turnYawTicks = (int) (changedYaw * ticksPerDegree);
-    if (changedYaw > 0 && changedYaw <= 25)
+    if (changedYaw > 0 && changedYaw <= 135)
     {
       turnRightDistance(turnYawTicks);
     }
-    if (changedYaw < 0 && changedYaw >= -25)
+    if (changedYaw < 0 && changedYaw >= -135)
     {
       turnLeftDistance(-turnYawTicks);
     }

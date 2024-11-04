@@ -37,7 +37,7 @@ public class IntoTheDepp extends LinearOpMode
     waitForStart();
     runtime.reset();
     // run until the end of the match (driver presses STOP)
-    arm.reset();
+    //arm.reset();
     
     //arm.extendArm();
     //arm.moveArmTo(RAISE_ARM);
@@ -59,9 +59,6 @@ public class IntoTheDepp extends LinearOpMode
     sleep(1000);
     driveChassis.strafeLeft(20);
     sleep(100000);*/
-    driveChassis.moveForward(20);
-    driveChassis.straighten(135);
-    sleep(10000);
     driveChassis.moveForward(15);
     telemetry.addLine("mov fowakrd: seeping 4 5000 melesekonds");
     telemetry.update();
@@ -72,7 +69,11 @@ public class IntoTheDepp extends LinearOpMode
     telemetry.addLine("mov bankwd: seeping 4 5000 melesekonds");
     telemetry.update();
     sleep(1000);
-    driveChassis.strafeLeft(120);
+    driveChassis.strafeLeft(60);
+    sleep(200);
+    driveChassis.straighten(0);
+    sleep(200);
+    driveChassis.strafeLeft(60);
     goAwayFromLeftWall(20);
     
     telemetry.addLine("starfing left: sweping fore 5000 milenisenkens");
@@ -85,9 +86,12 @@ public class IntoTheDepp extends LinearOpMode
     //grabb sampil
     telemetry.addLine("stawping beefore da back wall: sleping 5000 mlesekents");
     telemetry.update();
-    stopBeforeBackWall(10);
+    stopBeforeBackWall(20);
     
     //arm.moveArmTo(RAISE_ARM);
+    sleep(200);
+    driveChassis.straighten(0);
+    sleep(100);
     driveChassis.turnLeft();
     driveChassis.straighten(135);
     telemetry.addLine("sempal dropped: sweeping 5000 melelelesekend");
@@ -99,7 +103,7 @@ public class IntoTheDepp extends LinearOpMode
     //arm dropp sampel n baskit
     //-----------------------------------------------------------------------------------
     //2d grabb
-    driveChassis.straighten(0);
+    /*driveChassis.straighten(0);
     stopBeforeBackWall(35);
     //arm.moveArmTo(LOWER_ARM);
     //arm.toggleGripper();
@@ -125,14 +129,21 @@ public class IntoTheDepp extends LinearOpMode
     //arm dropp sampel n baskit
     //----------------------------------------------------------------------------------
     //arm.toggleGripper();
-    //go to see zone
-    driveChassis.straighten(0);
-    driveChassis.moveForward(20);
-    driveChassis.strafeRight(260);
-    driveChassis.turnLeft();
-    stopBeforeBackWall(35);
+    //go to see zone*/
+    telemetry.addLine("straightening to 0");
+    telemetry.update();
     driveChassis.turnRight();
-    driveChassis.moveBackward(20);
+    driveChassis.straighten(0);
+    stopBeforeBackWall(65);
+    driveChassis.straighten(-90);
+    sleep(100);
+    driveChassis.moveForward(123);
+    sleep(250);
+    driveChassis.straighten(-90);
+    driveChassis.moveForward(122);
+    driveChassis.turnLeft();
+    stopBeforeBackWall(3);
+    
     
     telemetry.addLine("Moved Forward");
     telemetry.update();

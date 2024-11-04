@@ -41,8 +41,13 @@ public class ArmControl
   
   public void reset()
   {
-    armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     
+    armMotor.setPower(-0.1);
+    while (!touchSensor.isPressed())
+    {
+    }
+    armStop();
+    armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
   }
   
   public void lowerArmTo(int distance)
@@ -53,10 +58,10 @@ public class ArmControl
     if (!touchSensor.isPressed())
     {
       armMotor.setPower(0.7);
-      telemetry.addLine("Goging downe in the G R I P P E R arm");
+      telemetry.addLine("Going down in the G R I P P E R arm");
     } else
     {
-      telemetry.addLine("Stoping the G R I P P E R arm");
+      telemetry.addLine("Stopping the G R I P P E R arm");
       armStop();
     }
     
@@ -64,12 +69,20 @@ public class ArmControl
   
   public void moveArmTo(int distance)
   {
-    telemetry.addLine("raising the G R I P P E R arm");
+    telemetry.addLine("Raising the G R I P P E R arm");
     telemetry.update();
-    armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    int armPosition = armMotor.getCurrentPosition();
     armMotor.setTargetPosition(distance);
     armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    armMotor.setPower(0.5);
+    if (armPosition > distance)
+    {
+      armMotor.setPower(-0.5);
+    } else
+    {
+      armMotor.setPower(0.5);
+    }
+    
+    
     while (armMotor.isBusy())
     {
       //look into the void of nothingness and dispare
