@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Atoomolonis test")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Atoomolons tiest")
 // ticks per centemeter = 17.7914
 public class IntoTheDepp extends LinearOpMode
 {
@@ -137,10 +137,10 @@ public class IntoTheDepp extends LinearOpMode
     stopBeforeBackWall(65);
     driveChassis.straighten(-90);
     sleep(100);
-    driveChassis.moveForward(123);
+    driveChassis.moveForward(100);
     sleep(250);
     driveChassis.straighten(-90);
-    driveChassis.moveForward(122);
+    driveChassis.moveForward(115);
     driveChassis.turnLeft();
     stopBeforeBackWall(3);
     

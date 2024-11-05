@@ -30,7 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 /*
  * This OpMode executes a POV Game style Teleop for a direct drive robot
@@ -45,18 +44,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  */
 
 
-public abstract class PrimaryOpMode2324 extends LinearOpMode
+public abstract class PrimaryOpMode2425 extends LinearOpMode
 {
   
   /* Declare OpMode members. */
-  public DcMotor driveMotor = null;
-  /*public MastArm mast;
-  public AirplaneLauncher airplane;*/
+  public MastArm mast;
   public MecanumDriveChassis driveChassis;
   public DistanceSensors distance_sensors;
-  //public PixelDropper purplePixelDropper;
-  //public PixelDropper yellowPixelDropper;
-  //public ArmControl arm;
+  public ArmControl arm;
   //public Blang blang;
   
   public abstract void turnColor();
@@ -65,12 +60,9 @@ public abstract class PrimaryOpMode2324 extends LinearOpMode
   public void runOpMode()
   {
     //mast = new MastArm(hardwareMap, telemetry);
-    //airplane = new AirplaneLauncher(hardwareMap, telemetry);
     driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
     distance_sensors = new DistanceSensors(hardwareMap, telemetry);
-    //purplePixelDropper = new PixelDropper(hardwareMap, telemetry, "pixelDropperPurple");
-    //yellowPixelDropper = new PixelDropper(hardwareMap, telemetry, "pixelDropperYellow");
-    //arm = new ArmControl(hardwareMap, telemetry);
+    arm = new ArmControl(hardwareMap, telemetry);
     //blang = new Blang(hardwareMap);
     telemetry.addData(">", "Robot Ready. Press Play.");
     telemetry.addData(">", "Remember:stay skibidi. Devin is NOT a mewer.");
@@ -80,32 +72,13 @@ public abstract class PrimaryOpMode2324 extends LinearOpMode
     // Wait for the game to start (driver presses PLAY)
     waitForStart();
     //driveChassis.testWheels();
-    //arm.armLower(); //This actually raises it
-    //sleep(650);
-    //arm.armStop();
+    arm.reset();
+    sleep(650);
     
     // run until the end of the match (driver presses STOP)
     //2 driver controls:
     while (opModeIsActive())
     {
-      /*  gamepad1.right_trigger > 0.75 && gamepad1.left_trigger > 0.75)
-      {
-        airplane.launch();
-        sleep(2000);
-        airplane.resetLauncher();
-      }
-      if (gamepad2.right_trigger > 0.75 && gamepad2.x)
-      {
-        airplane.resetLauncher();
-      }*/
-      /*if (gamepad2.right_bumper && gamepad2.right_trigger > 0.75)
-      {
-        purplePixelDropper.drop_pixel();
-      }
-      if (gamepad2.left_bumper && gamepad2.left_trigger > 0.75)
-      {
-        yellowPixelDropper.drop_pixel();
-      }*/
       /*if (gamepad2.dpad_up)
       {
         mast.mastUp();
@@ -116,29 +89,21 @@ public abstract class PrimaryOpMode2324 extends LinearOpMode
       {
         mast.mastStop();
       }*/
-      /*if (gamepad2.left_stick_y > 0.75)
+      if (gamepad2.left_stick_y > 0.75)
       {
-        arm.armRaise();
+        arm.raise();
       } else if (gamepad2.left_stick_y < -0.75)
       {
-        arm.armLower();
+        arm.lower();
       } else
       {
-        arm.armStop();
+        arm.stop();
       }
       if (gamepad2.a)
       {
         arm.toggleGripper();
         sleep(400);
-      }*/
-      /*if (gamepad2.left_bumper)
-      {
-        purplePixelDropper.drop_Purple();
       }
-      if (gamepad2.right_bumper)
-      {
-        purplePixelDropper.lift();
-      }*/
       
       telemetry.update();
       telemetry.addData("LStickY", gamepad1.left_stick_y * -1);

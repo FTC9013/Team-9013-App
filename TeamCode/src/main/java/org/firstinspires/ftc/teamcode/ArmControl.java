@@ -14,7 +14,9 @@ public class ArmControl
   private final DcMotor extensionMotor;
   //private final TouchSensor limitSwitch;
   private final Telemetry telemetry;
-  public TouchSensor touchSensor;
+  public TouchSensor bottomTouchSensor;
+  public TouchSensor topTouchSensor;
+  static final double ARM_SPEED = 0.05;
   
   
   ArmControl(HardwareMap hardwareMap, Telemetry theTelemetry)
@@ -24,7 +26,8 @@ public class ArmControl
     // Initialize the hardware variables
     armMotor = hardwareMap.get(DcMotor.class, "arm");
     gripper = hardwareMap.get(Servo.class, "gripper");
-    touchSensor = hardwareMap.get(TouchSensor.class, "arm_failsafe");
+    bottomTouchSensor = hardwareMap.get(TouchSensor.class, "arm_failsafe_bottom");
+    topTouchSensor = hardwareMap.get(TouchSensor.class, "arm_failsafe_top");
     extensionMotor = hardwareMap.get(DcMotor.class, "extension_motor");
     gripper.setPosition(0);
     //limitSwitch = hardwareMap.get(TouchSensor.class, "limitSwitch");
@@ -43,28 +46,11 @@ public class ArmControl
   {
     
     armMotor.setPower(-0.1);
-    while (!touchSensor.isPressed())
+    while (!bottomTouchSensor.isPressed())
     {
     }
-    armStop();
+    stop();
     armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-  }
-  
-  public void lowerArmTo(int distance)
-  
-  {
-    
-    
-    if (!touchSensor.isPressed())
-    {
-      armMotor.setPower(0.7);
-      telemetry.addLine("Going down in the G R I P P E R arm");
-    } else
-    {
-      telemetry.addLine("Stopping the G R I P P E R arm");
-      armStop();
-    }
-    
   }
   
   public void moveArmTo(int distance)
@@ -74,23 +60,31 @@ public class ArmControl
     int armPosition = armMotor.getCurrentPosition();
     armMotor.setTargetPosition(distance);
     armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    boolean movingUp = false;
     if (armPosition > distance)
     {
-      armMotor.setPower(-0.5);
+      armMotor.setPower(ARM_SPEED);
+      movingUp = false;
     } else
     {
-      armMotor.setPower(0.5);
+      armMotor.setPower(ARM_SPEED);
+      movingUp = true;
     }
     
     
     while (armMotor.isBusy())
     {
-      //look into the void of nothingness and dispare
+      if (movingUp && topTouchSensor.isPressed()) {
+        break;
+      }
+      else if (!movingUp && bottomTouchSensor.isPressed()) {
+        break;
+      }
     }
-    armMotor.setPower(0);
+    stop();
   }
   
-  public void armStop()
+  public void stop()
   {
     
     //telemetry.addData("Limit Switch?", limitSwitch.isPressed() ? "Pressed" : "Not Pressed");
@@ -111,17 +105,39 @@ public class ArmControl
   
   public void extendArm()
   {
-    telemetry.addLine("Extending the G R I P P E R arm");
+    telemetry.addLine("Extending the arm");
     telemetry.update();
     extensionMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     extensionMotor.setTargetPosition(100);
     extensionMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    extensionMotor.setPower(0.5);
+    extensionMotor.setPower(ARM_SPEED);
     while (extensionMotor.isBusy())
     {
       //look into the void of nothingness and dispare
     }
     extensionMotor.setPower(0);
     
+  }
+  public void lower() {
+    if (!bottomTouchSensor.isPressed())
+    {
+      armMotor.setPower(-ARM_SPEED);
+      telemetry.addLine("Going down in the arm");
+    } else
+    {
+      telemetry.addLine("Stopping the arm");
+      stop();
+    }
+  }
+  public void raise() {
+    if (!topTouchSensor.isPressed())
+    {
+      armMotor.setPower(ARM_SPEED);
+      telemetry.addLine("Going up in the arm");
+    } else
+    {
+      telemetry.addLine("Stopping the arm");
+      stop();
+    }
   }
 }

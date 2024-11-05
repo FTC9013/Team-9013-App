@@ -24,7 +24,7 @@ public class MecanumDriveChassis
   private ElapsedTime runTime = new ElapsedTime();
   double autonomousPower = 0.7;
   int turnDistance = 843;
-  int turnDistanceYaw = 843;
+  int turnDistanceYaw = 870;
   private final DcMotor leftFrontDrive;
   private final DcMotor leftRearDrive;
   private final DcMotor rightFrontDrive;
@@ -668,17 +668,31 @@ public class MecanumDriveChassis
     double yaw = orientation.getYaw(AngleUnit.DEGREES);
     telemetry.addData("Yaw is:", yaw);
     telemetry.update();
-    double ticksPerDegree = turnDistanceYaw / 90.0;
-    double changedYaw = yaw - desiredYaw;
-    int turnYawTicks = (int) (changedYaw * ticksPerDegree);
-    if (changedYaw > 0 && changedYaw <= 135)
+    int count = 0;
+    while (Math.abs(yaw - desiredYaw) > 0.5 && count < 3)
+    {
+      double ticksPerDegree = turnDistanceYaw / 90.0;
+      double changedYaw = yaw - desiredYaw;
+      int turnYawTicks = (int) (changedYaw * ticksPerDegree);
+      if (changedYaw > 0 && changedYaw <= 180)
+      {
+        turnRightDistance(turnYawTicks);
+      }
+      if (changedYaw < 0 && changedYaw >= -180)
+      {
+        turnLeftDistance(-turnYawTicks);
+      }
+      count += 1;
+      
+    }
+    /*if (changedYaw > 0 && changedYaw <= 180)
     {
       turnRightDistance(turnYawTicks);
     }
-    if (changedYaw < 0 && changedYaw >= -135)
+    if (changedYaw < 0 && changedYaw >= -180)
     {
       turnLeftDistance(-turnYawTicks);
-    }
+    }*/
     yaw = orientation.getYaw(AngleUnit.DEGREES);
     telemetry.addData("Yaw is changing to:", desiredYaw);
     telemetry.addData("Yaw is now:", yaw);

@@ -45,7 +45,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name = "Red :(", group = "Robot")
 
-public class RedTeleop extends PrimaryOpMode2324
+public class RedTeleop extends PrimaryOpMode2425
 {
   
   public void turnColor()
