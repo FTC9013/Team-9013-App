@@ -7,6 +7,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 /*
@@ -15,9 +16,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
  * Pure Drive or Strafe motions are maintained using two Odometry Wheels.
  * The IMU gyro is used to stabilize the heading during all motions
  */
-
+@Disabled
 @Autonomous(name = "Sample Autonomous", group = "Mr. Phil")
-public class SampleAutonomous extends LinearOpMode
+public class OdometrySampleAutonomous extends LinearOpMode
 {
   // get an instance of the "Robot" class.
   private SimplifiedOdometryRobot robot = new SimplifiedOdometryRobot(this);

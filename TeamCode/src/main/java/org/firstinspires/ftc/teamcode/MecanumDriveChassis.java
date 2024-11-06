@@ -4,7 +4,6 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -21,7 +20,6 @@ public class MecanumDriveChassis
   
   double actualSpeed;
   double tickPerCm = 17.7914;
-  private ElapsedTime runTime = new ElapsedTime();
   double autonomousPower = 0.7;
   int turnDistance = 843;
   int turnDistanceYaw = 870;
@@ -34,7 +32,6 @@ public class MecanumDriveChassis
   private static double leftRearDriveSpeed;
   private static double rightFrontDriveSpeed;
   private static double rightRearDriveSpeed;
-  public DistanceSensors propSensors;
   // Robot speed [-1, 1].  (speed in any direction that is not rotational)
   // does not have any angular component, just scaler velocity.
   // combined with the angular component for motion.  Even if angle is 0 (forward).
@@ -616,50 +613,6 @@ public class MecanumDriveChassis
     }
     stop_motors();
     
-  }
-  
-  public void faceLeft()
-  {
-    leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    
-    
-    leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    leftRearDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    rightRearDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    
-    
-    leftFrontDrive.setTargetPosition(-turnDistanceYaw);
-    rightFrontDrive.setTargetPosition(turnDistanceYaw);
-    leftRearDrive.setTargetPosition(-turnDistanceYaw);
-    rightRearDrive.setTargetPosition(turnDistanceYaw);
-    
-    leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    leftRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    rightRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    
-    leftFrontDrive.setPower(-autonomousPower);
-    leftRearDrive.setPower(autonomousPower);
-    rightFrontDrive.setPower(-autonomousPower);
-    rightRearDrive.setPower(autonomousPower);
-    while (leftFrontDrive.isBusy() && rightFrontDrive.isBusy() && leftRearDrive.isBusy() && rightRearDrive.isBusy())
-    {
-      YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
-      double yaw = orientation.getYaw(AngleUnit.DEGREES);
-      telemetry.addData("Yaw is", yaw);
-      telemetry.addLine("Straightening yaw");
-      telemetry.update();
-      if (yaw < 1 && yaw > -1)
-      {
-        break;
-      }
-      //Do nothing. Allows the motors to spin
-    }
-    stop_motors();
   }
   
   public void straighten(double desiredYaw)

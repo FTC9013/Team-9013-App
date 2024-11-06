@@ -16,7 +16,8 @@ public class ArmControl
   private final Telemetry telemetry;
   public TouchSensor bottomTouchSensor;
   public TouchSensor topTouchSensor;
-  static final double ARM_SPEED = 0.05;
+  static final double ARM_SPEED = 0.01;
+  static final double EXTENSION_SPEED = 0.01;
   
   
   ArmControl(HardwareMap hardwareMap, Telemetry theTelemetry)
@@ -45,7 +46,7 @@ public class ArmControl
   public void reset()
   {
     
-    armMotor.setPower(-0.1);
+    armMotor.setPower(-ARM_SPEED);
     while (!bottomTouchSensor.isPressed())
     {
     }
@@ -74,10 +75,11 @@ public class ArmControl
     
     while (armMotor.isBusy())
     {
-      if (movingUp && topTouchSensor.isPressed()) {
+      if (movingUp && topTouchSensor.isPressed())
+      {
         break;
-      }
-      else if (!movingUp && bottomTouchSensor.isPressed()) {
+      } else if (!movingUp && bottomTouchSensor.isPressed())
+      {
         break;
       }
     }
@@ -103,14 +105,14 @@ public class ArmControl
     telemetry.addData("G R I P P I N G", "True");
   }
   
-  public void extendArm()
+  public void extend()
   {
     telemetry.addLine("Extending the arm");
     telemetry.update();
     extensionMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     extensionMotor.setTargetPosition(100);
     extensionMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    extensionMotor.setPower(ARM_SPEED);
+    extensionMotor.setPower(EXTENSION_SPEED);
     while (extensionMotor.isBusy())
     {
       //look into the void of nothingness and dispare
@@ -118,7 +120,9 @@ public class ArmControl
     extensionMotor.setPower(0);
     
   }
-  public void lower() {
+  
+  public void lower()
+  {
     if (!bottomTouchSensor.isPressed())
     {
       armMotor.setPower(-ARM_SPEED);
@@ -129,7 +133,9 @@ public class ArmControl
       stop();
     }
   }
-  public void raise() {
+  
+  public void raise()
+  {
     if (!topTouchSensor.isPressed())
     {
       armMotor.setPower(ARM_SPEED);

@@ -1,25 +1,18 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Atoomolons tiest")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Into the Deep")
 // ticks per centemeter = 17.7914
 public class IntoTheDepp extends LinearOpMode
 {
-  public Blang blang;
+  //public Blang blang;
   public MecanumDriveChassis driveChassis;
   public DistanceSensors distanceSensors;
   public ArmControl arm;
   static final int RAISE_ARM = 50;
   static final int LOWER_ARM = 0;
   static final int MEDIUM_ARM = 25;
-  private final ElapsedTime runtime = new ElapsedTime();
-  //public ArmControl arm;
-  int turnDistanceYaw = 900;
-  IMU imu;
-  
   
   // a timer for the various automation activities.
   @Override
@@ -35,124 +28,12 @@ public class IntoTheDepp extends LinearOpMode
     driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
     // Wait for the game to start (driver presses PLAY)
     waitForStart();
-    runtime.reset();
-    // run until the end of the match (driver presses STOP)
-    //arm.reset();
     
-    //arm.extendArm();
-    //arm.moveArmTo(RAISE_ARM);
-    //arm.moveArmTo(MEDIUM_ARM);
-    //hang spaceminn witth a noose
-    /*driveChassis.moveForward(20);
-    driveChassis.turnLeft();
-    sleep(1000);
-    driveChassis.moveForward(20);
-    driveChassis.turnLeft();
-    sleep(1000);
-    driveChassis.moveForward(20);
-    driveChassis.turnLeft();
-    sleep(1000);
-    driveChassis.moveForward(20);
-    driveChassis.turnLeft();
-    sleep(1000);
-    driveChassis.strafeRight(20);
-    sleep(1000);
-    driveChassis.strafeLeft(20);
-    sleep(100000);*/
-    driveChassis.moveForward(15);
-    telemetry.addLine("mov fowakrd: seeping 4 5000 melesekonds");
-    telemetry.update();
-    sleep(1000);
-    //arm stuf heer
-    //arm.toggleGripper();
-    driveChassis.moveBackward(10);
-    telemetry.addLine("mov bankwd: seeping 4 5000 melesekonds");
-    telemetry.update();
-    sleep(1000);
-    driveChassis.strafeLeft(60);
-    sleep(200);
-    driveChassis.straighten(0);
-    sleep(200);
-    driveChassis.strafeLeft(60);
-    goAwayFromLeftWall(20);
-    
-    telemetry.addLine("starfing left: sweping fore 5000 milenisenkens");
-    telemetry.update();
-    sleep(1000);
-    //arm.moveArmTo(LOWER_ARM);
-    //arm.toggleGripper();
-    //----------------------------------------------------------------------------------
-    //Fistr grab
-    //grabb sampil
-    telemetry.addLine("stawping beefore da back wall: sleping 5000 mlesekents");
-    telemetry.update();
-    stopBeforeBackWall(20);
-    
-    //arm.moveArmTo(RAISE_ARM);
-    sleep(200);
-    driveChassis.straighten(0);
-    sleep(100);
-    driveChassis.turnLeft();
-    driveChassis.straighten(135);
-    telemetry.addLine("sempal dropped: sweeping 5000 melelelesekend");
-    telemetry.update();
-    sleep(1000);
-    
-    
-    //arm.toggleGripper();
-    //arm dropp sampel n baskit
-    //-----------------------------------------------------------------------------------
-    //2d grabb
-    /*driveChassis.straighten(0);
-    stopBeforeBackWall(35);
-    //arm.moveArmTo(LOWER_ARM);
-    //arm.toggleGripper();
-    //grrab sampel
-    stopBeforeBackWall(10);
-    //arm.moveArmTo(RAISE_ARM);
-    driveChassis.turnLeft();
-    driveChassis.straighten(135);
-    //arm.toggleGripper();
-    //arm dropp sampel n baskit
-    
-    //3th grab
-    driveChassis.straighten(0);
-    stopBeforeBackWall(35);
-    goAwayFromLeftWall(10);
-    //grrab sampel
-    //arm.moveArmTo(LOWER_ARM);
-    //arm.toggleGripper();
-    stopBeforeBackWall(10);
-    //arm.moveArmTo(RAISE_ARM);
-    driveChassis.turnLeft();
-    driveChassis.straighten(135);
-    //arm dropp sampel n baskit
-    //----------------------------------------------------------------------------------
-    //arm.toggleGripper();
-    //go to see zone*/
-    telemetry.addLine("straightening to 0");
-    telemetry.update();
-    driveChassis.turnRight();
-    driveChassis.straighten(0);
-    stopBeforeBackWall(65);
-    driveChassis.straighten(-90);
-    sleep(100);
-    driveChassis.moveForward(100);
-    sleep(250);
-    driveChassis.straighten(-90);
-    driveChassis.moveForward(115);
-    driveChassis.turnLeft();
-    stopBeforeBackWall(3);
-    
-    
-    telemetry.addLine("Moved Forward");
-    telemetry.update();
-    
-    while (opModeIsActive())
-    {
-      
-    }
-    
+    initialize();
+    hookSample();
+    strafeToBasket();
+    grabAndDropSample();
+    parkBeforeBackWall();
     
   }
   
@@ -170,6 +51,76 @@ public class IntoTheDepp extends LinearOpMode
     driveChassis.moveBackward(distTravel);
     telemetry.addData("Distance travel:", distTravel);
     telemetry.addData("back distance sensor", distanceSensors.backDistance());
+    telemetry.update();
+  }
+  
+  public void hookSample()
+  {
+    driveChassis.moveForward(15);
+    telemetry.addLine("Moving Forward: 15 cm");
+    telemetry.update();
+    sleep(1000);
+    //arm stuf heer
+    //arm.toggleGripper();
+    driveChassis.moveBackward(10);
+    telemetry.addLine("Moving Backward: 10 cm");
+    telemetry.update();
+    sleep(1000);
+  }
+  
+  public void strafeToBasket()
+  {
+    telemetry.addLine("Strafing left");
+    telemetry.update();
+    driveChassis.strafeLeft(60);
+    sleep(200);
+    driveChassis.straighten(0);
+    sleep(200);
+    driveChassis.strafeLeft(60);
+    goAwayFromLeftWall(20);
+    sleep(1000);
+    telemetry.addLine("Stopping before back wall");
+    telemetry.update();
+    stopBeforeBackWall(20);
+  }
+  
+  public void initialize()
+  {
+    arm.reset();
+    arm.extend();
+    arm.moveArmTo(MEDIUM_ARM);
+  }
+  
+  public void grabAndDropSample()
+  {
+    arm.moveArmTo(LOWER_ARM);
+    arm.toggleGripper();
+    arm.moveArmTo(RAISE_ARM);
+    sleep(200);
+    driveChassis.straighten(0);
+    sleep(100);
+    driveChassis.turnLeft();
+    driveChassis.straighten(135);
+    arm.toggleGripper();
+    telemetry.addLine("sempal dropped");
+    telemetry.update();
+    sleep(1000);
+  }
+  
+  public void parkBeforeBackWall()
+  {
+    driveChassis.turnRight();
+    driveChassis.straighten(0);
+    stopBeforeBackWall(65);
+    driveChassis.straighten(-90);
+    sleep(100);
+    driveChassis.moveForward(100);
+    sleep(250);
+    driveChassis.straighten(-90);
+    driveChassis.moveForward(115);
+    driveChassis.turnLeft();
+    stopBeforeBackWall(3);
+    telemetry.addLine("Moved Forward");
     telemetry.update();
   }
 }
