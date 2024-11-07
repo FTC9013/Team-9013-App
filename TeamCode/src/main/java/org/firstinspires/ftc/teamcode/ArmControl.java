@@ -16,8 +16,8 @@ public class ArmControl
   private final Telemetry telemetry;
   public TouchSensor bottomTouchSensor;
   public TouchSensor topTouchSensor;
-  static final double ARM_SPEED = 0.01;
-  static final double EXTENSION_SPEED = 0.01;
+  static final double ARM_SPEED = 0.6;
+  static final double EXTENSION_SPEED = 1;
   
   
   ArmControl(HardwareMap hardwareMap, Telemetry theTelemetry)
@@ -37,21 +37,25 @@ public class ArmControl
     // Motors on one side reversed to drive forward
     // Reverse the motor that runs backwards when connected directly to the battery
     // A positive power number should drive the robot forward regardless of the motor's position on the robot.
-    armMotor.setDirection(DcMotor.Direction.REVERSE);
+    armMotor.setDirection(DcMotor.Direction.FORWARD);
     armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     //extensionMotor.setDirection(DcMotor.Direction.________);
     extensionMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    extensionMotor.setDirection(DcMotor.Direction.REVERSE);
   }
+  
   
   public void reset()
   {
-    
+    armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     armMotor.setPower(-ARM_SPEED);
     while (!bottomTouchSensor.isPressed())
     {
+      telemetry.addLine("Resetting arm");
     }
-    stop();
+    armMotor.setPower(0);
     armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
   }
   
   public void moveArmTo(int distance)
@@ -91,18 +95,26 @@ public class ArmControl
     
     //telemetry.addData("Limit Switch?", limitSwitch.isPressed() ? "Pressed" : "Not Pressed");
     armMotor.setPower(0);
+    if (bottomTouchSensor.isPressed())
+    {
+      telemetry.addLine("bottem touch sensor is pressed");
+    } else if (topTouchSensor.isPressed())
+    {
+      telemetry.addLine("top touch sensor is pressed");
+    } else
+    {
+      telemetry.addLine("no botoon pressed :(");
+    }
   }
   
-  public void toggleGripper()
+  public void openGripper()
   {
-    if (gripper.getPosition() > 0.5)
-    {
-      gripper.setPosition(0);
-    } else if (gripper.getPosition() <= 0.5)
-    {
-      gripper.setPosition(1);
-    }
-    telemetry.addData("G R I P P I N G", "True");
+    gripper.setPosition(1);
+  }
+  
+  public void closeGripper()
+  {
+    gripper.setPosition(0.5);
   }
   
   public void extend()
@@ -110,8 +122,9 @@ public class ArmControl
     telemetry.addLine("Extending the arm");
     telemetry.update();
     extensionMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    extensionMotor.setTargetPosition(100);
+    extensionMotor.setTargetPosition(200);
     extensionMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     extensionMotor.setPower(EXTENSION_SPEED);
     while (extensionMotor.isBusy())
     {
@@ -132,6 +145,7 @@ public class ArmControl
       telemetry.addLine("Stopping the arm");
       stop();
     }
+    telemetry.addData("Arm Position: ", armMotor.getCurrentPosition());
   }
   
   public void raise()
@@ -145,5 +159,6 @@ public class ArmControl
       telemetry.addLine("Stopping the arm");
       stop();
     }
+    telemetry.addData("Arm Position: ", armMotor.getCurrentPosition());
   }
 }

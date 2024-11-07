@@ -405,6 +405,11 @@ public class MecanumDriveChassis
   
   public void moveBackward(double distanceCm)
   {
+    moveBackward(distanceCm, autonomousPower);
+  }
+  
+  public void moveBackward(double distanceCm, double speed)
+  {
     
     telemetry.addLine("moving backward");
     telemetry.update();
@@ -432,10 +437,10 @@ public class MecanumDriveChassis
     leftRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     rightRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     
-    leftFrontDrive.setPower(-autonomousPower);
-    leftRearDrive.setPower(-autonomousPower);
-    rightFrontDrive.setPower(-autonomousPower);
-    rightRearDrive.setPower(-autonomousPower);
+    leftFrontDrive.setPower(-speed);
+    leftRearDrive.setPower(-speed);
+    rightFrontDrive.setPower(-speed);
+    rightRearDrive.setPower(-speed);
     while (leftFrontDrive.isBusy() && rightFrontDrive.isBusy() && leftRearDrive.isBusy() && rightRearDrive.isBusy())
     {
       //Do nothing. Allows the motors to spin
@@ -617,16 +622,18 @@ public class MecanumDriveChassis
   
   public void straighten(double desiredYaw)
   {
+    double yaw;
     YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
-    double yaw = orientation.getYaw(AngleUnit.DEGREES);
-    telemetry.addData("Yaw is:", yaw);
-    telemetry.update();
     int count = 0;
-    while (Math.abs(yaw - desiredYaw) > 0.5 && count < 3)
+    do
     {
       double ticksPerDegree = turnDistanceYaw / 90.0;
+      orientation = imu.getRobotYawPitchRollAngles();
+      yaw = orientation.getYaw(AngleUnit.DEGREES);
       double changedYaw = yaw - desiredYaw;
       int turnYawTicks = (int) (changedYaw * ticksPerDegree);
+      telemetry.addData("Yaw is:", yaw);
+      telemetry.update();
       if (changedYaw > 0 && changedYaw <= 180)
       {
         turnRightDistance(turnYawTicks);
@@ -637,7 +644,7 @@ public class MecanumDriveChassis
       }
       count += 1;
       
-    }
+    } while (Math.abs(yaw - desiredYaw) > 0.5 && count < 3);
     /*if (changedYaw > 0 && changedYaw <= 180)
     {
       turnRightDistance(turnYawTicks);
@@ -646,6 +653,7 @@ public class MecanumDriveChassis
     {
       turnLeftDistance(-turnYawTicks);
     }*/
+    orientation = imu.getRobotYawPitchRollAngles();
     yaw = orientation.getYaw(AngleUnit.DEGREES);
     telemetry.addData("Yaw is changing to:", desiredYaw);
     telemetry.addData("Yaw is now:", yaw);

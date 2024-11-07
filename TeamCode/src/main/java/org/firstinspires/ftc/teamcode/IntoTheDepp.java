@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Into the Deep")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Intoh teh Depp")
 // ticks per centemeter = 17.7914
 public class IntoTheDepp extends LinearOpMode
 {
@@ -10,9 +10,10 @@ public class IntoTheDepp extends LinearOpMode
   public MecanumDriveChassis driveChassis;
   public DistanceSensors distanceSensors;
   public ArmControl arm;
-  static final int RAISE_ARM = 50;
-  static final int LOWER_ARM = 0;
-  static final int MEDIUM_ARM = 25;
+  static final int RAISE_ARM = 3675;
+  static final int HOOK_POSITION = 1850;
+  static final int PUSH_HOOK_POSITION = 1575;
+  static final int MEDIUM_ARM = 2000;
   
   // a timer for the various automation activities.
   @Override
@@ -56,16 +57,17 @@ public class IntoTheDepp extends LinearOpMode
   
   public void hookSample()
   {
-    driveChassis.moveForward(15);
-    telemetry.addLine("Moving Forward: 15 cm");
+    arm.moveArmTo(HOOK_POSITION);
+    driveChassis.moveForward(27);
+    arm.moveArmTo(PUSH_HOOK_POSITION);
+    telemetry.addLine("Moving Forward: 25 cm");
     telemetry.update();
-    sleep(1000);
     //arm stuf heer
-    //arm.toggleGripper();
-    driveChassis.moveBackward(10);
-    telemetry.addLine("Moving Backward: 10 cm");
-    telemetry.update();
+    driveChassis.moveBackward(17, 0.3);
+    arm.openGripper();
     sleep(1000);
+    telemetry.addLine("Moving Backward: 15 cm");
+    telemetry.update();
   }
   
   public void strafeToBasket()
@@ -73,54 +75,50 @@ public class IntoTheDepp extends LinearOpMode
     telemetry.addLine("Strafing left");
     telemetry.update();
     driveChassis.strafeLeft(60);
-    sleep(200);
     driveChassis.straighten(0);
-    sleep(200);
     driveChassis.strafeLeft(60);
-    goAwayFromLeftWall(20);
-    sleep(1000);
+    goAwayFromLeftWall(23);
     telemetry.addLine("Stopping before back wall");
     telemetry.update();
-    stopBeforeBackWall(20);
+    stopBeforeBackWall(5);
   }
   
   public void initialize()
   {
     arm.reset();
-    arm.extend();
+    //arm.extend();
     arm.moveArmTo(MEDIUM_ARM);
   }
   
   public void grabAndDropSample()
   {
-    arm.moveArmTo(LOWER_ARM);
-    arm.toggleGripper();
+    arm.reset();
+    arm.closeGripper();
+    sleep(800);
     arm.moveArmTo(RAISE_ARM);
-    sleep(200);
     driveChassis.straighten(0);
-    sleep(100);
     driveChassis.turnLeft();
-    driveChassis.straighten(135);
-    arm.toggleGripper();
+    driveChassis.straighten(115);
+    driveChassis.strafeRight(30);
+    driveChassis.moveForward(20);
+    driveChassis.strafeLeft(25);
+    arm.openGripper();
+    sleep(800);
     telemetry.addLine("sempal dropped");
     telemetry.update();
-    sleep(1000);
   }
   
   public void parkBeforeBackWall()
   {
     driveChassis.turnRight();
     driveChassis.straighten(0);
-    stopBeforeBackWall(65);
+    stopBeforeBackWall(60);
     driveChassis.straighten(-90);
-    sleep(100);
-    driveChassis.moveForward(100);
-    sleep(250);
-    driveChassis.straighten(-90);
-    driveChassis.moveForward(115);
+    driveChassis.moveForward(230);
     driveChassis.turnLeft();
     stopBeforeBackWall(3);
     telemetry.addLine("Moved Forward");
     telemetry.update();
+    arm.closeGripper();
   }
 }

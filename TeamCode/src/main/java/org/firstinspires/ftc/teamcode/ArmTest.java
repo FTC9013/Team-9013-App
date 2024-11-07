@@ -28,15 +28,15 @@ public class ArmTest extends LinearOpMode
     telemetry.addLine("Arm moved 0");
     telemetry.update();
     sleep(1000);
-    arm.toggleGripper();
+    arm.openGripper();
     telemetry.addLine("Toggle gripper1");
     telemetry.update();
     sleep(1000);
-    arm.toggleGripper();
+    arm.closeGripper();
     telemetry.addLine("Toggle gripper2");
     telemetry.update();
     sleep(1000);
-    arm.toggleGripper();
+    arm.openGripper();
     telemetry.addLine("Toggle gripper3");
     telemetry.update();
     sleep(1000);

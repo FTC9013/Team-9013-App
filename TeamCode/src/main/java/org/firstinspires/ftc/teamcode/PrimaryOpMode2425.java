@@ -91,21 +91,38 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
       }*/
       if (gamepad2.left_stick_y > 0.75)
       {
-        arm.raise();
+        arm.lower();
       } else if (gamepad2.left_stick_y < -0.75)
       {
-        arm.lower();
+        arm.raise();
+        
       } else
       {
         arm.stop();
+        
       }
       if (gamepad2.a)
       {
-        arm.toggleGripper();
+        arm.openGripper();
+        sleep(400);
+      }
+      if (gamepad2.b)
+      {
+        arm.closeGripper();
+        sleep(400);
+      }
+      if (gamepad2.x)
+      {
+        arm.reset();
+        sleep(400);
+      }
+      if (gamepad2.y)
+      {
+        arm.extend();
         sleep(400);
       }
       
-      telemetry.update();
+      
       telemetry.addData("LStickY", gamepad1.left_stick_y * -1);
       telemetry.addData("LStickX", gamepad1.left_stick_x);
       telemetry.addData("vD: ", 1000);
