@@ -12,7 +12,7 @@ public class ArmTest extends LinearOpMode
   {
     arm = new ArmControl(hardwareMap, telemetry);
     waitForStart();
-    arm.extend();
+    arm.fullExtend();
     telemetry.addLine("Arm extended");
     telemetry.update();
     sleep(1000);

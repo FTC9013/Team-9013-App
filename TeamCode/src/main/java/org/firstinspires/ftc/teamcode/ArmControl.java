@@ -60,23 +60,34 @@ public class ArmControl
   
   public void moveArmTo(int distance)
   {
+    startMovingTo(distance);
+    waitUntilDone();
+    
+    
+  }
+  
+  public void startMovingTo(int distance)
+  {
     telemetry.addLine("Raising the G R I P P E R arm");
     telemetry.update();
     int armPosition = armMotor.getCurrentPosition();
     armMotor.setTargetPosition(distance);
     armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    boolean movingUp = false;
+    
     if (armPosition > distance)
     {
       armMotor.setPower(ARM_SPEED);
-      movingUp = false;
+      
     } else
     {
       armMotor.setPower(ARM_SPEED);
-      movingUp = true;
+      
     }
-    
-    
+  }
+  
+  public void waitUntilDone()
+  {
+    boolean movingUp = armMotor.getPower() > 0;
     while (armMotor.isBusy())
     {
       if (movingUp && topTouchSensor.isPressed())
@@ -117,12 +128,22 @@ public class ArmControl
     gripper.setPosition(0.5);
   }
   
-  public void extend()
+  public void fullExtend()
+  {
+    extend(3000);
+  }
+  
+  public void smallExtend()
+  {
+    extend(100);
+  }
+  
+  public void extend(int distance)
   {
     telemetry.addLine("Extending the arm");
     telemetry.update();
     extensionMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    extensionMotor.setTargetPosition(200);
+    extensionMotor.setTargetPosition(distance);
     extensionMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     extensionMotor.setPower(EXTENSION_SPEED);
@@ -132,6 +153,16 @@ public class ArmControl
     }
     extensionMotor.setPower(0);
     
+  }
+  
+  public void stopExtending()
+  {
+    extensionMotor.setPower(0);
+  }
+  
+  public void extending()
+  {
+    extensionMotor.setPower(EXTENSION_SPEED);
   }
   
   public void lower()

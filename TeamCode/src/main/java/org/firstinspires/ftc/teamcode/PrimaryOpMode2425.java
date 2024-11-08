@@ -65,7 +65,7 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
     arm = new ArmControl(hardwareMap, telemetry);
     //blang = new Blang(hardwareMap);
     telemetry.addData(">", "Robot Ready. Press Play.");
-    telemetry.addData(">", "Remember:stay skibidi. Devin is NOT a mewer.");
+    telemetry.addData(">", "Remember, stay skibidi. Logan is NOT a mewer.");
     telemetry.update();
     turnColor();
     
@@ -104,22 +104,17 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
       if (gamepad2.a)
       {
         arm.openGripper();
-        sleep(400);
       }
       if (gamepad2.b)
       {
         arm.closeGripper();
-        sleep(400);
-      }
-      if (gamepad2.x)
-      {
-        arm.reset();
-        sleep(400);
       }
       if (gamepad2.y)
       {
-        arm.extend();
-        sleep(400);
+        arm.extending();
+      } else
+      {
+        arm.stopExtending();
       }
       
       

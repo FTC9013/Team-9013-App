@@ -2,17 +2,17 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Intoh teh Depp")
+
 // ticks per centemeter = 17.7914
-public class IntoTheDepp extends LinearOpMode
+public abstract class IntoTheDepp extends LinearOpMode
 {
   //public Blang blang;
   public MecanumDriveChassis driveChassis;
   public DistanceSensors distanceSensors;
   public ArmControl arm;
   static final int RAISE_ARM = 3675;
-  static final int HOOK_POSITION = 1850;
-  static final int PUSH_HOOK_POSITION = 1575;
+  static final int HOOK_POSITION = 2100;
+  static final int PUSH_HOOK_POSITION = 1300;
   static final int MEDIUM_ARM = 2000;
   
   // a timer for the various automation activities.
@@ -29,21 +29,24 @@ public class IntoTheDepp extends LinearOpMode
     driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
     // Wait for the game to start (driver presses PLAY)
     waitForStart();
-    
-    initialize();
-    hookSample();
-    strafeToBasket();
-    grabAndDropSample();
-    parkBeforeBackWall();
+    runAuto();
     
   }
   
+  public abstract void runAuto();
   
   public void goAwayFromLeftWall(double distRight)
   
   {
     double distTravel = distanceSensors.leftDistance() - distRight;
     driveChassis.strafeLeft(distTravel);
+  }
+  
+  public void goAwayFromRightWall(double distLeft)
+  
+  {
+    double distTravel = distanceSensors.rightDistance() - distLeft;
+    driveChassis.strafeRight(distTravel);
   }
   
   public void stopBeforeBackWall(double distBack)
@@ -55,20 +58,28 @@ public class IntoTheDepp extends LinearOpMode
     telemetry.update();
   }
   
+  public void initialize()
+  {
+    arm.reset();
+    arm.moveArmTo(HOOK_POSITION);
+    arm.fullExtend();
+  }
+  
   public void hookSample()
   {
-    arm.moveArmTo(HOOK_POSITION);
     driveChassis.moveForward(27);
-    arm.moveArmTo(PUSH_HOOK_POSITION);
+    arm.startMovingTo(PUSH_HOOK_POSITION);
+    
     telemetry.addLine("Moving Forward: 25 cm");
     telemetry.update();
     //arm stuf heer
-    driveChassis.moveBackward(17, 0.3);
+    driveChassis.moveBackward(17, driveChassis.slowAutonomousPower);
+    arm.waitUntilDone();
     arm.openGripper();
-    sleep(1000);
     telemetry.addLine("Moving Backward: 15 cm");
     telemetry.update();
   }
+  
   
   public void strafeToBasket()
   {
@@ -83,27 +94,24 @@ public class IntoTheDepp extends LinearOpMode
     stopBeforeBackWall(5);
   }
   
-  public void initialize()
-  {
-    arm.reset();
-    //arm.extend();
-    arm.moveArmTo(MEDIUM_ARM);
-  }
-  
   public void grabAndDropSample()
   {
+    arm.extending();
+    sleep(1000);
+    arm.stopExtending();
     arm.reset();
     arm.closeGripper();
     sleep(800);
     arm.moveArmTo(RAISE_ARM);
-    driveChassis.straighten(0);
-    driveChassis.turnLeft();
-    driveChassis.straighten(115);
-    driveChassis.strafeRight(30);
+    driveChassis.straighten(90);
     driveChassis.moveForward(20);
-    driveChassis.strafeLeft(25);
+    goAwayFromLeftWall(10);
+    arm.extending();
+    sleep(1000);
+    arm.stopExtending();
     arm.openGripper();
     sleep(800);
+    driveChassis.moveBackward(20);
     telemetry.addLine("sempal dropped");
     telemetry.update();
   }
