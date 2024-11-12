@@ -16,7 +16,7 @@ public class ArmControl
   private final Telemetry telemetry;
   public TouchSensor bottomTouchSensor;
   public TouchSensor topTouchSensor;
-  static final double ARM_SPEED = 0.6;
+  static final double ARM_SPEED = 0.8;
   static final double EXTENSION_SPEED = 1;
   static final int MAX_EXTENSION = 2500;
   

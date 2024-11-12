@@ -11,9 +11,9 @@ public abstract class IntoTheDepp extends LinearOpMode
   public DistanceSensors distanceSensors;
   public ArmControl arm;
   static final int RAISE_ARM = 3675;
-  static final int HOOK_POSITION = 2550;
-  static final int PUSH_HOOK_POSITION = 2050;
-  static final int MAX_EXTENSION = 2300;
+  static final int HOOK_POSITION = 2450;
+  static final int PUSH_HOOK_POSITION = 2700;
+  static final int MAX_EXTENSION = 2400;
   static final int MEDIUM_ARM = 2000;
   
   // a timer for the various automation activities.
@@ -63,22 +63,20 @@ public abstract class IntoTheDepp extends LinearOpMode
   {
     arm.reset();
     arm.moveArmTo(HOOK_POSITION);
-    arm.extend(MAX_EXTENSION);
   }
   
   public void hookSample()
   {
-    driveChassis.moveForward(47);
-    arm.startMovingTo(PUSH_HOOK_POSITION);
-    
+    driveChassis.moveForward(50);
+    arm.extend(MAX_EXTENSION);
+    arm.openGripper();
+    sleep(500);
     telemetry.addLine("Moving Forward: 27 cm");
     telemetry.update();
     //arm stuf heer
-    driveChassis.moveBackward(26, driveChassis.slowAutonomousPower);
+    driveChassis.moveBackward(45, driveChassis.slowAutonomousPower);
     arm.waitUntilDone();
-    arm.openGripper();
     arm.retract();
-    sleep(1000);
     arm.stopExtending();
     telemetry.addLine("Moving Backward: 18 cm");
     telemetry.update();

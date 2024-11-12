@@ -50,8 +50,9 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
   /* Declare OpMode members. */
   public MastArm mast;
   public MecanumDriveChassis driveChassis;
-  public DistanceSensors distance_sensors;
+  public DistanceSensors distanceSensors;
   public ArmControl arm;
+  static final int HOOK_POSITION = 2450;
   //public Blang blang;
   
   public abstract void turnColor();
@@ -61,7 +62,7 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
   {
     mast = new MastArm(hardwareMap, telemetry);
     driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
-    distance_sensors = new DistanceSensors(hardwareMap, telemetry);
+    distanceSensors = new DistanceSensors(hardwareMap, telemetry);
     arm = new ArmControl(hardwareMap, telemetry);
     //blang = new Blang(hardwareMap);
     telemetry.addData(">", "Robot Ready. Press Play.");
@@ -73,6 +74,7 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
     waitForStart();
     //driveChassis.testWheels();
     //arm.reset();
+    arm.reset();
     sleep(650);
     
     // run until the end of the match (driver presses STOP)
@@ -119,7 +121,10 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
       {
         arm.stopExtending();
       }
-      
+      if (gamepad1.left_trigger > 0.75 && gamepad1.right_trigger > 0.75)
+      {
+        hangSpecimen();
+      }
       
       telemetry.addData("LStickY", gamepad1.left_stick_y * -1);
       telemetry.addData("LStickX", gamepad1.left_stick_x);
@@ -139,9 +144,45 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
     }
   }
   
+  public void hangSpecimen()
+  {
+    arm.moveArmTo(HOOK_POSITION);
+    if (triggersPressed())
+      return;
+    driveChassis.straighten(0);
+    if (triggersPressed())
+      return;
+    stopBeforeBackWall(50);
+    if (triggersPressed())
+      return;
+    arm.extending();
+    if (triggersPressed())
+      return;
+    sleep(250);
+    if (triggersPressed())
+      return;
+    arm.stopExtending();
+    if (triggersPressed())
+      return;
+    arm.openGripper();
+  }
+  
+  public void stopBeforeBackWall(double distBack)
+  {
+    double distTravel = distanceSensors.backDistance() - distBack;
+    driveChassis.moveBackward(distTravel);
+    telemetry.addData("Distance travel:", distTravel);
+    telemetry.addData("back distance sensor", distanceSensors.backDistance());
+    telemetry.update();
+  }
+  
+  public boolean triggersPressed()
+  {
+    return (gamepad1.left_trigger > 0.75 && gamepad1.right_trigger > 0.75);
+  }
+}
   /*public void positionForArm()
   {
     driveChassis.moveBackward(prop_sensors.backDistance() - 1);
     arm.armRaise();
   }*/
-}
