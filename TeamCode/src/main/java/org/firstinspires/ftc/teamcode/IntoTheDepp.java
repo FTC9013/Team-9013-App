@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
-// ticks per centemeter = 17.7914
+// ticks per centepeder = 17.7914
 public abstract class IntoTheDepp extends LinearOpMode
 {
   //public Blang blang;
@@ -11,8 +11,9 @@ public abstract class IntoTheDepp extends LinearOpMode
   public DistanceSensors distanceSensors;
   public ArmControl arm;
   static final int RAISE_ARM = 3675;
-  static final int HOOK_POSITION = 2100;
-  static final int PUSH_HOOK_POSITION = 1300;
+  static final int HOOK_POSITION = 2550;
+  static final int PUSH_HOOK_POSITION = 2050;
+  static final int MAX_EXTENSION = 2300;
   static final int MEDIUM_ARM = 2000;
   
   // a timer for the various automation activities.
@@ -62,21 +63,24 @@ public abstract class IntoTheDepp extends LinearOpMode
   {
     arm.reset();
     arm.moveArmTo(HOOK_POSITION);
-    arm.fullExtend();
+    arm.extend(MAX_EXTENSION);
   }
   
   public void hookSample()
   {
-    driveChassis.moveForward(27);
+    driveChassis.moveForward(47);
     arm.startMovingTo(PUSH_HOOK_POSITION);
     
-    telemetry.addLine("Moving Forward: 25 cm");
+    telemetry.addLine("Moving Forward: 27 cm");
     telemetry.update();
     //arm stuf heer
-    driveChassis.moveBackward(17, driveChassis.slowAutonomousPower);
+    driveChassis.moveBackward(26, driveChassis.slowAutonomousPower);
     arm.waitUntilDone();
     arm.openGripper();
-    telemetry.addLine("Moving Backward: 15 cm");
+    arm.retract();
+    sleep(1000);
+    arm.stopExtending();
+    telemetry.addLine("Moving Backward: 18 cm");
     telemetry.update();
   }
   
@@ -85,33 +89,32 @@ public abstract class IntoTheDepp extends LinearOpMode
   {
     telemetry.addLine("Strafing left");
     telemetry.update();
-    driveChassis.strafeLeft(60);
+    driveChassis.strafeLeft(120);
     driveChassis.straighten(0);
-    driveChassis.strafeLeft(60);
-    goAwayFromLeftWall(23);
+    goAwayFromLeftWall(21);
     telemetry.addLine("Stopping before back wall");
     telemetry.update();
-    stopBeforeBackWall(5);
+    stopBeforeBackWall(28);
   }
   
   public void grabAndDropSample()
   {
-    arm.extending();
+    
+    arm.retract();
     sleep(1000);
-    arm.stopExtending();
     arm.reset();
     arm.closeGripper();
     sleep(800);
     arm.moveArmTo(RAISE_ARM);
-    driveChassis.straighten(90);
-    driveChassis.moveForward(20);
+    driveChassis.turnLeft();
+    driveChassis.moveForward(17);
     goAwayFromLeftWall(10);
     arm.extending();
     sleep(1000);
     arm.stopExtending();
     arm.openGripper();
     sleep(800);
-    driveChassis.moveBackward(20);
+    driveChassis.moveBackward(19);
     telemetry.addLine("sempal dropped");
     telemetry.update();
   }

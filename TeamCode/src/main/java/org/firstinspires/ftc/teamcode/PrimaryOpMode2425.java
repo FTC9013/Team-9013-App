@@ -59,27 +59,27 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
   @Override
   public void runOpMode()
   {
-    //mast = new MastArm(hardwareMap, telemetry);
+    mast = new MastArm(hardwareMap, telemetry);
     driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
     distance_sensors = new DistanceSensors(hardwareMap, telemetry);
     arm = new ArmControl(hardwareMap, telemetry);
     //blang = new Blang(hardwareMap);
     telemetry.addData(">", "Robot Ready. Press Play.");
-    telemetry.addData(">", "Remember, stay skibidi. Logan is NOT a mewer.");
+    telemetry.addData(">", "9013 is the BeSt!>!>!!>!!!!!!111!!!.");
     telemetry.update();
     turnColor();
     
     // Wait for the game to start (driver presses PLAY)
     waitForStart();
     //driveChassis.testWheels();
-    arm.reset();
+    //arm.reset();
     sleep(650);
     
     // run until the end of the match (driver presses STOP)
     //2 driver controls:
     while (opModeIsActive())
     {
-      /*if (gamepad2.dpad_up)
+      if (gamepad2.dpad_up)
       {
         mast.mastUp();
       } else if (gamepad2.dpad_down)
@@ -88,7 +88,7 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
       } else
       {
         mast.mastStop();
-      }*/
+      }
       if (gamepad2.left_stick_y > 0.75)
       {
         arm.lower();
@@ -112,6 +112,9 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
       if (gamepad2.y)
       {
         arm.extending();
+      } else if (gamepad2.x)
+      {
+        arm.retract();
       } else
       {
         arm.stopExtending();
@@ -124,12 +127,12 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
       telemetry.update();
       if (gamepad1.left_bumper && gamepad1.right_bumper)
       {
-        driveChassis.drive(-gamepad1.left_stick_y, -gamepad1.left_stick_x,
-          -gamepad1.right_stick_x, false);
+        driveChassis.drive(-gamepad1.left_stick_y, -gamepad1.right_stick_x,
+          -gamepad1.left_stick_x, false);
       } else
       {
-        driveChassis.drive(gamepad1.left_stick_y, gamepad1.left_stick_x,
-          gamepad1.right_stick_x, gamepad1.left_bumper);
+        driveChassis.drive(gamepad1.left_stick_y, gamepad1.right_stick_x,
+          gamepad1.left_stick_x, gamepad1.left_bumper);
       }
 // Pace this loop so jaw action is reasonable speed.
       sleep(50);

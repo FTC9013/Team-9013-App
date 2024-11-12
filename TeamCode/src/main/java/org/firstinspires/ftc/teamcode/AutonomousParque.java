@@ -8,7 +8,7 @@ public class AutonomousParque extends IntoTheDepp
   {
     sleep(10000);
     initialize();
-    hookSample();
+    //hookSample();
     arm.moveArmTo(RAISE_ARM);
     driveChassis.strafeRight(100);
     goAwayFromRightWall(10);

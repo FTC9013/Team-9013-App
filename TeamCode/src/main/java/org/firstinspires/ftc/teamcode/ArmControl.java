@@ -18,6 +18,7 @@ public class ArmControl
   public TouchSensor topTouchSensor;
   static final double ARM_SPEED = 0.6;
   static final double EXTENSION_SPEED = 1;
+  static final int MAX_EXTENSION = 2500;
   
   
   ArmControl(HardwareMap hardwareMap, Telemetry theTelemetry)
@@ -33,7 +34,7 @@ public class ArmControl
     gripper.setPosition(0);
     //limitSwitch = hardwareMap.get(TouchSensor.class, "limitSwitch");
     armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    //extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.);
     // Motors on one side reversed to drive forward
     // Reverse the motor that runs backwards when connected directly to the battery
     // A positive power number should drive the robot forward regardless of the motor's position on the robot.
@@ -48,7 +49,7 @@ public class ArmControl
   public void reset()
   {
     armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    armMotor.setPower(-ARM_SPEED);
+    armMotor.setPower(-0.9);
     while (!bottomTouchSensor.isPressed())
     {
       telemetry.addLine("Resetting arm");
@@ -76,10 +77,14 @@ public class ArmControl
     
     if (armPosition > distance)
     {
+      extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
       armMotor.setPower(ARM_SPEED);
       
     } else
     {
+      extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+      extensionMotor.setPower(EXTENSION_SPEED);
+      extensionMotor.setPower(0);
       armMotor.setPower(ARM_SPEED);
       
     }
@@ -106,6 +111,7 @@ public class ArmControl
     
     //telemetry.addData("Limit Switch?", limitSwitch.isPressed() ? "Pressed" : "Not Pressed");
     armMotor.setPower(0);
+    extensionMotor.setPower(0);
     if (bottomTouchSensor.isPressed())
     {
       telemetry.addLine("bottem touch sensor is pressed");
@@ -160,15 +166,28 @@ public class ArmControl
     extensionMotor.setPower(0);
   }
   
+  public void retract()
+  {
+    extensionMotor.setPower(-0.05);
+  }
+  
   public void extending()
   {
-    extensionMotor.setPower(EXTENSION_SPEED);
+    if (extensionMotor.getCurrentPosition() < MAX_EXTENSION)
+    {
+      extensionMotor.setPower(EXTENSION_SPEED);
+    } else
+    {
+      extensionMotor.setPower(0);
+    }
   }
   
   public void lower()
   {
     if (!bottomTouchSensor.isPressed())
     {
+      extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+      extensionMotor.setPower(-EXTENSION_SPEED);
       armMotor.setPower(-ARM_SPEED);
       telemetry.addLine("Going down in the arm");
     } else
@@ -177,6 +196,7 @@ public class ArmControl
       stop();
     }
     telemetry.addData("Arm Position: ", armMotor.getCurrentPosition());
+    extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
   }
   
   public void raise()
@@ -184,6 +204,7 @@ public class ArmControl
     if (!topTouchSensor.isPressed())
     {
       armMotor.setPower(ARM_SPEED);
+      extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
       telemetry.addLine("Going up in the arm");
     } else
     {

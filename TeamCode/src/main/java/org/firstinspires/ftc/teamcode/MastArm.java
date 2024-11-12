@@ -31,7 +31,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -49,9 +48,9 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class MastArm
 {
-  public DcMotor driveMotor = null;
+  public DcMotor driveMotor;
   private final Telemetry telemetry;
-  public TouchSensor touchSensor;
+  //public TouchSensor touchSensor;
   
   MastArm(HardwareMap hardwareMap, Telemetry theTelemetry)
   {
@@ -64,7 +63,6 @@ public class MastArm
     driveMotor = hardwareMap.get(DcMotor.class, "mast");
     driveMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     driveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    touchSensor = hardwareMap.get(TouchSensor.class, "mast_failsafe");
     // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
     // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
     // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
@@ -80,20 +78,20 @@ public class MastArm
   
   public void mastDown()
   {
-    if (!touchSensor.isPressed())
-    {
-      driveMotor.setPower(-0.75);
-      telemetry.addLine("Pulling down ;- )");
-    } else
-    {
-      telemetry.addLine("Mast stopped :) Due to Touch Sensor");
-      mastStop();
-    }
+    //if (!touchSensor.isPressed())
+    //{
+    driveMotor.setPower(-0.75);
+    telemetry.addLine("Pulling down ;- )");
+    //} else
+    //{
+    //telemetry.addLine("Mast stopped :) Due to Touch Sensor");
+    //mastStop();
+    //}
   }
   
   public void mastStop()
   {
-    telemetry.addData("Touch Sensor: ", touchSensor.isPressed());
+    //telemetry.addData("Touch Sensor: ", touchSensor.isPressed());
     driveMotor.setPower(0);
   }
 }

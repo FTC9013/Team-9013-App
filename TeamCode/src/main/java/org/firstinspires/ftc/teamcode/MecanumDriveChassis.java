@@ -20,8 +20,8 @@ public class MecanumDriveChassis
   
   double actualSpeed;
   double tickPerCm = 17.7914;
-  double autonomousPower = 0.7;
-  double slowAutonomousPower = 0.2;
+  double autonomousPower = 0.8;
+  double slowAutonomousPower = 0.15;
   int turnDistance = 843;
   int turnDistanceYaw = 870;
   private final DcMotor leftFrontDrive;
