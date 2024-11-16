@@ -75,7 +75,6 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
     //driveChassis.testWheels();
     //arm.reset();
     arm.reset();
-    sleep(650);
     
     // run until the end of the match (driver presses STOP)
     //2 driver controls:
@@ -116,6 +115,7 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
         arm.extending();
       } else if (gamepad2.x)
       {
+        telemetry.addLine("Retracting");
         arm.retract();
       } else
       {
@@ -129,6 +129,8 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
       telemetry.addData("LStickY", gamepad1.left_stick_y * -1);
       telemetry.addData("LStickX", gamepad1.left_stick_x);
       telemetry.addData("vD: ", 1000);
+      arm.printSensors();
+      distanceSensors.printSensors();
       telemetry.update();
       if (gamepad1.left_bumper && gamepad1.right_bumper)
       {

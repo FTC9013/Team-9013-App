@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 
 // ticks per centepeder = 17.7914
-public abstract class IntoTheDepp extends LinearOpMode
+public abstract class IntoTheDebt extends LinearOpMode
 {
   //public Blang blang;
   public MecanumDriveChassis driveChassis;
@@ -67,19 +67,15 @@ public abstract class IntoTheDepp extends LinearOpMode
   
   public void hookSample()
   {
-    driveChassis.moveForward(50);
-    arm.extend(MAX_EXTENSION);
+    driveChassis.moveForward(48);
+    //arm.extend(MAX_EXTENSION);
     arm.openGripper();
-    sleep(500);
+    sleep(1000);
+    arm.moveArmTo(RAISE_ARM);
+    arm.releaseBrake();
     telemetry.addLine("Moving Forward: 27 cm");
     telemetry.update();
-    //arm stuf heer
-    driveChassis.moveBackward(45, driveChassis.slowAutonomousPower);
-    arm.waitUntilDone();
-    arm.retract();
-    arm.stopExtending();
-    telemetry.addLine("Moving Backward: 18 cm");
-    telemetry.update();
+    //armor stuffs hear
   }
   
   
@@ -89,43 +85,42 @@ public abstract class IntoTheDepp extends LinearOpMode
     telemetry.update();
     driveChassis.strafeLeft(120);
     driveChassis.straighten(0);
-    goAwayFromLeftWall(21);
+    goAwayFromLeftWall(31.5);
     telemetry.addLine("Stopping before back wall");
     telemetry.update();
-    stopBeforeBackWall(28);
+    stopBeforeBackWall(33);
   }
   
   public void grabAndDropSample()
   {
     
     arm.retract();
-    sleep(1000);
     arm.reset();
     arm.closeGripper();
     sleep(800);
-    arm.moveArmTo(RAISE_ARM);
+    arm.raiseMax();
     driveChassis.turnLeft();
-    driveChassis.moveForward(17);
-    goAwayFromLeftWall(10);
-    arm.extending();
-    sleep(1000);
-    arm.stopExtending();
+    driveChassis.moveForward(23);
+    goAwayFromLeftWall(10.75);
+    //extend 1483cm extension motor
+    arm.extendMax();
     arm.openGripper();
     sleep(800);
-    driveChassis.moveBackward(19);
-    telemetry.addLine("sempal dropped");
+    driveChassis.moveBackward(25);
+    
+    telemetry.addLine("sample dropped");
     telemetry.update();
   }
   
   public void parkBeforeBackWall()
   {
-    driveChassis.turnRight();
+    driveChassis.strafeRight(20);
     driveChassis.straighten(0);
     stopBeforeBackWall(60);
     driveChassis.straighten(-90);
-    driveChassis.moveForward(230);
+    driveChassis.moveForward(245);
     driveChassis.turnLeft();
-    stopBeforeBackWall(3);
+    driveChassis.moveBackward(25);
     telemetry.addLine("Moved Forward");
     telemetry.update();
     arm.closeGripper();

@@ -20,7 +20,7 @@ public class MecanumDriveChassis
   
   double actualSpeed;
   double tickPerCm = 17.7914;
-  double autonomousPower = 1;
+  double autonomousPower = 1.5;
   double slowAutonomousPower = 0.15;
   int turnDistance = 843;
   int turnDistanceYaw = 870;
@@ -635,11 +635,11 @@ public class MecanumDriveChassis
       int turnYawTicks = (int) (changedYaw * ticksPerDegree);
       telemetry.addData("Yaw is:", yaw);
       telemetry.update();
-      if (changedYaw > 0 && changedYaw <= 180)
+      if (changedYaw > 0 && changedYaw <= 90)
       {
         turnRightDistance(turnYawTicks);
       }
-      if (changedYaw < 0 && changedYaw >= -180)
+      if (changedYaw < 0 && changedYaw >= -90)
       {
         turnLeftDistance(-turnYawTicks);
       }

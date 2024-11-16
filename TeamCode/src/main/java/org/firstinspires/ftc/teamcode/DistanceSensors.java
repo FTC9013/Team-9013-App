@@ -230,4 +230,12 @@ public class DistanceSensors
     
     return PropSide.No;
   }
+  
+  public void printSensors()
+  {
+    telemetry.addData("Front Sensor | Distance (cm)", "%.3f", frontSensor.getDistance(DistanceUnit.CM));
+    telemetry.addData("Left Sensor | Distance (cm)", "%.3f", leftSensor.getDistance(DistanceUnit.CM));
+    telemetry.addData("Right Sensor | Distance (cm)", "%.3f", rightSensor.getDistance(DistanceUnit.CM));
+    telemetry.addData("Back Sensor | Distance (cm)", "%.3f", backSensor.getDistance(DistanceUnit.CM));
+  }
 }

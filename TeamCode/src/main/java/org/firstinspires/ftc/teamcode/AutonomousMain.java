@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "beg pants!")
-public class AutonomousMain extends IntoTheDepp
+public class AutonomousMain extends IntoTheDebt
 {
   @Override
   public void runAuto()

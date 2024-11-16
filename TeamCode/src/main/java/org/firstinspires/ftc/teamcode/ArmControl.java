@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -19,6 +20,8 @@ public class ArmControl
   static final double ARM_SPEED = 0.8;
   static final double EXTENSION_SPEED = 1;
   static final int MAX_EXTENSION = 2500;
+  private final ElapsedTime runtime = new ElapsedTime();
+  
   
   
   ArmControl(HardwareMap hardwareMap, Telemetry theTelemetry)
@@ -59,12 +62,35 @@ public class ArmControl
     armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
   }
   
+  public void raiseMax()
+  {
+    armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    armMotor.setPower(0.9);
+    while (!topTouchSensor.isPressed())
+    {
+      telemetry.addLine("Resetting arm");
+    }
+    armMotor.setPower(0);
+    armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+  }
+  
+  
+  
   public void moveArmTo(int distance)
   {
     startMovingTo(distance);
     waitUntilDone();
     
     
+  }
+  
+  public void releaseBrake()
+  {
+    extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+    //int armPosition = armMotor.getCurrentPosition();
+    extensionMotor.setPower(-0.1);
+    extensionMotor.setPower(0);
   }
   
   public void startMovingTo(int distance)
@@ -143,6 +169,10 @@ public class ArmControl
   {
     extend(100);
   }
+  public void extendMax()
+  {
+    extend(1483 - extensionMotor.getCurrentPosition());
+  }
   
   public void extend(int distance)
   {
@@ -153,7 +183,8 @@ public class ArmControl
     extensionMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     extensionMotor.setPower(EXTENSION_SPEED);
-    while (extensionMotor.isBusy())
+    runtime.reset();
+    while (extensionMotor.isBusy () && runtime.seconds() < 3)
     {
       //look into the void of nothingness and dispare
     }
@@ -168,11 +199,13 @@ public class ArmControl
   
   public void retract()
   {
+    extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     extensionMotor.setPower(-0.05);
   }
   
   public void extending()
   {
+    extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     if (extensionMotor.getCurrentPosition() < MAX_EXTENSION)
     {
       extensionMotor.setPower(EXTENSION_SPEED);
@@ -212,5 +245,11 @@ public class ArmControl
       stop();
     }
     telemetry.addData("Arm Position: ", armMotor.getCurrentPosition());
+  }
+  
+  public void printSensors()
+  {
+    telemetry.addData("Arm Position: ", armMotor.getCurrentPosition());
+    telemetry.addData("Extension Position: ", extensionMotor.getCurrentPosition());
   }
 }

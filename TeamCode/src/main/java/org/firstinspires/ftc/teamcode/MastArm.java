@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -50,7 +51,7 @@ public class MastArm
 {
   public DcMotor driveMotor;
   private final Telemetry telemetry;
-  //public TouchSensor touchSensor;
+  public TouchSensor touchSensor;
   
   MastArm(HardwareMap hardwareMap, Telemetry theTelemetry)
   {
@@ -58,7 +59,7 @@ public class MastArm
     telemetry = theTelemetry;
     double drive;
     
-    
+    touchSensor = hardwareMap.get(TouchSensor.class, "mast limit");
     // Define and Initialize Motors
     driveMotor = hardwareMap.get(DcMotor.class, "mast");
     driveMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -78,20 +79,20 @@ public class MastArm
   
   public void mastDown()
   {
-    //if (!touchSensor.isPressed())
-    //{
-    driveMotor.setPower(-0.75);
-    telemetry.addLine("Pulling down ;- )");
-    //} else
-    //{
-    //telemetry.addLine("Mast stopped :) Due to Touch Sensor");
-    //mastStop();
-    //}
+    if (!touchSensor.isPressed())
+    {
+      driveMotor.setPower(-0.75);
+      telemetry.addLine("Pulling down ;- )");
+    } else
+    {
+      telemetry.addLine("Mast stopped :) Due to Touch Sensor");
+      mastStop();
+    }
   }
   
   public void mastStop()
   {
-    //telemetry.addData("Touch Sensor: ", touchSensor.isPressed());
+    telemetry.addData("Touch Sensor: ", touchSensor.isPressed());
     driveMotor.setPower(0);
   }
 }
