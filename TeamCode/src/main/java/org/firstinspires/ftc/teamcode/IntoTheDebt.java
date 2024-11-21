@@ -10,11 +10,12 @@ public abstract class IntoTheDebt extends LinearOpMode
   public MecanumDriveChassis driveChassis;
   public DistanceSensors distanceSensors;
   public ArmControl arm;
-  static final int RAISE_ARM = 3675;
-  static final int HOOK_POSITION = 2450;
+  static final int RAISE_ARM = 3000;
+  static final int HOOK_POSITION = 2884;
   static final int PUSH_HOOK_POSITION = 2700;
   static final int MAX_EXTENSION = 2400;
   static final int MEDIUM_ARM = 2000;
+  static final int INITIAL_EXTENSION = 2700;
   
   // a timer for the various automation activities.
   @Override
@@ -61,19 +62,22 @@ public abstract class IntoTheDebt extends LinearOpMode
   
   public void initialize()
   {
-    arm.reset();
+    arm.extendTo(INITIAL_EXTENSION);
     arm.moveArmTo(HOOK_POSITION);
+    arm.retract();
+    sleep(500);
+    arm.stop();
+    arm.reset();
   }
   
   public void hookSample()
   {
+    arm.moveArmTo(RAISE_ARM);
     driveChassis.moveForward(48);
-    //arm.extend(MAX_EXTENSION);
     arm.openGripper();
     sleep(1000);
-    arm.moveArmTo(RAISE_ARM);
     arm.releaseBrake();
-    telemetry.addLine("Moving Forward: 27 cm");
+    telemetry.addLine("Moving Forward: 48 cm");
     telemetry.update();
     //armor stuffs hear
   }

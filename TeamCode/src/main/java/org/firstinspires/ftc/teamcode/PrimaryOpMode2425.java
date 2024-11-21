@@ -112,7 +112,7 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
       }
       if (gamepad2.y)
       {
-        arm.extending();
+        arm.extend();
       } else if (gamepad2.x)
       {
         telemetry.addLine("Retracting");
@@ -157,7 +157,7 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
     stopBeforeBackWall(50);
     if (triggersPressed())
       return;
-    arm.extending();
+    arm.extend();
     if (triggersPressed())
       return;
     sleep(250);
