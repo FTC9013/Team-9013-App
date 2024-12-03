@@ -19,9 +19,9 @@ public class MecanumDriveChassis
   IMU imu;
   
   double actualSpeed;
-  double tickPerCm = 17.7914;
-  double autonomousPower = 1.5;
-  double slowAutonomousPower = 0.15;
+  double tickPerCm = 17.7914; //17.7914
+  double autonomousPower = 1.0;
+  double strafeAutonomousPower = 0.4;
   int turnDistance = 843;
   int turnDistanceYaw = 870;
   private final DcMotor leftFrontDrive;
@@ -477,6 +477,44 @@ public class MecanumDriveChassis
     leftRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     rightRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     
+    leftFrontDrive.setPower(-strafeAutonomousPower);
+    rightFrontDrive.setPower(strafeAutonomousPower);
+    leftRearDrive.setPower(strafeAutonomousPower);
+    rightRearDrive.setPower(-strafeAutonomousPower);
+    while (leftFrontDrive.isBusy() && rightFrontDrive.isBusy() && leftRearDrive.isBusy() && rightRearDrive.isBusy())
+    {
+      //Do nothing. Allows the motors to spin
+    }
+    stop_motors();
+  }
+  
+  public void strafeLeftTicks(int distance)
+  {
+    telemetry.addLine("strafing left");
+    telemetry.update();
+    
+    leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    
+    
+    leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    leftRearDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    rightRearDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    
+    
+    leftFrontDrive.setTargetPosition(-distance);
+    rightFrontDrive.setTargetPosition(distance);
+    leftRearDrive.setTargetPosition(distance);
+    rightRearDrive.setTargetPosition(-distance);
+    
+    leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    leftRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    rightRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    
     leftFrontDrive.setPower(-autonomousPower);
     rightFrontDrive.setPower(autonomousPower);
     leftRearDrive.setPower(autonomousPower);
@@ -516,10 +554,10 @@ public class MecanumDriveChassis
     leftRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     rightRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     
-    leftFrontDrive.setPower(autonomousPower);
-    rightFrontDrive.setPower(-autonomousPower);
-    leftRearDrive.setPower(-autonomousPower);
-    rightRearDrive.setPower(autonomousPower);
+    leftFrontDrive.setPower(strafeAutonomousPower);
+    rightFrontDrive.setPower(-strafeAutonomousPower);
+    leftRearDrive.setPower(-strafeAutonomousPower);
+    rightRearDrive.setPower(strafeAutonomousPower);
     while (leftFrontDrive.isBusy() && rightFrontDrive.isBusy() && leftRearDrive.isBusy() && rightRearDrive.isBusy())
     {
       //Do nothing. Allows the motors to spin

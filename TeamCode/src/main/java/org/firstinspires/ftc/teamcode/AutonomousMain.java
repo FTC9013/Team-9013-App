@@ -7,6 +7,7 @@ public class AutonomousMain extends IntoTheDebt
   public void runAuto()
   {
     initialize();
+    //test();
     hookSample();
     strafeToBasket();
     grabAndDropSample();
@@ -18,4 +19,5 @@ public class AutonomousMain extends IntoTheDebt
 and eat his dookie from his booty at exactly 420 am, then scream:
 "dookie inside me!" 10 times, the entity called "Uncle Joseph" will wake
 up and dookie inside you. DO NOT ENTER LEVEL "Uncle Joseph's bedroom."
+-Logan? Zacurry(Zachary)?
  */

@@ -10,12 +10,13 @@ public abstract class IntoTheDebt extends LinearOpMode
   public MecanumDriveChassis driveChassis;
   public DistanceSensors distanceSensors;
   public ArmControl arm;
+  double tickPerCm = 20.24278;
   static final int RAISE_ARM = 3000;
   static final int HOOK_POSITION = 2884;
   static final int PUSH_HOOK_POSITION = 2700;
   static final int MAX_EXTENSION = 2400;
   static final int MEDIUM_ARM = 2000;
-  static final int INITIAL_EXTENSION = 2700;
+  static final int INITIAL_EXTENSION = 2850;
   
   // a timer for the various automation activities.
   @Override
@@ -40,8 +41,12 @@ public abstract class IntoTheDebt extends LinearOpMode
   public void goAwayFromLeftWall(double distRight)
   
   {
+    telemetry.addData("Left sensor:", distanceSensors.leftDistance());
+    telemetry.update();
     double distTravel = distanceSensors.leftDistance() - distRight;
     driveChassis.strafeLeft(distTravel);
+    telemetry.addData("Left sensor:", distanceSensors.leftDistance());
+    telemetry.update();
   }
   
   public void goAwayFromRightWall(double distLeft)
@@ -62,9 +67,9 @@ public abstract class IntoTheDebt extends LinearOpMode
   
   public void initialize()
   {
-    arm.extendTo(INITIAL_EXTENSION);
+    //arm.extendTo(INITIAL_EXTENSION);
     arm.moveArmTo(HOOK_POSITION);
-    arm.retract();
+    //arm.retract();
     sleep(500);
     arm.stop();
     arm.reset();
@@ -72,13 +77,12 @@ public abstract class IntoTheDebt extends LinearOpMode
   
   public void hookSample()
   {
-    arm.moveArmTo(RAISE_ARM);
-    driveChassis.moveForward(48);
+    arm.moveArmTo(HOOK_POSITION);
+    driveChassis.moveForward(63);
+    arm.extendForTime(0.5);
     arm.openGripper();
     sleep(1000);
-    arm.releaseBrake();
-    telemetry.addLine("Moving Forward: 48 cm");
-    telemetry.update();
+    stopBeforeBackWall(33);
     //armor stuffs hear
   }
   
@@ -89,10 +93,11 @@ public abstract class IntoTheDebt extends LinearOpMode
     telemetry.update();
     driveChassis.strafeLeft(120);
     driveChassis.straighten(0);
-    goAwayFromLeftWall(31.5);
+    goAwayFromLeftWall(35);
     telemetry.addLine("Stopping before back wall");
+    stopBeforeBackWall(28);
     telemetry.update();
-    stopBeforeBackWall(33);
+    
   }
   
   public void grabAndDropSample()
@@ -106,8 +111,6 @@ public abstract class IntoTheDebt extends LinearOpMode
     driveChassis.turnLeft();
     driveChassis.moveForward(23);
     goAwayFromLeftWall(10.75);
-    //extend 1483cm extension motor
-    arm.extendMax();
     arm.openGripper();
     sleep(800);
     driveChassis.moveBackward(25);
@@ -120,7 +123,6 @@ public abstract class IntoTheDebt extends LinearOpMode
   {
     driveChassis.strafeRight(20);
     driveChassis.straighten(0);
-    stopBeforeBackWall(60);
     driveChassis.straighten(-90);
     driveChassis.moveForward(245);
     driveChassis.turnLeft();
@@ -129,4 +131,11 @@ public abstract class IntoTheDebt extends LinearOpMode
     telemetry.update();
     arm.closeGripper();
   }
+  
+  public void test()
+  {
+    driveChassis.strafeLeftTicks(1000);
+  }
 }
+
+

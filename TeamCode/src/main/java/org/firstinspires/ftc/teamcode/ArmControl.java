@@ -247,4 +247,17 @@ public class ArmControl
     telemetry.addData("Arm Position: ", armMotor.getCurrentPosition());
     telemetry.addData("Extension Position: ", extensionMotor.getCurrentPosition());
   }
+  
+  public void extendForTime(double time)
+  {
+    telemetry.addLine("Extending the arm");
+    telemetry.update();
+    extensionMotor.setPower(EXTENSION_SPEED);
+    runtime.reset();
+    while (runtime.seconds() < time)
+    {
+      //look into the void of nothingness and dispare
+    }
+    extensionMotor.setPower(0);
+  }
 }
