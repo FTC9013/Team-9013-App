@@ -96,8 +96,8 @@ public class DistanceSensors
   
   public double leftDistance()
   {
-    //return leftSensor.getDistance(DistanceUnit.CM);
-    double readings[] = new double[10];
+    return leftSensor.getDistance(DistanceUnit.CM);
+    /*double readings[] = new double[10];
     for (int i = 0; i <= 9; i++)
     {
       readings[i] = leftSensor.getDistance(DistanceUnit.CM);
@@ -113,6 +113,7 @@ public class DistanceSensors
     }
     
     return averageReadings / 3;
+    */
     
   }
   

@@ -19,9 +19,9 @@ public class MecanumDriveChassis
   IMU imu;
   
   double actualSpeed;
-  double tickPerCm = 17.7914; //17.7914
+  double tickPerCm = 20.1; //17.7914
   double autonomousPower = 1.0;
-  double strafeAutonomousPower = 0.4;
+  double strafeAutonomousPower = 0.55;
   int turnDistance = 843;
   int turnDistanceYaw = 870;
   private final DcMotor leftFrontDrive;
