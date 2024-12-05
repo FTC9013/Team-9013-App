@@ -10,13 +10,15 @@ public abstract class IntoTheDebt extends LinearOpMode
   public MecanumDriveChassis driveChassis;
   public DistanceSensors distanceSensors;
   public ArmControl arm;
+  public DistanceSensors propSensors;
   double tickPerCm = 20.24278;
   static final int RAISE_ARM = 3000;
-  static final int HOOK_POSITION = 2884;
+  static final int HOOK_POSITION = 2800;
   static final int DROP_POSITION = 3350;
   static final int MAX_EXTENSION = 2400;
   static final int MEDIUM_ARM = 2000;
-  static final int INITIAL_EXTENSION = 2850;
+  static final int INITIAL_EXTENSION = 3000;
+  
   
   // a timer for the various automation activities.
   @Override
@@ -97,9 +99,12 @@ public abstract class IntoTheDebt extends LinearOpMode
     telemetry.update();
     driveChassis.strafeLeft(120);
     driveChassis.straighten(0);
-    goAwayFromLeftWall(28);
+    goAwayFromLeftWall(30);
     telemetry.addLine("Stopping before back wall");
-    stopBeforeBackWall(28);
+    stopBeforeBackWall(34);
+    goAwayFromLeftWall(30);
+    stopBeforeBackWall(34);
+    driveChassis.straighten(0);
     telemetry.update();
   }
   
@@ -111,12 +116,35 @@ public abstract class IntoTheDebt extends LinearOpMode
     arm.moveArmTo(100);
     arm.closeGripper();
     sleep(800);
-    arm.raiseMax();
+    arm.moveArmTo(4000);
+    arm.extendForTime(2);
     driveChassis.turnLeft();
     driveChassis.moveForward(24);
     goAwayFromLeftWall(13);
-    arm.extendForTime(3);
-    arm.moveArmTo(DROP_POSITION);
+    arm.openGripper();
+    sleep(1000);
+    arm.raise();
+    arm.extendForTime(0.5);
+    arm.retract();
+    arm.stop();
+    driveChassis.moveBackward(25);
+    
+    telemetry.addLine("sample dropped");
+    telemetry.update();
+  }
+  
+  public void slamIntoWallNotTooHard()
+  {
+    
+    arm.reset();
+    arm.moveArmTo(100);
+    arm.closeGripper();
+    sleep(800);
+    arm.moveArmTo(4000);
+    driveChassis.turnLeft();
+    driveChassis.startMovingForward(propSensors.frontDistance() + 1, 0.1);
+    goAwayFromLeftWall(13);
+    arm.extendForTime(2);
     arm.openGripper();
     sleep(100);
     arm.retract();
@@ -133,6 +161,7 @@ public abstract class IntoTheDebt extends LinearOpMode
     driveChassis.strafeRight(50);
     driveChassis.turnRight();
     driveChassis.turnRight();
+    driveChassis.straighten(90);
     driveChassis.moveForward(210);
     driveChassis.turnLeft();
     driveChassis.moveBackward(35);

@@ -153,13 +153,13 @@ public class ArmControl
     extensionMotor.setPower(0);
     if (bottomTouchSensor.isPressed())
     {
-      telemetry.addLine("bottem touch sensor is pressed");
+      telemetry.addLine("bottom touch sensor is pressed");
     } else if (topTouchSensor.isPressed())
     {
       telemetry.addLine("top touch sensor is pressed");
     } else
     {
-      telemetry.addLine("no botoon pressed :(");
+      telemetry.addLine("no button pressed :(");
     }
   }
   
@@ -268,6 +268,7 @@ public class ArmControl
   {
     telemetry.addLine("Extending the arm");
     telemetry.update();
+    extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     extensionMotor.setPower(EXTENSION_SPEED);
     runtime.reset();
     while (runtime.seconds() < time)

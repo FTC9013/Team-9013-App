@@ -75,7 +75,7 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
     //driveChassis.testWheels();
     //arm.reset();
     arm.reset();
-    
+    arm.moveArmTo(2000);
     // run until the end of the match (driver presses STOP)
     //2 driver controls:
     while (opModeIsActive())

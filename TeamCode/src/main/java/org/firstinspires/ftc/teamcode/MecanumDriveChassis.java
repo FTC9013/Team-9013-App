@@ -392,10 +392,10 @@ public class MecanumDriveChassis
     leftRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     rightRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     
-    leftFrontDrive.setPower(autonomousPower);
-    leftRearDrive.setPower(autonomousPower);
-    rightFrontDrive.setPower(autonomousPower);
-    rightRearDrive.setPower(autonomousPower);
+    leftFrontDrive.setPower(power);
+    leftRearDrive.setPower(power);
+    rightFrontDrive.setPower(power);
+    rightRearDrive.setPower(power);
   }
   
   public boolean stillMoving()
