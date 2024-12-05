@@ -42,6 +42,7 @@ public class ArmControl
     // A positive power number should drive the robot forward regardless of the motor's position on the robot.
     armMotor.setDirection(DcMotor.Direction.FORWARD);
     armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     //extensionMotor.setDirection(DcMotor.Direction.________);
     extensionMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -65,24 +66,33 @@ public class ArmControl
   
   public void raiseMax()
   {
-    armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    startMovingTo(4400);
+    waitUntilDone();
+    /*
     armMotor.setPower(0.9);
     telemetry.addLine("Resetting arm");
+    telemetry.addData("Before raising position:", armMotor.getCurrentPosition());
     telemetry.update();
     while (!topTouchSensor.isPressed())
     {
     }
     armMotor.setPower(0);
-    armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    telemetry.addData("After raising position:", armMotor.getCurrentPosition());
+    telemetry.update();
+    */
+    
   }
   
   
   public void moveArmTo(int distance)
   {
     startMovingTo(distance);
+    telemetry.addData("Before raising position:", armMotor.getCurrentPosition());
+    telemetry.addData("Distance: ", distance);
     waitUntilDone();
-    
+    telemetry.addData("After raising position:", armMotor.getCurrentPosition());
+    telemetry.update();
     
   }
   
@@ -97,14 +107,17 @@ public class ArmControl
   public void startMovingTo(int distance)
   {
     telemetry.addLine("Raising the G R I P P E R arm");
+    telemetry.addData("Current arm pos=", armMotor.getCurrentPosition());
+    telemetry.addData("Desired arm distance=", distance);
     telemetry.update();
+    
     int armPosition = armMotor.getCurrentPosition();
     armMotor.setTargetPosition(distance);
     armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     
     if (armPosition > distance)
     {
-      armMotor.setPower(ARM_SPEED);
+      armMotor.setPower(-ARM_SPEED);
       
     } else
     {
@@ -116,7 +129,10 @@ public class ArmControl
   public void waitUntilDone()
   {
     boolean movingUp = armMotor.getPower() > 0;
-    while (armMotor.isBusy())
+    telemetry.addData("Moving up = ", movingUp);
+    telemetry.update();
+    runtime.reset();
+    while (armMotor.isBusy() && runtime.seconds() < 5)
     {
       if (movingUp && topTouchSensor.isPressed())
       {
@@ -154,7 +170,7 @@ public class ArmControl
   
   public void closeGripper()
   {
-    gripper.setPosition(0.5);
+    gripper.setPosition(0);
   }
   
   public void fullExtend()
@@ -261,3 +277,4 @@ public class ArmControl
     extensionMotor.setPower(0);
   }
 }
+

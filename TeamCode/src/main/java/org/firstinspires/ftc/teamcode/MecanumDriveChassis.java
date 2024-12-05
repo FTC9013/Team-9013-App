@@ -141,7 +141,7 @@ public class MecanumDriveChassis
    rightRearDrive.setPower(0.3);
    telemetry.addLine("Spinning right rear");
    telemetry.update();
-   Thread.sleep(5000);
+   Thread.(5000);
    rightRearDrive.setPower(0);
    
    rightFrontDrive.setPower(0.3);
@@ -673,11 +673,11 @@ public class MecanumDriveChassis
       int turnYawTicks = (int) (changedYaw * ticksPerDegree);
       telemetry.addData("Yaw is:", yaw);
       telemetry.update();
-      if (changedYaw > 0 && changedYaw <= 90)
+      if (changedYaw > 0 && changedYaw <= 30)
       {
         turnRightDistance(turnYawTicks);
       }
-      if (changedYaw < 0 && changedYaw >= -90)
+      if (changedYaw < 0 && changedYaw >= -30)
       {
         turnLeftDistance(-turnYawTicks);
       }

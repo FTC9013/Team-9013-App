@@ -12,9 +12,8 @@ public abstract class IntoTheDebt extends LinearOpMode
   public ArmControl arm;
   double tickPerCm = 20.24278;
   static final int RAISE_ARM = 3000;
-  static final int HOOK_POSITION = 2750;
-  static final int DROP_POSITION = 2600;
-  static final int PUSH_HOOK_POSITION = 2700;
+  static final int HOOK_POSITION = 2884;
+  static final int DROP_POSITION = 3350;
   static final int MAX_EXTENSION = 2400;
   static final int MEDIUM_ARM = 2000;
   static final int INITIAL_EXTENSION = 2850;
@@ -68,10 +67,10 @@ public abstract class IntoTheDebt extends LinearOpMode
   
   public void initialize()
   {
-    //arm.extendTo(INITIAL_EXTENSION);
+    arm.extendTo(INITIAL_EXTENSION);
     // DOC NOT USE arm.moveArmTo(HOOK_POSITION);
-    //arm.retract();
-    //sleep(500);
+    arm.retract();
+    arm.moveArmTo(1000);
     arm.stop();
     arm.reset();
   }
@@ -80,10 +79,12 @@ public abstract class IntoTheDebt extends LinearOpMode
   {
     arm.moveArmTo(HOOK_POSITION);
     driveChassis.moveForward(61);
-    arm.extendForTime(0.35);
+    arm.extendForTime(0.14);
     arm.openGripper();
+    arm.moveArmTo(HOOK_POSITION + 125);
     sleep(1000);
     arm.retract();
+    sleep(500);
     arm.stop();
     driveChassis.moveBackward(25);
     //armor stuffs hear
@@ -96,11 +97,10 @@ public abstract class IntoTheDebt extends LinearOpMode
     telemetry.update();
     driveChassis.strafeLeft(120);
     driveChassis.straighten(0);
-    goAwayFromLeftWall(30);
+    goAwayFromLeftWall(28);
     telemetry.addLine("Stopping before back wall");
-    stopBeforeBackWall(27);
+    stopBeforeBackWall(28);
     telemetry.update();
-    
   }
   
   public void grabAndDropSample()
@@ -108,15 +108,17 @@ public abstract class IntoTheDebt extends LinearOpMode
     
     
     arm.reset();
+    arm.moveArmTo(100);
     arm.closeGripper();
     sleep(800);
     arm.raiseMax();
     driveChassis.turnLeft();
     driveChassis.moveForward(24);
     goAwayFromLeftWall(13);
-    arm.extendTo(1600);
+    arm.extendForTime(3);
     arm.moveArmTo(DROP_POSITION);
     arm.openGripper();
+    sleep(100);
     arm.retract();
     arm.stop();
     sleep(800);
@@ -133,7 +135,7 @@ public abstract class IntoTheDebt extends LinearOpMode
     driveChassis.turnRight();
     driveChassis.moveForward(210);
     driveChassis.turnLeft();
-    driveChassis.moveBackward(25);
+    driveChassis.moveBackward(35);
     telemetry.addLine("Moved Forward");
     telemetry.update();
     arm.closeGripper();
