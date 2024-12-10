@@ -66,15 +66,14 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
     arm = new ArmControl(hardwareMap, telemetry);
     //blang = new Blang(hardwareMap);
     telemetry.addData(">", "Robot Ready. Press Play.");
-    telemetry.addData(">", "9013 is the BeSt!>!>!!>!!!!!!111!!!.");
+    telemetry.addData(">", "[skibidi] is the best!");
     telemetry.update();
     turnColor();
     
     // Wait for the game to start (driver presses PLAY)
     waitForStart();
+    arm.resetTelop();
     //driveChassis.testWheels();
-    //arm.reset();
-    arm.reset();
     // run until the end of the match (driver presses STOP)
     //2 driver controls:
     while (opModeIsActive())
@@ -140,7 +139,7 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
         driveChassis.drive(gamepad1.left_stick_y, gamepad1.right_stick_x,
           gamepad1.left_stick_x, gamepad1.left_bumper);
       }
-// Pace this loop so jaw action is reasonable speed.
+      // Pace this loop so jaw action is reasonable speed.
       sleep(50);
     }
   }

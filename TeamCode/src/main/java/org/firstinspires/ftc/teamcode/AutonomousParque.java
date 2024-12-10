@@ -8,7 +8,7 @@ public class AutonomousParque extends IntoTheDebt
   {
     sleep(10000);
     initialize();
-    //hookSample();
+    hookSample();
     arm.moveArmTo(RAISE_ARM);
     driveChassis.strafeRight(100);
     goAwayFromRightWall(10);

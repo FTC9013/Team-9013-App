@@ -99,11 +99,11 @@ public abstract class IntoTheDebt extends LinearOpMode
     telemetry.update();
     driveChassis.strafeLeft(120);
     driveChassis.straighten(0);
-    goAwayFromLeftWall(30);
+    goAwayFromLeftWall(31);
     telemetry.addLine("Stopping before back wall");
-    stopBeforeBackWall(34);
-    goAwayFromLeftWall(30);
-    stopBeforeBackWall(34);
+    stopBeforeBackWall(32);
+    goAwayFromLeftWall(31);
+    stopBeforeBackWall(32);
     driveChassis.straighten(0);
     telemetry.update();
   }
@@ -119,15 +119,16 @@ public abstract class IntoTheDebt extends LinearOpMode
     arm.moveArmTo(4000);
     arm.extendForTime(2);
     driveChassis.turnLeft();
-    driveChassis.moveForward(24);
-    goAwayFromLeftWall(13);
+    driveChassis.moveForward(28);
+    goAwayFromLeftWall(10);
     arm.openGripper();
     sleep(1000);
     arm.raise();
     arm.extendForTime(0.5);
+    driveChassis.moveBackward(5);
+    
     arm.retract();
     arm.stop();
-    driveChassis.moveBackward(25);
     
     telemetry.addLine("sample dropped");
     telemetry.update();

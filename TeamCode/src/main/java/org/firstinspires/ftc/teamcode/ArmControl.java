@@ -56,10 +56,17 @@ public class ArmControl
     armMotor.setPower(-0.9);
     telemetry.addLine("Resetting arm");
     telemetry.update();
-    while (!bottomTouchSensor.isPressed())
+    runtime.reset();
+    while (!bottomTouchSensor.isPressed() && runtime.seconds() < 5)
     {
     }
     armMotor.setPower(0);
+    armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+  }
+  
+  public void resetTelop()
+  {
     armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
   }
@@ -208,6 +215,7 @@ public class ArmControl
   
   public void stopExtending()
   {
+    extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     extensionMotor.setPower(0);
   }
   
@@ -221,13 +229,9 @@ public class ArmControl
   public void extend()
   {
     extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    if (extensionMotor.getCurrentPosition() < MAX_EXTENSION)
-    {
-      extensionMotor.setPower(EXTENSION_SPEED);
-    } else
-    {
-      extensionMotor.setPower(0);
-    }
+    
+    extensionMotor.setPower(EXTENSION_SPEED);
+    
   }
   
   public void lower()

@@ -120,6 +120,7 @@ public class DistanceSensors
   public double rightDistance()
   {
     //return rightSensor.getDistance(DistanceUnit.CM);
+    
     double readings[] = new double[10];
     for (int i = 0; i <= 9; i++)
     {
@@ -141,8 +142,8 @@ public class DistanceSensors
   
   public double backDistance()
   {
-    //return backSensor.getDistance(DistanceUnit.CM);
-    double readings[] = new double[10];
+    return backSensor.getDistance(DistanceUnit.CM);
+    /*double readings[] = new double[10];
     for (int i = 0; i <= 9; i++)
     {
       readings[i] = backSensor.getDistance(DistanceUnit.CM);
@@ -158,6 +159,8 @@ public class DistanceSensors
     }
     
     return averageReadings / 3;
+    
+     */
     
   }
   
