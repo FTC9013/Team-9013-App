@@ -35,7 +35,8 @@ public abstract class IntoTheDebt extends LinearOpMode
     // Wait for the game to start (driver presses PLAY)
     waitForStart();
     runAuto();
-    
+    telemetry.addLine("This is the added code");
+    telemetry.update();
   }
   
   public abstract void runAuto();
@@ -70,11 +71,11 @@ public abstract class IntoTheDebt extends LinearOpMode
   public void initialize()
   {
     arm.extendTo(INITIAL_EXTENSION);
-    // DOC NOT USE arm.moveArmTo(HOOK_POSITION);
     arm.retract();
     arm.moveArmTo(1000);
     arm.stop();
     arm.reset();
+    arm.resetTelop();
   }
   
   public void hookSample()
@@ -97,13 +98,14 @@ public abstract class IntoTheDebt extends LinearOpMode
   {
     telemetry.addLine("Strafing left");
     telemetry.update();
-    driveChassis.strafeLeft(120);
+    driveChassis.strafeLeft(100);
     driveChassis.straighten(0);
-    goAwayFromLeftWall(31);
+    goFromLeftWall(59);
+    driveChassis.straighten(0);
     telemetry.addLine("Stopping before back wall");
-    stopBeforeBackWall(32);
-    goAwayFromLeftWall(31);
-    stopBeforeBackWall(32);
+    goFromBackWall(39);
+    //goFromLeftWall(38.5);
+    //goFromBackWall(42);
     driveChassis.straighten(0);
     telemetry.update();
   }
@@ -119,8 +121,8 @@ public abstract class IntoTheDebt extends LinearOpMode
     arm.moveArmTo(4000);
     arm.extendForTime(2);
     driveChassis.turnLeft();
-    driveChassis.moveForward(28);
-    goAwayFromLeftWall(10);
+    driveChassis.moveForward(48);
+    goAwayFromLeftWall(12);
     arm.openGripper();
     sleep(1000);
     arm.raise();
@@ -169,6 +171,39 @@ public abstract class IntoTheDebt extends LinearOpMode
     telemetry.addLine("Moved Forward");
     telemetry.update();
     arm.closeGripper();
+  }
+  
+  public void goFromLeftWall(double distFromLeftWell)
+  
+  {
+    telemetry.addData("Left sensor:", distanceSensors.leftDistance());
+    telemetry.update();
+    double distTravel = distanceSensors.leftDistance() - distFromLeftWell;
+    driveChassis.startStrafingLefte(0.60);
+    
+    while (distanceSensors.leftDistance() > distFromLeftWell && opModeIsActive())
+    {
+      telemetry.addData("Left sensor:", distanceSensors.leftDistance());
+      telemetry.update();
+      //Be l1k3 th3 b01ld3rs(do n0th1ng)
+    }
+    driveChassis.stop_motors();
+    sleep(500);
+  }
+  
+  public void goFromBackWall(double distFromBackWall)
+  
+  {
+    telemetry.addData("Back sensor:", distanceSensors.backDistance());
+    telemetry.update();
+    driveChassis.startMovingBackward(0.55);
+    while (distanceSensors.backDistance() > distFromBackWall && opModeIsActive())
+    {
+      telemetry.addData("Back sensor:", distanceSensors.backDistance());
+      telemetry.update();
+    }
+    driveChassis.stop_motors();
+    sleep(500);
   }
   
   public void test()

@@ -449,6 +449,23 @@ public class MecanumDriveChassis
     stop_motors();
   }
   
+  public void startMovingBackward(double speed)
+  {
+    
+    telemetry.addLine("moving backward");
+    telemetry.update();
+    
+    leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    leftRearDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    rightRearDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    
+    leftFrontDrive.setPower(-speed);
+    leftRearDrive.setPower(-speed);
+    rightFrontDrive.setPower(-speed);
+    rightRearDrive.setPower(-speed);
+  }
+  
   public void strafeLeft(double distanceCm)
   {
     telemetry.addLine("strafing left");
@@ -486,6 +503,25 @@ public class MecanumDriveChassis
       //Do nothing. Allows the motors to spin
     }
     stop_motors();
+  }
+  
+  public void startStrafingLefte(double speed)
+  {
+    telemetry.addLine("strafing left");
+    telemetry.update();
+    
+    
+    leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    leftRearDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    rightRearDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    
+    leftFrontDrive.setPower(-speed);
+    rightFrontDrive.setPower(speed);
+    leftRearDrive.setPower(speed);
+    rightRearDrive.setPower(-speed);
+    
+    
   }
   
   public void strafeLeftTicks(int distance)
@@ -567,6 +603,10 @@ public class MecanumDriveChassis
   
   public void stop_motors()
   {
+    leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    leftRearDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    rightRearDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     rightFrontDrive.setPower(0);
     rightRearDrive.setPower(0);
     leftFrontDrive.setPower(0);
