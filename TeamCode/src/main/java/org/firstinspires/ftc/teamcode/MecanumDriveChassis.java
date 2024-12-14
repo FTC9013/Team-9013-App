@@ -508,7 +508,7 @@ public class MecanumDriveChassis
   public void startStrafingLefte(double speed)
   {
     telemetry.addLine("strafing left");
-    telemetry.update();
+    //telemetry.update();
     
     
     leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

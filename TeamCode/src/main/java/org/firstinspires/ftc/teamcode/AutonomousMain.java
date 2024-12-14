@@ -11,6 +11,7 @@ public class AutonomousMain extends IntoTheDebt
     hookSample();
     strafeToBasket();
     grabAndDropSample();
+    touchBar();
     //parkBeforeBackWall();
     
   }
@@ -20,4 +21,4 @@ and eat his dookie from his booty at exactly 420 am, then scream:
 "dookie inside me!" 10 times, the entity called "Uncle Joseph" will wake
 up and dookie inside you. DO NOT ENTER LEVEL "Uncle Joseph's bedroom."
 -Logan? Zacurry(Zachary)?*/
- // hauk tuah sigma sigma on the wall who's the skibidiest of them all? hauk tuah
+// hauk tuah sigma sigma on the wall who's the skibidiest of them all? hauk tuah

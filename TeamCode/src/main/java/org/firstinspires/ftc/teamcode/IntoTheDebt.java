@@ -12,8 +12,12 @@ public abstract class IntoTheDebt extends LinearOpMode
   public ArmControl arm;
   public DistanceSensors propSensors;
   double tickPerCm = 20.24278;
+  double maxSpeed = 0.6;
+  double minSpeed = 0.1;
+  double decelDistCm = 20;
   static final int RAISE_ARM = 3000;
   static final int HOOK_POSITION = 2800;
+  static final int STARTING_POSITION = 3000;
   static final int DROP_POSITION = 3350;
   static final int MAX_EXTENSION = 2400;
   static final int MEDIUM_ARM = 2000;
@@ -35,8 +39,8 @@ public abstract class IntoTheDebt extends LinearOpMode
     // Wait for the game to start (driver presses PLAY)
     waitForStart();
     runAuto();
-    telemetry.addLine("This is the added code");
-    telemetry.update();
+    //goFromLeftWall(30);
+    //sleep(5000);
   }
   
   public abstract void runAuto();
@@ -70,24 +74,24 @@ public abstract class IntoTheDebt extends LinearOpMode
   
   public void initialize()
   {
+    arm.resetTelop();
     arm.extendTo(INITIAL_EXTENSION);
     arm.retract();
     arm.moveArmTo(1000);
     arm.stop();
-    arm.reset();
-    arm.resetTelop();
+    arm.moveArmTo(0);
   }
   
   public void hookSample()
   {
-    arm.moveArmTo(HOOK_POSITION);
+    //arm.moveArmTo(HOOK_POSITION);
     driveChassis.moveForward(61);
     arm.extendForTime(0.14);
     arm.openGripper();
-    arm.moveArmTo(HOOK_POSITION + 125);
-    sleep(1000);
-    arm.retract();
+    arm.moveArmTo(130);
     sleep(500);
+    arm.retract();
+    sleep(100);
     arm.stop();
     driveChassis.moveBackward(25);
     //armor stuffs hear
@@ -98,12 +102,12 @@ public abstract class IntoTheDebt extends LinearOpMode
   {
     telemetry.addLine("Strafing left");
     telemetry.update();
-    driveChassis.strafeLeft(100);
+    driveChassis.strafeLeft(90);
     driveChassis.straighten(0);
-    goFromLeftWall(59);
+    goFromLeftWall(35);
     driveChassis.straighten(0);
     telemetry.addLine("Stopping before back wall");
-    goFromBackWall(39);
+    goFromBackWall(43);
     //goFromLeftWall(38.5);
     //goFromBackWall(42);
     driveChassis.straighten(0);
@@ -121,7 +125,7 @@ public abstract class IntoTheDebt extends LinearOpMode
     arm.moveArmTo(4000);
     arm.extendForTime(2);
     driveChassis.turnLeft();
-    driveChassis.moveForward(48);
+    driveChassis.moveForward(distanceSensors.frontDistance() - 5);
     goAwayFromLeftWall(12);
     arm.openGripper();
     sleep(1000);
@@ -134,6 +138,19 @@ public abstract class IntoTheDebt extends LinearOpMode
     
     telemetry.addLine("sample dropped");
     telemetry.update();
+  }
+  
+  public void touchBar()
+  {
+    driveChassis.moveBackward(30);
+    driveChassis.turnRight();
+    driveChassis.straighten(0);
+    driveChassis.moveForward(95);
+    driveChassis.straighten(0);
+    driveChassis.turnRight();
+    driveChassis.moveForward(distanceSensors.frontDistance());
+    arm.moveArmTo(STARTING_POSITION);
+    
   }
   
   public void slamIntoWallNotTooHard()
@@ -179,13 +196,20 @@ public abstract class IntoTheDebt extends LinearOpMode
     telemetry.addData("Left sensor:", distanceSensors.leftDistance());
     telemetry.update();
     double distTravel = distanceSensors.leftDistance() - distFromLeftWell;
-    driveChassis.startStrafingLefte(0.60);
+    driveChassis.startStrafingLefte(maxSpeed);
     
     while (distanceSensors.leftDistance() > distFromLeftWell && opModeIsActive())
     {
       telemetry.addData("Left sensor:", distanceSensors.leftDistance());
+      double distAwayTar = distanceSensors.leftDistance() - distFromLeftWell;
+      double desiredSpeed = (maxSpeed - minSpeed) / decelDistCm * distAwayTar + minSpeed;
+      if (desiredSpeed >= maxSpeed)
+      {
+        desiredSpeed = maxSpeed;
+      }
+      telemetry.addData("desired sped:", desiredSpeed);
       telemetry.update();
-      //Be l1k3 th3 b01ld3rs(do n0th1ng)
+      driveChassis.startStrafingLefte(desiredSpeed);
     }
     driveChassis.stop_motors();
     sleep(500);
