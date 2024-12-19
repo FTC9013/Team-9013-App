@@ -349,10 +349,16 @@ public class MecanumDriveChassis
   
   public void moveForward(double distanceCm)
   {
+    moveForward(distanceCm, autonomousPower);
+  }
+  
+  public void moveForward(double distanceCm, double speed)
+  {
+    
     
     telemetry.addLine("moving forward");
     
-    startMovingForward(distanceCm);
+    startMovingForward(distanceCm, speed);
     while (stillMoving())
     {
       

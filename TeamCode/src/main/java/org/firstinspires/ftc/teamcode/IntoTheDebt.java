@@ -17,7 +17,7 @@ public abstract class IntoTheDebt extends LinearOpMode
   double decelDistCm = 20;
   static final int RAISE_ARM = 3000;
   static final int HOOK_POSITION = 2800;
-  static final int STARTING_POSITION = 3000;
+  static final int STARTING_POSITION = 2600;
   static final int DROP_POSITION = 3350;
   static final int MAX_EXTENSION = 2400;
   static final int MEDIUM_ARM = 2000;
@@ -75,23 +75,26 @@ public abstract class IntoTheDebt extends LinearOpMode
   public void initialize()
   {
     arm.resetTelop();
-    arm.extendTo(INITIAL_EXTENSION);
-    arm.retract();
-    arm.moveArmTo(1000);
+    //arm.extendTo(INITIAL_EXTENSION);
+    //arm.retract();
+    sleep(1000);
+    //√∙·
+    arm.moveArmTo(2000);
+    telemetry.update();
     arm.stop();
-    arm.moveArmTo(0);
+    arm.moveArmTo(-1500);
   }
   
   public void hookSample()
   {
     //arm.moveArmTo(HOOK_POSITION);
-    driveChassis.moveForward(61);
-    arm.extendForTime(0.14);
+    driveChassis.moveForward(55);
+    arm.extendForTime(0.33);
     arm.openGripper();
-    arm.moveArmTo(130);
-    sleep(500);
+    arm.moveArmTo(-1300);
+    //sleep(500);
     arm.retract();
-    sleep(100);
+    sleep(20);
     arm.stop();
     driveChassis.moveBackward(25);
     //armor stuffs hear
@@ -107,34 +110,28 @@ public abstract class IntoTheDebt extends LinearOpMode
     goFromLeftWall(35);
     driveChassis.straighten(0);
     telemetry.addLine("Stopping before back wall");
-    goFromBackWall(43);
-    //goFromLeftWall(38.5);
-    //goFromBackWall(42);
+    stopBeforeBackWall(28);
+    goFromLeftWall(35);
+    stopBeforeBackWall(28);
     driveChassis.straighten(0);
     telemetry.update();
   }
   
   public void grabAndDropSample()
   {
-    
-    
     arm.reset();
     arm.moveArmTo(100);
     arm.closeGripper();
     sleep(800);
-    arm.moveArmTo(4000);
+    arm.moveArmTo(3700);
     arm.extendForTime(2);
     driveChassis.turnLeft();
-    driveChassis.moveForward(distanceSensors.frontDistance() - 5);
-    goAwayFromLeftWall(12);
-    arm.openGripper();
+    goAwayFromLeftWall(17);
+    driveChassis.moveForward(distanceSensors.frontDistance() - 5, 0.6);
     sleep(1000);
-    arm.raise();
-    arm.extendForTime(0.5);
-    driveChassis.moveBackward(5);
-    
-    arm.retract();
-    arm.stop();
+    arm.openGripper();
+    arm.extendForTime(0.754321);
+    arm.moveArmTo(4000);
     
     telemetry.addLine("sample dropped");
     telemetry.update();
@@ -142,18 +139,23 @@ public abstract class IntoTheDebt extends LinearOpMode
   
   public void touchBar()
   {
-    driveChassis.moveBackward(30);
+    
+    arm.retract();
+    driveChassis.moveBackward(55);
+    arm.stop();
     driveChassis.turnRight();
     driveChassis.straighten(0);
+    arm.startMovingTo(STARTING_POSITION);
     driveChassis.moveForward(95);
     driveChassis.straighten(0);
     driveChassis.turnRight();
-    driveChassis.moveForward(distanceSensors.frontDistance());
-    arm.moveArmTo(STARTING_POSITION);
+    driveChassis.moveForward(distanceSensors.frontDistance(), 0.5);
+    arm.moveArmTo(STARTING_POSITION - 250);
+    
     
   }
   
-  public void slamIntoWallNotTooHard()
+  public void slamIntoWallTooHard()
   {
     
     arm.reset();

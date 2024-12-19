@@ -21,6 +21,7 @@ public class ArmControl
   static final double EXTENSION_SPEED = 1;
   static final int MAX_EXTENSION = 2500;
   private final ElapsedTime runtime = new ElapsedTime();
+  private boolean movingUp = false;
   
   
   ArmControl(HardwareMap hardwareMap, Telemetry theTelemetry)
@@ -116,7 +117,7 @@ public class ArmControl
     telemetry.addLine("Raising the G R I P P E R arm");
     telemetry.addData("Current arm pos=", armMotor.getCurrentPosition());
     telemetry.addData("Desired arm distance=", distance);
-    telemetry.update();
+    
     
     int armPosition = armMotor.getCurrentPosition();
     armMotor.setTargetPosition(distance);
@@ -124,32 +125,43 @@ public class ArmControl
     
     if (armPosition > distance)
     {
+      movingUp = false;
+      telemetry.addLine("Arm goin down");
       armMotor.setPower(-ARM_SPEED);
       
     } else
     {
+      movingUp = true;
+      telemetry.addLine("arm goin up");
       armMotor.setPower(ARM_SPEED);
       
     }
+    
+    telemetry.update();
   }
   
   public void waitUntilDone()
   {
-    boolean movingUp = armMotor.getPower() > 0;
     telemetry.addData("Moving up = ", movingUp);
-    telemetry.update();
     runtime.reset();
     while (armMotor.isBusy() && runtime.seconds() < 5)
     {
       if (movingUp && topTouchSensor.isPressed())
       {
+        telemetry.addLine("Reach limit of debt");
         break;
       } else if (!movingUp && bottomTouchSensor.isPressed())
       {
+        telemetry.addLine("Reach the lowest of depths");
         break;
       }
     }
     stop();
+    if (topTouchSensor.isPressed() || bottomTouchSensor.isPressed())
+    {
+      telemetry.addLine("Reset encoder");
+      armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
   }
   
   public void stop()
