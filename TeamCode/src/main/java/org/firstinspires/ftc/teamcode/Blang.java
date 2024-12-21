@@ -47,9 +47,19 @@ public class Blang
     blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.BREATH_RED);
   }
   
+  public void turnFastRed()
+  {
+    blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.TWINKLES_LAVA_PALETTE);
+  }
+  
   public void turnBlue()
   {
     blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.BREATH_BLUE);
+  }
+  
+  public void turnFastBlue()
+  {
+    blinkinLedDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.TWINKLES_OCEAN_PALETTE);
   }
   
   public void YIPPIE()

@@ -43,13 +43,16 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@TeleOp(name = "Teloop :)", group = "Robot")
-
+@TeleOp(name = "blue :)", group = "Robot")
 public class BlueTeleop extends PrimaryOpMode2425
 {
+  public void turnFastColor()
+  {
+    blang.turnFastBlue();
+  }
   
   public void turnColor()
   {
-    //blang.turnBlue();
+    blang.turnBlue();
   }
 }

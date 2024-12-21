@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 // ticks per centepeder = 17.7914
 public abstract class IntoTheDebt extends LinearOpMode
 {
-  //public Blang blang;
+  public Blang blang;
   public MecanumDriveChassis driveChassis;
   public DistanceSensors distanceSensors;
   public ArmControl arm;
@@ -29,7 +29,7 @@ public abstract class IntoTheDebt extends LinearOpMode
   public void runOpMode()
   {
     arm = new ArmControl(hardwareMap, telemetry);
-    //blang = new Blang(hardwareMap, telemetry);
+    blang = new Blang(hardwareMap);
     distanceSensors = new DistanceSensors(hardwareMap, telemetry);
     telemetry.addData("Status", "Initialized");
     telemetry.update();
@@ -44,6 +44,8 @@ public abstract class IntoTheDebt extends LinearOpMode
   }
   
   public abstract void runAuto();
+  
+  public abstract void turnColor();
   
   public void goAwayFromLeftWall(double distRight)
   
@@ -75,26 +77,27 @@ public abstract class IntoTheDebt extends LinearOpMode
   public void initialize()
   {
     arm.resetTelop();
-    //arm.extendTo(INITIAL_EXTENSION);
-    //arm.retract();
-    sleep(1000);
+    arm.extendTo(INITIAL_EXTENSION);
+    arm.retract();
+    sleep(50);
+    arm.stop();
     //√∙·
     arm.moveArmTo(2000);
     telemetry.update();
     arm.stop();
-    arm.moveArmTo(-1500);
+    arm.moveArmTo(-1600);
   }
   
   public void hookSample()
   {
     //arm.moveArmTo(HOOK_POSITION);
     driveChassis.moveForward(55);
-    arm.extendForTime(0.33);
+    arm.extendForTime(0.5);
     arm.openGripper();
-    arm.moveArmTo(-1300);
+    arm.moveArmTo(-1500);
     //sleep(500);
     arm.retract();
-    sleep(20);
+    sleep(200);
     arm.stop();
     driveChassis.moveBackward(25);
     //armor stuffs hear
@@ -110,9 +113,9 @@ public abstract class IntoTheDebt extends LinearOpMode
     goFromLeftWall(35);
     driveChassis.straighten(0);
     telemetry.addLine("Stopping before back wall");
-    stopBeforeBackWall(28);
+    stopBeforeBackWall(30);
     goFromLeftWall(35);
-    stopBeforeBackWall(28);
+    stopBeforeBackWall(30);
     driveChassis.straighten(0);
     telemetry.update();
   }
@@ -126,7 +129,7 @@ public abstract class IntoTheDebt extends LinearOpMode
     arm.moveArmTo(3700);
     arm.extendForTime(2);
     driveChassis.turnLeft();
-    goAwayFromLeftWall(17);
+    goAwayFromLeftWall(15);
     driveChassis.moveForward(distanceSensors.frontDistance() - 5, 0.6);
     sleep(1000);
     arm.openGripper();
@@ -149,8 +152,9 @@ public abstract class IntoTheDebt extends LinearOpMode
     driveChassis.moveForward(95);
     driveChassis.straighten(0);
     driveChassis.turnRight();
+    driveChassis.straighten(90);
     driveChassis.moveForward(distanceSensors.frontDistance(), 0.5);
-    arm.moveArmTo(STARTING_POSITION - 250);
+    arm.moveArmTo(STARTING_POSITION - 260);
     
     
   }

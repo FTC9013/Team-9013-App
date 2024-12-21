@@ -53,9 +53,11 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
   public DistanceSensors distanceSensors;
   public ArmControl arm;
   static final int HOOK_POSITION = 2450;
-  //public Blang blang;
+  public Blang blang;
   
   public abstract void turnColor();
+  
+  public abstract void turnFastColor();
   
   @Override
   public void runOpMode()
@@ -64,7 +66,7 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
     driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
     distanceSensors = new DistanceSensors(hardwareMap, telemetry);
     arm = new ArmControl(hardwareMap, telemetry);
-    //blang = new Blang(hardwareMap);
+    blang = new Blang(hardwareMap);
     telemetry.addData(">", "Robot Ready. Press Play.");
     telemetry.addData(">", "[skibidi] is the best!");
     telemetry.update();
@@ -84,6 +86,7 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
       } else if (gamepad2.dpad_down)
       {
         mast.mastDown();
+        blang.YIPPIE();
       } else
       {
         mast.mastStop();
@@ -130,15 +133,16 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
       arm.printSensors();
       distanceSensors.printSensors();
       telemetry.update();
-      if (gamepad1.left_bumper && gamepad1.right_bumper)
+      if (gamepad1.left_stick_y > 0 || gamepad1.right_stick_x > 0 || gamepad1.left_stick_x > 0 || gamepad1.left_bumper)
       {
-        driveChassis.drive(-gamepad1.left_stick_y, -gamepad1.right_stick_x,
-          -gamepad1.left_stick_x, false);
+        turnFastColor();
       } else
       {
-        driveChassis.drive(gamepad1.left_stick_y, gamepad1.right_stick_x,
-          gamepad1.left_stick_x, gamepad1.left_bumper);
+        turnColor();
       }
+      driveChassis.drive(gamepad1.left_stick_y, gamepad1.right_stick_x,
+        gamepad1.left_stick_x, gamepad1.left_bumper);
+      
       // Pace this loop so jaw action is reasonable speed.
       sleep(50);
     }

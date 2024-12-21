@@ -58,7 +58,7 @@ public class ArmControl
     telemetry.addLine("Resetting arm");
     telemetry.update();
     runtime.reset();
-    while (!bottomTouchSensor.isPressed() && runtime.seconds() < 5)
+    while (!bottomTouchSensor.isPressed() && runtime.seconds() < 7)
     {
     }
     armMotor.setPower(0);
