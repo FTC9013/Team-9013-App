@@ -58,7 +58,7 @@ public class ArmControl
     telemetry.addLine("Resetting arm");
     telemetry.update();
     runtime.reset();
-    while (!bottomTouchSensor.isPressed() && runtime.seconds() < 7)
+    while (!bottomTouchSensor.isPressed() && runtime.seconds() < 6)
     {
     }
     armMotor.setPower(0);
@@ -70,6 +70,12 @@ public class ArmControl
   {
     armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+  }
+  
+  public void resetAuto()
+  {
+    moveArmTo(2500);
+    armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
   }
   
   public void raiseMax()
@@ -157,11 +163,6 @@ public class ArmControl
       }
     }
     stop();
-    if (topTouchSensor.isPressed() || bottomTouchSensor.isPressed())
-    {
-      telemetry.addLine("Reset encoder");
-      armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    }
   }
   
   public void stop()

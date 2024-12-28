@@ -21,7 +21,7 @@ public abstract class IntoTheDebt extends LinearOpMode
   static final int DROP_POSITION = 3350;
   static final int MAX_EXTENSION = 2400;
   static final int MEDIUM_ARM = 2000;
-  static final int INITIAL_EXTENSION = 3000;
+  static final int INITIAL_EXTENSION = 2600;
   
   
   // a timer for the various automation activities.
@@ -36,6 +36,7 @@ public abstract class IntoTheDebt extends LinearOpMode
     // setup a instance of our drive system
     // Declare OpMode members.
     driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
+    turnColor();
     // Wait for the game to start (driver presses PLAY)
     waitForStart();
     runAuto();
@@ -76,13 +77,13 @@ public abstract class IntoTheDebt extends LinearOpMode
   
   public void initialize()
   {
-    arm.resetTelop();
     arm.extendTo(INITIAL_EXTENSION);
+    arm.resetAuto();
+    
     arm.retract();
-    sleep(50);
+    sleep(200);
     arm.stop();
     //√∙·
-    arm.moveArmTo(2000);
     telemetry.update();
     arm.stop();
     arm.moveArmTo(-1600);
@@ -92,7 +93,7 @@ public abstract class IntoTheDebt extends LinearOpMode
   {
     //arm.moveArmTo(HOOK_POSITION);
     driveChassis.moveForward(55);
-    arm.extendForTime(0.5);
+    arm.extendForTime(0.2);
     arm.openGripper();
     arm.moveArmTo(-1500);
     //sleep(500);
@@ -126,15 +127,16 @@ public abstract class IntoTheDebt extends LinearOpMode
     arm.moveArmTo(100);
     arm.closeGripper();
     sleep(800);
-    arm.moveArmTo(3700);
+    arm.moveArmTo(4500);
     arm.extendForTime(2);
     driveChassis.turnLeft();
     goAwayFromLeftWall(15);
     driveChassis.moveForward(distanceSensors.frontDistance() - 5, 0.6);
     sleep(1000);
+    arm.moveArmTo(3700);
     arm.openGripper();
-    arm.extendForTime(0.754321);
-    arm.moveArmTo(4000);
+    arm.extendForTime(0.7654321);
+    arm.moveArmTo(4500);
     
     telemetry.addLine("sample dropped");
     telemetry.update();
@@ -143,8 +145,9 @@ public abstract class IntoTheDebt extends LinearOpMode
   public void touchBar()
   {
     
-    arm.retract();
     driveChassis.moveBackward(55);
+    arm.retract();
+    sleep(250);
     arm.stop();
     driveChassis.turnRight();
     driveChassis.straighten(0);
