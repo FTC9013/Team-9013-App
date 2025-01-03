@@ -6,13 +6,16 @@ public abstract class AutonomousParque extends IntoTheDebt
   @Override
   public void runAuto()
   {
-    sleep(10000);
+    sleep(15000);
     initialize();
     hookSample();
-    arm.moveArmTo(RAISE_ARM);
-    driveChassis.strafeRight(100);
-    goAwayFromRightWall(10);
     stopBeforeBackWall(5);
+    arm.moveArmTo(-1600);
+    driveChassis.strafeRight(50);
+    driveChassis.straighten(0);
+    driveChassis.strafeRight(50);
+    goAwayFromRightWall(10);
+    
     
   }
 }

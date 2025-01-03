@@ -719,11 +719,11 @@ public class MecanumDriveChassis
       int turnYawTicks = (int) (changedYaw * ticksPerDegree);
       telemetry.addData("Yaw is:", yaw);
       telemetry.update();
-      if (changedYaw > 0 && changedYaw <= 30)
+      if (changedYaw > 0 && changedYaw <= 45)
       {
         turnRightDistance(turnYawTicks);
       }
-      if (changedYaw < 0 && changedYaw >= -30)
+      if (changedYaw < 0 && changedYaw >= -45)
       {
         turnLeftDistance(-turnYawTicks);
       }

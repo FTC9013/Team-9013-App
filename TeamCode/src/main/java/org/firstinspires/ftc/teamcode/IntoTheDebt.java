@@ -109,13 +109,14 @@ public abstract class IntoTheDebt extends LinearOpMode
   {
     telemetry.addLine("Strafing left");
     telemetry.update();
+    driveChassis.straighten(0);
     driveChassis.strafeLeft(90);
     driveChassis.straighten(0);
-    goFromLeftWall(35);
+    goFromLeftWall(34);
     driveChassis.straighten(0);
     telemetry.addLine("Stopping before back wall");
     stopBeforeBackWall(30);
-    goFromLeftWall(35);
+    goFromLeftWall(34);
     stopBeforeBackWall(30);
     driveChassis.straighten(0);
     telemetry.update();
@@ -127,16 +128,16 @@ public abstract class IntoTheDebt extends LinearOpMode
     arm.moveArmTo(100);
     arm.closeGripper();
     sleep(800);
-    arm.moveArmTo(4500);
-    arm.extendForTime(2);
+    arm.moveArmTo(4300);
+    arm.extendForTime(1.5);
     driveChassis.turnLeft();
     goAwayFromLeftWall(15);
     driveChassis.moveForward(distanceSensors.frontDistance() - 5, 0.6);
-    sleep(1000);
+    sleep(750);
     arm.moveArmTo(3700);
     arm.openGripper();
     arm.extendForTime(0.7654321);
-    arm.moveArmTo(4500);
+    arm.moveArmTo(4300);
     
     telemetry.addLine("sample dropped");
     telemetry.update();
@@ -145,19 +146,17 @@ public abstract class IntoTheDebt extends LinearOpMode
   public void touchBar()
   {
     
-    driveChassis.moveBackward(55);
+    driveChassis.moveBackward(60);
     arm.retract();
     sleep(250);
     arm.stop();
     driveChassis.turnRight();
     driveChassis.straighten(0);
-    arm.startMovingTo(STARTING_POSITION);
+    arm.startMovingTo(STARTING_POSITION - 350);
     driveChassis.moveForward(95);
-    driveChassis.straighten(0);
     driveChassis.turnRight();
-    driveChassis.straighten(90);
-    driveChassis.moveForward(distanceSensors.frontDistance(), 0.5);
-    arm.moveArmTo(STARTING_POSITION - 260);
+    driveChassis.straighten(-90);
+    driveChassis.moveForward(distanceSensors.frontDistance() - 2, 0.7);
     
     
   }
