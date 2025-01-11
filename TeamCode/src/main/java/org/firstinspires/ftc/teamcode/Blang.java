@@ -34,7 +34,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Blang
 {
-  
   RevBlinkinLedDriver blinkinLedDriver;
   
   public Blang(HardwareMap hardwareMap)

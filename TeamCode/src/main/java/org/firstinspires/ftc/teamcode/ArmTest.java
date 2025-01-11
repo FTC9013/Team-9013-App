@@ -3,11 +3,13 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Arm Test")
+
 public class ArmTest extends LinearOpMode
 {
   public ArmControl arm;
   
   @Override
+  
   public void runOpMode()
   {
     arm = new ArmControl(hardwareMap, telemetry);
@@ -41,6 +43,4 @@ public class ArmTest extends LinearOpMode
     telemetry.update();
     sleep(1000);
   }
-  
-  
 }

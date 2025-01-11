@@ -19,10 +19,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @TeleOp(name = "Sample Teleop", group = "Mr. Phil")
 public class SampleTeleop extends LinearOpMode
 {
-  public double SAFE_DRIVE_SPEED = 0.8; // Adjust this to your robot and your driver.  Slower usually means more accuracy.  Max value = 1.0
-  public double SAFE_STRAFE_SPEED = 0.8; // Adjust this to your robot and your driver.  Slower usually means more accuracy.  Max value = 1.0
-  public double SAFE_YAW_SPEED = 0.7; // Adjust this to your robot and your driver.  Slower usually means more accuracy.  Max value = 1.0
-  public double HEADING_HOLD_TIME = 10.0; // How long to hold heading once all driver input stops. (This Avoids effects of Gyro Drift)
+  final double SAFE_DRIVE_SPEED = 0.8; // Adjust this to your robot and your driver.  Slower usually means more accuracy.  Max value = 1.0
+  final double SAFE_STRAFE_SPEED = 0.8; // Adjust this to your robot and your driver.  Slower usually means more accuracy.  Max value = 1.0
+  final double SAFE_YAW_SPEED = 0.5; // Adjust this to your robot and your driver.  Slower usually means more accuracy.  Max value = 1.0
+  final double HEADING_HOLD_TIME = 10.0; // How long to hold heading once all driver input stops. (This Avoids effects of Gyro Drift)
   
   // local parameters
   ElapsedTime stopTime = new ElapsedTime();  // Use for timeouts.
@@ -64,7 +64,6 @@ public class SampleTeleop extends LinearOpMode
       double strafe = -gamepad1.left_stick_x * SAFE_STRAFE_SPEED;     //  Left/Right on left stick
       double yaw = -gamepad1.right_stick_x * SAFE_YAW_SPEED;       //  Rotate on right stick
       
-      
       //  OR... For special conditions, Use the DPAD to make pure orthoginal motions
       if (gamepad1.dpad_left)
       {
@@ -103,8 +102,7 @@ public class SampleTeleop extends LinearOpMode
       }
       
       //  Drive the wheels based on the desired axis motions
-      
-      robot.moveRobot(drive, strafe, yaw, gamepad1.right_trigger > 0.75);
+      robot.moveRobot(drive, strafe, yaw);
       
       // If the robot has just been sitting here for a while, make heading setpoint track any gyro drift to prevent rotating.
       if ((drive == 0) && (strafe == 0) && (yaw == 0))

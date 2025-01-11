@@ -9,12 +9,10 @@ public class BlangTest extends LinearOpMode
 {
   public Blang blang;
   
-  
   // a timer for the various automation activities.
   @Override
   public void runOpMode()
   {
     blang = new Blang(hardwareMap);
-    
   }
 }

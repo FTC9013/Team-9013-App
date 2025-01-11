@@ -95,7 +95,7 @@ public class MastArm
     } else
     {
       telemetry.addLine("Mast stopped :) Due to Touch Sensor");
-      mastStop();
+      driveMotor.setPower(-0.3);
     }
   }
   

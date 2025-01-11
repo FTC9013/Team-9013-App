@@ -15,7 +15,5 @@ public abstract class AutonomousParque extends IntoTheDebt
     driveChassis.straighten(0);
     driveChassis.strafeRight(50);
     goAwayFromRightWall(10);
-    
-    
   }
 }

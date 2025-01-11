@@ -18,6 +18,7 @@ public class ArmControl
   public TouchSensor bottomTouchSensor;
   public TouchSensor topTouchSensor;
   static final double ARM_SPEED = 0.8;
+  static final double SLOW_ARM_SPEED = 0.4;
   static final double EXTENSION_SPEED = 1;
   static final int MAX_EXTENSION = 2500;
   private final ElapsedTime runtime = new ElapsedTime();
@@ -49,7 +50,6 @@ public class ArmControl
     extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     extensionMotor.setDirection(DcMotor.Direction.REVERSE);
   }
-  
   
   public void reset()
   {
@@ -95,9 +95,7 @@ public class ArmControl
     telemetry.addData("After raising position:", armMotor.getCurrentPosition());
     telemetry.update();
     */
-    
   }
-  
   
   public void moveArmTo(int distance)
   {
@@ -123,26 +121,20 @@ public class ArmControl
     telemetry.addLine("Raising the G R I P P E R arm");
     telemetry.addData("Current arm pos=", armMotor.getCurrentPosition());
     telemetry.addData("Desired arm distance=", distance);
-    
-    
     int armPosition = armMotor.getCurrentPosition();
     armMotor.setTargetPosition(distance);
     armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    
     if (armPosition > distance)
     {
       movingUp = false;
       telemetry.addLine("Arm goin down");
       armMotor.setPower(-ARM_SPEED);
-      
     } else
     {
       movingUp = true;
       telemetry.addLine("arm goin up");
       armMotor.setPower(ARM_SPEED);
-      
     }
-    
     telemetry.update();
   }
   
@@ -167,7 +159,6 @@ public class ArmControl
   
   public void stop()
   {
-    
     //telemetry.addData("Limit Switch?", limitSwitch.isPressed() ? "Pressed" : "Not Pressed");
     armMotor.setPower(0);
     extensionMotor.setPower(0);
@@ -223,7 +214,6 @@ public class ArmControl
       //look into the void of nothingness and dispare
     }
     extensionMotor.setPower(0);
-    
   }
   
   public void stopExtending()
@@ -242,14 +232,27 @@ public class ArmControl
   public void extend()
   {
     extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    
     extensionMotor.setPower(EXTENSION_SPEED);
     
   }
   
-  public void lower()
+  public void extendLock()
   {
-    if (!bottomTouchSensor.isPressed())
+    if (armMotor.getCurrentPosition() > 0)
+    {
+      telemetry.addLine("Estending with lck");
+      extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+      extensionMotor.setPower(EXTENSION_SPEED);
+    }
+  }
+  
+  public void lower(boolean slow)
+  {
+    if (!bottomTouchSensor.isPressed() && slow)
+    {
+      armMotor.setPower(-SLOW_ARM_SPEED);
+      telemetry.addLine("Going down in the arm");
+    } else if (!bottomTouchSensor.isPressed())
     {
       armMotor.setPower(-ARM_SPEED);
       telemetry.addLine("Going down in the arm");
@@ -261,9 +264,13 @@ public class ArmControl
     telemetry.addData("Arm Position: ", armMotor.getCurrentPosition());
   }
   
-  public void raise()
+  public void raise(boolean slow)
   {
-    if (!topTouchSensor.isPressed())
+    if (!topTouchSensor.isPressed() && slow)
+    {
+      armMotor.setPower(SLOW_ARM_SPEED);
+      telemetry.addLine("Going up in the arm");
+    } else if (!topTouchSensor.isPressed())
     {
       armMotor.setPower(ARM_SPEED);
       telemetry.addLine("Going up in the arm");
@@ -295,4 +302,3 @@ public class ArmControl
     extensionMotor.setPower(0);
   }
 }
-

@@ -68,7 +68,7 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
     arm = new ArmControl(hardwareMap, telemetry);
     blang = new Blang(hardwareMap);
     telemetry.addData(">", "Robot Ready. Press Play.");
-    telemetry.addData(">", "[skibidi] is the best!");
+    telemetry.addData(">", "Hit that sigma grind in your winter arc and do a 5x30 five minutes a day.");
     telemetry.update();
     turnColor();
     
@@ -93,10 +93,13 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
       }
       if (gamepad2.left_stick_y > 0.75)
       {
-        arm.lower();
+        boolean slow = gamepad2.left_trigger > 0.75;
+        arm.lower(slow);
+        
       } else if (gamepad2.left_stick_y < -0.75)
       {
-        arm.raise();
+        boolean slow = gamepad2.left_trigger > 0.75;
+        arm.raise(slow);
         
       } else
       {
@@ -113,7 +116,8 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
       }
       if (gamepad2.y)
       {
-        arm.extend();
+        telemetry.addLine("Extending");
+        arm.extendLock();
       } else if (gamepad2.x)
       {
         telemetry.addLine("Retracting");
@@ -133,13 +137,13 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
       arm.printSensors();
       distanceSensors.printSensors();
       telemetry.update();
-      if (gamepad1.left_stick_y > 0 || gamepad1.right_stick_x > 0 || gamepad1.left_stick_x > 0 || gamepad1.left_bumper)
+      /*if (gamepad1.left_stick_y > 0 || gamepad1.right_stick_x > 0 || gamepad1.left_stick_x > 0 || gamepad1.left_bumper)
       {
         turnFastColor();
       } else
       {
         turnColor();
-      }
+      }*/
       driveChassis.drive(gamepad1.left_stick_y, gamepad1.right_stick_x,
         gamepad1.left_stick_x, gamepad1.left_bumper);
       

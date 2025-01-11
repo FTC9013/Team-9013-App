@@ -69,27 +69,21 @@ import androidx.annotation.NonNull;
 
 public class DistanceSensors
 {
-  
   public double frontDistance()
   {
     return frontSensor.getDistance(DistanceUnit.CM);
-
-    
     /*double readings[] = new double[10];
     for (int i = 0; i <= 9; i++)
     {
       readings[i] = frontSensor.getDistance(DistanceUnit.CM);
-      
     }
     Arrays.sort(readings);
-    
     double averageReadings = 0;
     for (int i = 4; i <= 6; i++)
     {
       telemetry.addData("font dist is", readings[i]);
       averageReadings += readings[i];
     }
-    
     return averageReadings / 3;
     */
   }
@@ -101,43 +95,34 @@ public class DistanceSensors
     for (int i = 0; i <= 9; i++)
     {
       readings[i] = leftSensor.getDistance(DistanceUnit.CM);
-      
     }
     Arrays.sort(readings);
-    
     double averageReadings = 0;
     for (int i = 4; i <= 6; i++)
     {
       telemetry.addData("left dist is", readings[i]);
       averageReadings += readings[i];
     }
-    
     return averageReadings / 3;
     */
-    
   }
   
   public double rightDistance()
   {
     //return rightSensor.getDistance(DistanceUnit.CM);
-    
     double readings[] = new double[10];
     for (int i = 0; i <= 9; i++)
     {
       readings[i] = rightSensor.getDistance(DistanceUnit.CM);
-      
     }
     Arrays.sort(readings);
-    
     double averageReadings = 0;
     for (int i = 4; i <= 6; i++)
     {
       telemetry.addData("rigt dist is", readings[i]);
       averageReadings += readings[i];
     }
-    
     return averageReadings / 3;
-    
   }
   
   public double backDistance()
@@ -147,21 +132,16 @@ public class DistanceSensors
     for (int i = 0; i <= 9; i++)
     {
       readings[i] = backSensor.getDistance(DistanceUnit.CM);
-      
     }
     Arrays.sort(readings);
-    
     double averageReadings = 0;
     for (int i = 4; i <= 6; i++)
     {
       telemetry.addData("back dist is", readings[i]);
       averageReadings += readings[i];
     }
-    
     return averageReadings / 3;
-    
      */
-    
   }
   
   /** The colorSensor field will contain a reference to our color sensor hardware object */
@@ -207,31 +187,24 @@ public class DistanceSensors
   
   protected PropSide detectProp()
   {
-    
-    
     telemetry.addData("Port 0, Front Sensor | Distance (cm)", "%.3f", ((DistanceSensor) frontSensor).getDistance(DistanceUnit.CM));
     if (frontSensor.getDistance(DistanceUnit.CM) < distanceThingy)
     {
       telemetry.addLine("It on de front");
       return PropSide.Front;
     }
-    
-    
     telemetry.addData("Port 1, Left Sensor | Distance (cm)", "%.3f", ((DistanceSensor) leftSensor).getDistance(DistanceUnit.CM));
     if (leftSensor.getDistance(DistanceUnit.CM) < distanceThingy)
     {
       telemetry.addLine("It on de lefte");
       return PropSide.Left;
     }
-    
-    
     telemetry.addData("Port 2, Right Sensor | Distance (cm)", "%.3f", ((DistanceSensor) rightSensor).getDistance(DistanceUnit.CM));
     if (rightSensor.getDistance(DistanceUnit.CM) < distanceThingy)
     {
       telemetry.addLine("It on de rite");
       return PropSide.Right;
     }
-    
     return PropSide.No;
   }
   

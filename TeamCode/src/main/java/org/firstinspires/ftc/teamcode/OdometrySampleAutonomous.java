@@ -7,7 +7,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 /*
@@ -16,8 +15,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
  * Pure Drive or Strafe motions are maintained using two Odometry Wheels.
  * The IMU gyro is used to stabilize the heading during all motions
  */
-@Disabled
-@Autonomous(name = "Sample Autonomous", group = "Mr. Phil")
+
+@Autonomous(name = "0d0m3try t3st", group = "Mr. Phil")
 public class OdometrySampleAutonomous extends LinearOpMode
 {
   // get an instance of the "Robot" class.
@@ -42,8 +41,8 @@ public class OdometrySampleAutonomous extends LinearOpMode
       // Note, this example takes more than 30 seconds to execute, so turn OFF the auto timer.
       
       // Drive a large rectangle, turning at each corner
-      robot.drive(30, 0.60, 0.05);
-      robot.turnTo(-90, 0.45, 0.05);
+      robot.drive(100, 0.40, 0.05);
+      /*robot.turnTo(-90, 0.45, 0.05);
       robot.drive(30, 0.60, 0.05);
       robot.turnTo(-180, 0.45, 0.05);
       robot.drive(30, 0.60, 0.05);
@@ -57,7 +56,7 @@ public class OdometrySampleAutonomous extends LinearOpMode
       robot.drive(30, 0.60, 0.1);
       robot.strafe(-30, 0.60, 0.1);
       robot.drive(-30, 0.60, 0.1);
-      robot.strafe(30, 0.60, 0.1);
+      robot.strafe(30, 0.60, 0.1);*/
     }
   }
 }

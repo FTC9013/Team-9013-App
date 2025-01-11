@@ -92,8 +92,8 @@ public abstract class IntoTheDebt extends LinearOpMode
   public void hookSample()
   {
     //arm.moveArmTo(HOOK_POSITION);
-    driveChassis.moveForward(55);
-    arm.extendForTime(0.2);
+    driveChassis.moveForward(56);
+    arm.extendForTime(0.4);
     arm.openGripper();
     arm.moveArmTo(-1500);
     //sleep(500);
@@ -112,12 +112,12 @@ public abstract class IntoTheDebt extends LinearOpMode
     driveChassis.straighten(0);
     driveChassis.strafeLeft(90);
     driveChassis.straighten(0);
-    goFromLeftWall(34);
+    goFromLeftWall(37);
     driveChassis.straighten(0);
     telemetry.addLine("Stopping before back wall");
-    stopBeforeBackWall(30);
-    goFromLeftWall(34);
-    stopBeforeBackWall(30);
+    stopBeforeBackWall(29);
+    goFromLeftWall(37);
+    stopBeforeBackWall(29);
     driveChassis.straighten(0);
     telemetry.update();
   }
