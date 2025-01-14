@@ -23,9 +23,10 @@ import java.util.List;
 public class SimplifiedOdometryRobot
 {
   // Adjust these numbers to suit your robot.
-  private final double ODOM_INCHES_PER_COUNT = 0.002969;   //  GoBilda Odometry Pod (1/226.8)
+  private final double ODOM_INCHES_PER_COUNT = 0.002969;//  GoBilda Odometry Pod (1/226.8)
+  private final double ODOM_CENTIMETERS_PER_COUNT = ODOM_INCHES_PER_COUNT * 2.54; //sigma centimators
   private final boolean INVERT_DRIVE_ODOMETRY = true;       //  When driving FORWARD, the odometry value MUST increase.  If it does not, flip the value of this constant.
-  private final boolean INVERT_STRAFE_ODOMETRY = true;       //  When strafing to the LEFT, the odometry value MUST increase.  If it does not, flip the value of this constant.
+  private final boolean INVERT_STRAFE_ODOMETRY = false;      //  When strafing to the LEFT, the odometry value MUST increase.  If it does not, flip the value of this constant.
   
   private static final double DRIVE_GAIN = 0.03;        // Strength of axial position control
   private static final double DRIVE_ACCEL = 2.0;        // Acceleration limit.  Percent Power change per second.  1.0 = 0-100% power in 1 sec.
@@ -153,8 +154,8 @@ public class SimplifiedOdometryRobot
   {
     rawDriveOdometer = driveEncoder.getCurrentPosition() * (INVERT_DRIVE_ODOMETRY ? -1 : 1);
     rawStrafeOdometer = strafeEncoder.getCurrentPosition() * (INVERT_STRAFE_ODOMETRY ? -1 : 1);
-    driveDistance = (rawDriveOdometer - driveOdometerOffset) * ODOM_INCHES_PER_COUNT;
-    strafeDistance = (rawStrafeOdometer - strafeOdometerOffset) * ODOM_INCHES_PER_COUNT;
+    driveDistance = (rawDriveOdometer - driveOdometerOffset) * ODOM_CENTIMETERS_PER_COUNT;
+    strafeDistance = (rawStrafeOdometer - strafeOdometerOffset) * ODOM_CENTIMETERS_PER_COUNT;
     
     YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
     AngularVelocity angularVelocity = imu.getRobotAngularVelocity(AngleUnit.DEGREES);
@@ -176,15 +177,15 @@ public class SimplifiedOdometryRobot
   
   /**
    * Drive in the axial (forward/reverse) direction, maintain the current heading and don't drift sideways
-   * @param distanceInches  Distance to travel.  +ve = forward, -ve = reverse.
+   * @param distanceCm  Distance to travel.  +ve = forward, -ve = reverse.
    * @param power Maximum power to apply.  This number should always be positive.
    * @param holdTime Minimum time (sec) required to hold the final position.  0 = no hold.
    */
-  public void drive(double distanceInches, double power, double holdTime)
+  public void drive(double distanceCm, double power, double holdTime)
   {
     resetOdometry();
     
-    driveController.reset(distanceInches, power);   // achieve desired drive distance
+    driveController.reset(distanceCm, power);   // achieve desired drive distance
     strafeController.reset(0);               // Maintain zero strafe drift
     yawController.reset();                          // Maintain last turn heading
     holdTimer.reset();
@@ -213,16 +214,16 @@ public class SimplifiedOdometryRobot
   
   /**
    * Strafe in the lateral (left/right) direction, maintain the current heading and don't drift fwd/bwd
-   * @param distanceInches  Distance to travel.  +ve = left, -ve = right.
+   * @param distanceCm  Distance to travel.  +ve = left, -ve = right.
    * @param power Maximum power to apply.  This number should always be positive.
    * @param holdTime Minimum time (sec) required to hold the final position.  0 = no hold.
    */
-  public void strafe(double distanceInches, double power, double holdTime)
+  public void strafe(double distanceCm, double power, double holdTime)
   {
     resetOdometry();
     
     driveController.reset(0.0);             //  Maintain zero drive drift
-    strafeController.reset(distanceInches, power);  // Achieve desired Strafe distance
+    strafeController.reset(distanceCm, power);  // Achieve desired Strafe distance
     yawController.reset();                          // Maintain last turn angle
     holdTimer.reset();
     

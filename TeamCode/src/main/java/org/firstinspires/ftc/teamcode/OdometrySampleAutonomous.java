@@ -42,6 +42,7 @@ public class OdometrySampleAutonomous extends LinearOpMode
       
       // Drive a large rectangle, turning at each corner
       robot.drive(100, 0.40, 0.05);
+      robot.strafe(100, 0.40, 0.05);
       /*robot.turnTo(-90, 0.45, 0.05);
       robot.drive(30, 0.60, 0.05);
       robot.turnTo(-180, 0.45, 0.05);
@@ -60,3 +61,4 @@ public class OdometrySampleAutonomous extends LinearOpMode
     }
   }
 }
+// im bigger and better and ill host the famous sumo reslting fight of tony and grayson
