@@ -11,8 +11,8 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
   public DistanceSensors distanceSensors;
   public ArmControl arm;
   public DistanceSensors propSensors;
-  static final double DEFAULT_POWER = 0.5;
-  static final double DEFAULT_HOLD_TIME = 0.05;
+  static final double DEFAULT_POWER = 0.9;
+  static final double DEFAULT_HOLD_TIME = 0;
   double tickPerCm = 20.24278;
   double maxSpeed = 0.6;
   double minSpeed = 0.1;
@@ -38,6 +38,7 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     // setup a instance of our drive system
     // Declare OpMode members.
     driveChassis = new SimplifiedOdometryRobot(this);
+    driveChassis.initialize(true);
     turnColor();
     // Wait for the game to start (driver presses PLAY)
     waitForStart();
@@ -94,8 +95,8 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
   public void hookSample()
   {
     //arm.moveArmTo(HOOK_POSITION);
-    driveChassis.drive(56, DEFAULT_POWER, DEFAULT_HOLD_TIME);
-    
+    driveChassis.drive(58, DEFAULT_POWER, DEFAULT_HOLD_TIME);
+    telemetry.addLine("sigma sigma boy");
     arm.extendForTime(0.4);
     arm.openGripper();
     arm.moveArmTo(-1500);

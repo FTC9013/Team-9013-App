@@ -41,8 +41,10 @@ public class OdometrySampleAutonomous extends LinearOpMode
       // Note, this example takes more than 30 seconds to execute, so turn OFF the auto timer.
       
       // Drive a large rectangle, turning at each corner
-      robot.drive(100, 0.40, 0.05);
-      robot.strafe(100, 0.40, 0.05);
+      robot.drive(300, 0.40, 0.05);
+      robot.strafe(200, 0.40, 0.05);
+      robot.drive(-290, 0.40, 0.05);
+      robot.strafe(-200, 0.40, 0.05);
       /*robot.turnTo(-90, 0.45, 0.05);
       robot.drive(30, 0.60, 0.05);
       robot.turnTo(-180, 0.45, 0.05);

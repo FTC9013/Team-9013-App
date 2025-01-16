@@ -45,7 +45,7 @@ public class SimplifiedOdometryRobot
   private static final double YAW_TOLERANCE = 1.0;      // Controller is is "inPosition" if position error is < +/- this amount
   private static final double YAW_DEADBAND = 0.25;      // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
   private static final double YAW_MAX_AUTO = 0.6;       // "default" Maximum Yaw power limit during autonomous
-  
+  private static final double MIN_MOTOR_SPEED = 0.08;
   // Public Members
   public double driveDistance = 0; // scaled axial distance (+ = forward)
   public double strafeDistance = 0; // scaled lateral distance (+ = left)
@@ -302,6 +302,10 @@ public class SimplifiedOdometryRobot
     max = Math.max(max, Math.abs(lB));
     max = Math.max(max, Math.abs(rB));
     
+    double min = Math.min(Math.abs(lF), Math.abs(rF));
+    min = Math.min(min, Math.abs(lB));
+    min = Math.min(min, Math.abs(rB));
+    
     //normalize the motor values
     if (max > 1.0)
     {
@@ -310,7 +314,14 @@ public class SimplifiedOdometryRobot
       lB /= max;
       rB /= max;
     }
-    
+    if (min < MIN_MOTOR_SPEED)
+    {
+      double scale = MIN_MOTOR_SPEED / min;
+      lF *= scale;
+      rF *= scale;
+      lB *= scale;
+      rB *= scale;
+    }
     //send power to the motors
     leftFrontDrive.setPower(lF);
     rightFrontDrive.setPower(rF);
@@ -319,6 +330,7 @@ public class SimplifiedOdometryRobot
     
     if (showTelemetry)
     {
+      
       myOpMode.telemetry.addData("Axes D:S:Y", "%5.2f %5.2f %5.2f", drive, strafe, yaw);
       myOpMode.telemetry.addData("Wheels lf:rf:lb:rb", "%5.2f %5.2f %5.2f %5.2f", lF, rF, lB, rB);
       myOpMode.telemetry.update(); //  Assume this is the last thing done in the loop.
