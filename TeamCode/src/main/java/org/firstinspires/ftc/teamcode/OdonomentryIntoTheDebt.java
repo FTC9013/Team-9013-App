@@ -7,11 +7,11 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public abstract class OdonomentryIntoTheDebt extends LinearOpMode
 {
   public Blang blang;
-  public SimplifiedOdometryRobot driveChassis;
+  public SimplifiedOdometryRobotInches driveChassis;
   public DistanceSensors distanceSensors;
   public ArmControl arm;
   public DistanceSensors propSensors;
-  static final double DEFAULT_POWER = 0.9;
+  static final double DEFAULT_POWER = 0.6;
   static final double DEFAULT_HOLD_TIME = 0;
   double tickPerCm = 20.24278;
   double maxSpeed = 0.6;
@@ -37,11 +37,12 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     telemetry.update();
     // setup a instance of our drive system
     // Declare OpMode members.
-    driveChassis = new SimplifiedOdometryRobot(this);
+    driveChassis = new SimplifiedOdometryRobotInches(this);
     driveChassis.initialize(true);
     turnColor();
     // Wait for the game to start (driver presses PLAY)
     waitForStart();
+    driveChassis.resetHeading();
     runAuto();
     //goFromLeftWall(30);
     //sleep(5000);
@@ -80,7 +81,7 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
   
   public void initialize()
   {
-    arm.extendTo(INITIAL_EXTENSION);
+    //arm.extendTo(INITIAL_EXTENSION);
     arm.resetAuto();
     
     arm.retract();
@@ -97,7 +98,7 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     //arm.moveArmTo(HOOK_POSITION);
     driveChassis.drive(58, DEFAULT_POWER, DEFAULT_HOLD_TIME);
     telemetry.addLine("sigma sigma boy");
-    arm.extendForTime(0.4);
+    //arm.extendForTime(0.4);
     arm.openGripper();
     arm.moveArmTo(-1500);
     //sleep(500);
@@ -129,14 +130,14 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     arm.closeGripper();
     sleep(800);
     arm.moveArmTo(4300);
-    arm.extendForTime(1.5);
+    //arm.extendForTime(1.5);
     driveChassis.turnTo(90, DEFAULT_POWER, DEFAULT_HOLD_TIME);
     goAwayFromLeftWall(15);
     driveChassis.drive(distanceSensors.frontDistance() - 5, DEFAULT_POWER, DEFAULT_HOLD_TIME);
     sleep(750);
     arm.moveArmTo(3700);
     arm.openGripper();
-    arm.extendForTime(0.7654321);
+    //arm.extendForTime(0.7654321);
     arm.moveArmTo(4300);
     
     telemetry.addLine("sample dropped");
@@ -160,8 +161,6 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     
     
   }
-  
-  
 }
 
 

@@ -63,7 +63,7 @@ public class MastArm
     bottomTouchSensor = hardwareMap.get(TouchSensor.class, "bottom mast limit");
     topTouchSensor = hardwareMap.get(TouchSensor.class, "top mast limit");
     // Define and Initialize Motors
-    driveMotor = hardwareMap.get(DcMotor.class, "mast");
+    driveMotor = hardwareMap.get(DcMotor.class, "mast + axial");
     driveMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     driveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.

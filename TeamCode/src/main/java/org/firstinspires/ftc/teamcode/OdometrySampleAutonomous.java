@@ -16,7 +16,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
  * The IMU gyro is used to stabilize the heading during all motions
  */
 
-@Autonomous(name = "0d0m3try t3st", group = "Mr. Phil")
+@Autonomous(name = "0d0m3try 1nch35", group = "Mr. Phil")
 public class OdometrySampleAutonomous extends LinearOpMode
 {
   // get an instance of the "Robot" class.
@@ -41,10 +41,12 @@ public class OdometrySampleAutonomous extends LinearOpMode
       // Note, this example takes more than 30 seconds to execute, so turn OFF the auto timer.
       
       // Drive a large rectangle, turning at each corner
-      robot.drive(300, 0.40, 0.05);
-      robot.strafe(200, 0.40, 0.05);
-      robot.drive(-290, 0.40, 0.05);
-      robot.strafe(-200, 0.40, 0.05);
+      robot.drive(15, 0.8, 0.05);
+      robot.strafe(40, 0.8, 0.05);
+      robot.drive(15, 0.8, 0.05);
+      robot.drive(-15, 0.8, 0.05);
+      robot.strafe(-40, 0.8, 0.05);
+      robot.drive(-15, 0.8, 0.05);
       /*robot.turnTo(-90, 0.45, 0.05);
       robot.drive(30, 0.60, 0.05);
       robot.turnTo(-180, 0.45, 0.05);

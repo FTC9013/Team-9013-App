@@ -20,24 +20,23 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 import java.util.List;
 
-public class SimplifiedOdometryRobot
+public class SimplifiedOdometryRobotInches
 {
   // Adjust these numbers to suit your robot.
   private final double ODOM_INCHES_PER_COUNT = 0.002969;//  GoBilda Odometry Pod (1/226.8)
-  private final double ODOM_CENTIMETERS_PER_COUNT = ODOM_INCHES_PER_COUNT * 2.54; //sigma centimators
   private final boolean INVERT_DRIVE_ODOMETRY = true;       //  When driving FORWARD, the odometry value MUST increase.  If it does not, flip the value of this constant.
   private final boolean INVERT_STRAFE_ODOMETRY = false;      //  When strafing to the LEFT, the odometry value MUST increase.  If it does not, flip the value of this constant.
   
   private static final double DRIVE_GAIN = 0.03;        // Strength of axial position control
   private static final double DRIVE_ACCEL = 2.0;        // Acceleration limit.  Percent Power change per second.  1.0 = 0-100% power in 1 sec.
-  private static final double DRIVE_TOLERANCE = 0.5 * 2.54;    // Controller is is "inPosition" if position error is < +/- this amount
-  private static final double DRIVE_DEADBAND = 0.4 * 2.54;     // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
+  private static final double DRIVE_TOLERANCE = 0.5;    // Controller is is "inPosition" if position error is < +/- this amount
+  private static final double DRIVE_DEADBAND = 0.4;     // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
   private static final double DRIVE_MAX_AUTO = 0.8;     // "default" Maximum Axial power limit during autonomous
   
   private static final double STRAFE_GAIN = 0.03;       // Strength of lateral position control
   private static final double STRAFE_ACCEL = 2.0;       // Acceleration limit.  Percent Power change per second.  1.0 = 0-100% power in 1 sec.
-  private static final double STRAFE_TOLERANCE = 0.5 * 2.54;   // Controller is is "inPosition" if position error is < +/- this amount
-  private static final double STRAFE_DEADBAND = 0.4 * 2.54;    // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
+  private static final double STRAFE_TOLERANCE = 0.5;   // Controller is is "inPosition" if position error is < +/- this amount
+  private static final double STRAFE_DEADBAND = 0.4;    // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
   private static final double STRAFE_MAX_AUTO = 0.8;    // "default" Maximum Lateral power limit during autonomous
   
   private static final double YAW_GAIN = 0.018;         // Strength of Yaw position control
@@ -82,7 +81,7 @@ public class SimplifiedOdometryRobot
   private boolean showTelemetry = true;
   
   // Robot Constructor
-  public SimplifiedOdometryRobot(LinearOpMode opmode)
+  public SimplifiedOdometryRobotInches(LinearOpMode opmode)
   {
     myOpMode = opmode;
   }
@@ -154,8 +153,8 @@ public class SimplifiedOdometryRobot
   {
     rawDriveOdometer = driveEncoder.getCurrentPosition() * (INVERT_DRIVE_ODOMETRY ? -1 : 1);
     rawStrafeOdometer = strafeEncoder.getCurrentPosition() * (INVERT_STRAFE_ODOMETRY ? -1 : 1);
-    driveDistance = (rawDriveOdometer - driveOdometerOffset) * ODOM_CENTIMETERS_PER_COUNT;
-    strafeDistance = (rawStrafeOdometer - strafeOdometerOffset) * ODOM_CENTIMETERS_PER_COUNT;
+    driveDistance = (rawDriveOdometer - driveOdometerOffset) * ODOM_INCHES_PER_COUNT;
+    strafeDistance = (rawStrafeOdometer - strafeOdometerOffset) * ODOM_INCHES_PER_COUNT;
     
     YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
     AngularVelocity angularVelocity = imu.getRobotAngularVelocity(AngleUnit.DEGREES);
@@ -184,8 +183,8 @@ public class SimplifiedOdometryRobot
   public void drive(double distanceCm, double power, double holdTime)
   {
     resetOdometry();
-    
-    driveController.reset(distanceCm, power);   // achieve desired drive distance
+    double distanceInches = distanceCm / 2.54;
+    driveController.reset(distanceInches, power);   // achieve desired drive distance
     strafeController.reset(0);               // Maintain zero strafe drift
     yawController.reset();                          // Maintain last turn heading
     holdTimer.reset();
@@ -221,9 +220,9 @@ public class SimplifiedOdometryRobot
   public void strafe(double distanceCm, double power, double holdTime)
   {
     resetOdometry();
-    
+    double distanceInches = distanceCm / 2.54;
     driveController.reset(0.0);             //  Maintain zero drive drift
-    strafeController.reset(distanceCm, power);  // Achieve desired Strafe distance
+    strafeController.reset(distanceInches, power);  // Achieve desired Strafe distance
     yawController.reset();                          // Maintain last turn angle
     holdTimer.reset();
     
@@ -387,7 +386,7 @@ public class SimplifiedOdometryRobot
  * to get an axis to the desired setpoint value.
  * It also implements an acceleration limit, and a max power output.
  */
-class ProportionalControl
+class ProportionalControlInches
 {
   double lastOutput;
   double gain;
@@ -402,7 +401,7 @@ class ProportionalControl
   private static final double MIN_SPEED = 0.158;
   ElapsedTime cycleTime = new ElapsedTime();
   
-  public ProportionalControl(double gain, double accelLimit, double outputLimit, double tolerance, double deadband, boolean circular)
+  public ProportionalControlInches(double gain, double accelLimit, double outputLimit, double tolerance, double deadband, boolean circular)
   {
     this.gain = gain;
     this.accelLimit = accelLimit;
