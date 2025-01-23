@@ -23,21 +23,21 @@ import java.util.List;
 public class SimplifiedOdometryRobotInches
 {
   // Adjust these numbers to suit your robot.
-  private final double ODOM_INCHES_PER_COUNT = 0.002969;//  GoBilda Odometry Pod (1/226.8)
+  private final double ODOM_INCHES_PER_COUNT = 0.002969;    //  GoBilda Odometry Pod (1/226.8)
   private final boolean INVERT_DRIVE_ODOMETRY = true;       //  When driving FORWARD, the odometry value MUST increase.  If it does not, flip the value of this constant.
-  private final boolean INVERT_STRAFE_ODOMETRY = false;      //  When strafing to the LEFT, the odometry value MUST increase.  If it does not, flip the value of this constant.
+  private final boolean INVERT_STRAFE_ODOMETRY = false;     //  When strafing to the LEFT, the odometry value MUST increase.  If it does not, flip the value of this constant.
   
-  private static final double DRIVE_GAIN = 0.03;        // Strength of axial position control
+  private static final double DRIVE_GAIN = 0.06;        // Strength of axial position control
   private static final double DRIVE_ACCEL = 2.0;        // Acceleration limit.  Percent Power change per second.  1.0 = 0-100% power in 1 sec.
   private static final double DRIVE_TOLERANCE = 0.5;    // Controller is is "inPosition" if position error is < +/- this amount
   private static final double DRIVE_DEADBAND = 0.4;     // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
-  private static final double DRIVE_MAX_AUTO = 0.8;     // "default" Maximum Axial power limit during autonomous
+  private static final double DRIVE_MAX_AUTO = 1.0;     // "default" Maximum Axial power limit during autonomous
   
-  private static final double STRAFE_GAIN = 0.03;       // Strength of lateral position control
+  private static final double STRAFE_GAIN = 0.06;       // Strength of lateral position control
   private static final double STRAFE_ACCEL = 2.0;       // Acceleration limit.  Percent Power change per second.  1.0 = 0-100% power in 1 sec.
-  private static final double STRAFE_TOLERANCE = 0.5;   // Controller is is "inPosition" if position error is < +/- this amount
+  private static final double STRAFE_TOLERANCE = 0.75;  // Controller is is "inPosition" if position error is < +/- this amount
   private static final double STRAFE_DEADBAND = 0.4;    // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
-  private static final double STRAFE_MAX_AUTO = 0.8;    // "default" Maximum Lateral power limit during autonomous
+  private static final double STRAFE_MAX_AUTO = 1.0;    // "default" Maximum Lateral power limit during autonomous
   
   private static final double YAW_GAIN = 0.018;         // Strength of Yaw position control
   private static final double YAW_ACCEL = 3.0;          // Acceleration limit.  Percent Power change per second.  1.0 = 0-100% power in 1 sec.
@@ -140,7 +140,7 @@ public class SimplifiedOdometryRobotInches
     aMotor.setDirection(direction);
     aMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);  // Reset Encoders to zero
     aMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    aMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);  // Requires motor encoder cables to be hooked up.
+    aMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);  // Requires motor encoder cables to be hooked up.
     return aMotor;
   }
   
@@ -206,7 +206,7 @@ public class SimplifiedOdometryRobotInches
       {
         holdTimer.reset();
       }
-      myOpMode.sleep(10);
+      //myOpMode.sleep(10);
     }
     stopRobot();
   }
@@ -243,7 +243,7 @@ public class SimplifiedOdometryRobotInches
       {
         holdTimer.reset();
       }
-      myOpMode.sleep(10);
+      //myOpMode.sleep(10);
     }
     stopRobot();
   }
@@ -398,7 +398,6 @@ class ProportionalControlInches
   double deadband;
   boolean circular;
   boolean inPosition;
-  private static final double MIN_SPEED = 0.158;
   ElapsedTime cycleTime = new ElapsedTime();
   
   public ProportionalControlInches(double gain, double accelLimit, double outputLimit, double tolerance, double deadband, boolean circular)
@@ -452,13 +451,7 @@ class ProportionalControlInches
       {
         output = lastOutput - dV;
       }
-      if (output < MIN_SPEED && !circular && output > 0)
-      {
-        output = MIN_SPEED;
-      } else if (output > -MIN_SPEED && output < 0 && !circular)
-      {
-        output = -MIN_SPEED;
-      }
+      
     }
     
     lastOutput = output;

@@ -4,6 +4,7 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -361,7 +362,11 @@ public class MecanumDriveChassis
     startMovingForward(distanceCm, speed);
     while (stillMoving())
     {
-      
+      telemetry.addData("Left Front Wheel Position", leftFrontDrive.getCurrentPosition());
+      telemetry.addData("Left Rear Wheel Position", leftRearDrive.getCurrentPosition());
+      telemetry.addData("Right Front Wheel Position", rightFrontDrive.getCurrentPosition());
+      telemetry.addData("Right Rear Wheel Position", rightRearDrive.getCurrentPosition());
+      telemetry.update();
       //Do nothing. Allows the motors to spin
     }
     stop_motors();
@@ -450,6 +455,11 @@ public class MecanumDriveChassis
     rightRearDrive.setPower(-speed);
     while (leftFrontDrive.isBusy() && rightFrontDrive.isBusy() && leftRearDrive.isBusy() && rightRearDrive.isBusy())
     {
+      telemetry.addData("Left Front Wheel Position", leftFrontDrive.getCurrentPosition());
+      telemetry.addData("Left Rear Wheel Position", leftRearDrive.getCurrentPosition());
+      telemetry.addData("Right Front Wheel Position", rightFrontDrive.getCurrentPosition());
+      telemetry.addData("Right Rear Wheel Position", rightRearDrive.getCurrentPosition());
+      telemetry.update();
       //Do nothing. Allows the motors to spin
     }
     stop_motors();
@@ -506,6 +516,11 @@ public class MecanumDriveChassis
     rightRearDrive.setPower(-strafeAutonomousPower);
     while (leftFrontDrive.isBusy() && rightFrontDrive.isBusy() && leftRearDrive.isBusy() && rightRearDrive.isBusy())
     {
+      telemetry.addData("Left Front Strafe", leftFrontDrive.getCurrentPosition());
+      telemetry.addData("Left Rear Strafe", leftRearDrive.getCurrentPosition());
+      telemetry.addData("Right Front Strafe", rightFrontDrive.getCurrentPosition());
+      telemetry.addData("Right Rear Strafe", rightRearDrive.getCurrentPosition());
+      telemetry.update();
       //Do nothing. Allows the motors to spin
     }
     stop_motors();
@@ -743,5 +758,71 @@ public class MecanumDriveChassis
     telemetry.addData("Yaw is changing to:", desiredYaw);
     telemetry.addData("Yaw is now:", yaw);
     telemetry.update();
+  }
+  
+  public void wheelTest(double power, int distanceCm)
+  {
+    ElapsedTime runtime = new ElapsedTime();
+    leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    leftRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    rightRearDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    
+    
+    leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    leftRearDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    rightRearDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    
+    int distance = (int) (distanceCm * tickPerCm);
+    
+    leftFrontDrive.setTargetPosition(distance);
+    leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    leftFrontDrive.setPower(power);
+    runtime.reset();
+    while (leftFrontDrive.isBusy() && runtime.seconds() < 5)
+    {
+      telemetry.addData("Distance: ", distance);
+      telemetry.addData("Left Front Motor Encoder: ", leftFrontDrive.getCurrentPosition());
+      telemetry.update();
+      //Do nothing. Allows the motors to spin
+    }
+    stop_motors();
+    leftRearDrive.setTargetPosition(distance);
+    leftRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    leftRearDrive.setPower(power);
+    runtime.reset();
+    while (leftRearDrive.isBusy() && runtime.seconds() < 5)
+    {
+      telemetry.addData("Distance: ", distance);
+      telemetry.addData("Left Rear Motor Encoder: ", leftRearDrive.getCurrentPosition());
+      telemetry.update();
+      //Do nothing. Allows the motors to spin
+    }
+    stop_motors();
+    rightFrontDrive.setTargetPosition(distance);
+    rightFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    rightFrontDrive.setPower(power);
+    runtime.reset();
+    while (rightFrontDrive.isBusy() && runtime.seconds() < 5)
+    {
+      telemetry.addData("Distance: ", distance);
+      telemetry.addData("Right Front Motor Encoder: ", rightFrontDrive.getCurrentPosition());
+      telemetry.update();
+      //Do nothing. Allows the motors to spin
+    }
+    stop_motors();
+    rightRearDrive.setTargetPosition(distance);
+    rightRearDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    rightRearDrive.setPower(power);
+    runtime.reset();
+    while (rightRearDrive.isBusy() && runtime.seconds() < 5)
+    {
+      telemetry.addData("Distance: ", distance);
+      telemetry.addData("Right Rear Motor Encoder: ", rightRearDrive.getCurrentPosition());
+      telemetry.update();
+      //Do nothing. Allows the motors to spin
+    }
+    stop_motors();
   }
 }

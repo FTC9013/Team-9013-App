@@ -7,11 +7,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public abstract class OdonomentryIntoTheDebt extends LinearOpMode
 {
   public Blang blang;
-  public SimplifiedOdometryRobotInches driveChassis;
+  public SimplifiedOdometryRobotInches driveChassisOdom;
+  public MecanumDriveChassis driveChassis;
   public DistanceSensors distanceSensors;
   public ArmControl arm;
   public DistanceSensors propSensors;
-  static final double DEFAULT_POWER = 0.6;
+  static final double DEFAULT_POWER = 0.8;
   static final double DEFAULT_HOLD_TIME = 0;
   double tickPerCm = 20.24278;
   double maxSpeed = 0.6;
@@ -37,12 +38,13 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     telemetry.update();
     // setup a instance of our drive system
     // Declare OpMode members.
-    driveChassis = new SimplifiedOdometryRobotInches(this);
-    driveChassis.initialize(true);
+    driveChassisOdom = new SimplifiedOdometryRobotInches(this);
+    driveChassisOdom.initialize(false);
+    driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
     turnColor();
     // Wait for the game to start (driver presses PLAY)
     waitForStart();
-    driveChassis.resetHeading();
+    driveChassisOdom.resetHeading();
     runAuto();
     //goFromLeftWall(30);
     //sleep(5000);
@@ -53,27 +55,25 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
   public abstract void turnColor();
   
   public void goAwayFromLeftWall(double distRight)
-  
   {
     telemetry.addData("Left sensor:", distanceSensors.leftDistance());
     telemetry.update();
     double distTravel = distanceSensors.leftDistance() - distRight;
-    driveChassis.strafe(distTravel, DEFAULT_POWER, DEFAULT_HOLD_TIME);
+    strafe(distTravel);
     telemetry.addData("Left sensor:", distanceSensors.leftDistance());
     telemetry.update();
   }
   
   public void goAwayFromRightWall(double distLeft)
-  
   {
     double distTravel = distanceSensors.rightDistance() - distLeft;
-    driveChassis.strafe(-distTravel, DEFAULT_POWER, DEFAULT_HOLD_TIME);
+    strafe(-distTravel);
   }
   
   public void stopBeforeBackWall(double distBack)
   {
     double distTravel = distanceSensors.backDistance() - distBack;
-    driveChassis.drive(-distTravel, DEFAULT_POWER, DEFAULT_HOLD_TIME);
+    drive(-distTravel);
     telemetry.addData("Distance travel:", distTravel);
     telemetry.addData("back distance sensor", distanceSensors.backDistance());
     telemetry.update();
@@ -81,7 +81,7 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
   
   public void initialize()
   {
-    //arm.extendTo(INITIAL_EXTENSION);
+    arm.extendTo(INITIAL_EXTENSION);
     arm.resetAuto();
     
     arm.retract();
@@ -96,7 +96,7 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
   public void hookSample()
   {
     //arm.moveArmTo(HOOK_POSITION);
-    driveChassis.drive(58, DEFAULT_POWER, DEFAULT_HOLD_TIME);
+    drive(61);
     telemetry.addLine("sigma sigma boy");
     //arm.extendForTime(0.4);
     arm.openGripper();
@@ -105,8 +105,7 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     arm.retract();
     sleep(200);
     arm.stop();
-    driveChassis.drive(-25, DEFAULT_POWER, DEFAULT_HOLD_TIME);
-    //armor stuffs hear
+    drive(-35);
   }
   
   
@@ -114,13 +113,7 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
   {
     telemetry.addLine("Strafing left");
     telemetry.update();
-    driveChassis.strafe(90, DEFAULT_POWER, DEFAULT_HOLD_TIME);
-    goAwayFromLeftWall(37);
-    telemetry.addLine("Stopping before back wall");
-    stopBeforeBackWall(29);
-    goAwayFromLeftWall(37);
-    stopBeforeBackWall(29);
-    telemetry.update();
+    strafe(91);
   }
   
   public void grabAndDropSample()
@@ -130,14 +123,14 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     arm.closeGripper();
     sleep(800);
     arm.moveArmTo(4300);
-    //arm.extendForTime(1.5);
-    driveChassis.turnTo(90, DEFAULT_POWER, DEFAULT_HOLD_TIME);
+    arm.extendForTime(1.5);
+    turn(90);
+    
     goAwayFromLeftWall(15);
-    driveChassis.drive(distanceSensors.frontDistance() - 5, DEFAULT_POWER, DEFAULT_HOLD_TIME);
-    sleep(750);
+    drive(distanceSensors.frontDistance() - 5);
     arm.moveArmTo(3700);
     arm.openGripper();
-    //arm.extendForTime(0.7654321);
+    arm.extendForTime(0.73);
     arm.moveArmTo(4300);
     
     telemetry.addLine("sample dropped");
@@ -147,19 +140,34 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
   public void touchBar()
   {
     
-    driveChassis.drive(-60, DEFAULT_POWER, DEFAULT_HOLD_TIME);
+    drive(-60);
     arm.retract();
     sleep(250);
     arm.stop();
-    driveChassis.turnTo(0, DEFAULT_POWER, DEFAULT_HOLD_TIME);
+    turn(0);
     
     arm.startMovingTo(STARTING_POSITION - 350);
-    driveChassis.drive(95, DEFAULT_POWER, DEFAULT_HOLD_TIME);
-    driveChassis.turnTo(-90, DEFAULT_POWER, DEFAULT_HOLD_TIME);
+    drive(95);
+    turn(-90);
     
-    driveChassis.drive(distanceSensors.frontDistance() - 2, DEFAULT_POWER, DEFAULT_HOLD_TIME);
+    drive(distanceSensors.frontDistance() - 2);
     
     
+  }
+  
+  public void drive(double distanceCm)
+  {
+    driveChassisOdom.drive(distanceCm, DEFAULT_POWER, DEFAULT_HOLD_TIME);
+  }
+  
+  public void strafe(double distanceCm)
+  {
+    driveChassisOdom.strafe(distanceCm, DEFAULT_POWER, DEFAULT_HOLD_TIME);
+  }
+  
+  public void turn(double degree)
+  {
+    driveChassisOdom.strafe(degree, DEFAULT_POWER, DEFAULT_HOLD_TIME);
   }
 }
 

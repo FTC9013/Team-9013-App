@@ -11,9 +11,16 @@ public abstract class TestSquare extends LinearOpMode
   @Override
   public void runOpMode()
   {
+    driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
+    waitForStart();
     driveChassis.moveForward(20);
     telemetry.addLine("mobing forward");
     telemetry.update();
+    driveChassis.moveBackward(20);
+    telemetry.addLine("mobing backword");
+    telemetry.update();
+  
+    /*
     driveChassis.turnLeft();
     telemetry.addLine("Turnin left");
     telemetry.update();
@@ -35,6 +42,7 @@ public abstract class TestSquare extends LinearOpMode
     driveChassis.turnLeft();
     telemetry.addLine("Turnin left");
     telemetry.update();
+     */
   }
 }
   

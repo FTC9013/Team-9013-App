@@ -211,6 +211,8 @@ public class ArmControl
     runtime.reset();
     while (extensionMotor.isBusy() && runtime.seconds() < 3)
     {
+      telemetry.addData("extension position", extensionMotor.getCurrentPosition());
+      telemetry.update();
       //look into the void of nothingness and dispare
     }
     extensionMotor.setPower(0);
