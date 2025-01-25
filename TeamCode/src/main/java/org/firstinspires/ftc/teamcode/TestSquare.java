@@ -14,10 +14,15 @@ public abstract class TestSquare extends LinearOpMode
     driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
     waitForStart();
     driveChassis.moveForward(20);
-    telemetry.addLine("mobing forward");
+    telemetry.addLine("moving forward");
     telemetry.update();
     driveChassis.moveBackward(20);
-    telemetry.addLine("mobing backword");
+    telemetry.addLine("moving backward");
+    telemetry.update();
+    driveChassis.turnRight();
+    telemetry.addLine("Turning right");
+    driveChassis.turnLeft();
+    telemetry.addLine("Turning left");
     telemetry.update();
   
     /*

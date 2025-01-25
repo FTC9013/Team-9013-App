@@ -20,43 +20,60 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public class OdometrySampleAutonomous extends LinearOpMode
 {
   // get an instance of the "Robot" class.
-  private SimplifiedOdometryRobotInches robot = new SimplifiedOdometryRobotInches(this);
+  private SimplifiedOdometryRobotInches driveChassisOdom = new SimplifiedOdometryRobotInches(this);
+  static final double DEFAULT_POWER = 0.8;
+  static final double DEFAULT_HOLD_TIME = 0;
   
   @Override
   public void runOpMode()
   {
     // Initialize the robot hardware & Turn on telemetry
-    robot.initialize(true);
+    driveChassisOdom.initialize(false);
     
     // Wait for driver to press start
     telemetry.addData(">", "Touch Play to run Auto");
     telemetry.update();
     
     waitForStart();
-    robot.resetHeading();  // Reset heading to set a baseline for Auto
+    driveChassisOdom.resetHeading();  // Reset heading to set a baseline for Auto
     
     // Run Auto if stop was not pressed.
     if (opModeIsActive())
     {
+      telemetry.addLine("we running now");
+      telemetry.update();
       // Note, this example takes more than 30 seconds to execute, so turn OFF the auto timer.
       
       // Drive a large rectangle, turning at each corner
-      robot.drive(30, 0.8, 0.05);
-      telemetry.addLine("dr1v1ng f0wqrd 30");
-      robot.drive(-30, 0.8, 0.05);
-      telemetry.addLine("dr1v1ng bqckwqrd 30");
-      robot.drive(30, 1, 0.05);
-      telemetry.addLine("dr1v1ng f0wqrd 30");
-      robot.drive(-30, 1, 0.05);
-      telemetry.addLine("dr1v1ng bqckwqrd 30");
-      robot.strafe(-100, 0.8, 0.05);
-      telemetry.addLine("strqf1ng r1ght 100");
-      robot.strafe(100, 0.8, 0.05);
-      telemetry.addLine("strqf1ng l3ft 100");
-      robot.strafe(-100, 1, 0.05);
-      telemetry.addLine("strqf1ng r1ght 100");
-      robot.strafe(100, 1, 0.05);
-      telemetry.addLine("strqf1ng l3ft 100");
+      drive(64);
+      telemetry.addLine("sigma sigma boy");
+      //arm.extendForTime(0.4);
+      //sleep(500);
+      sleep(200);
+      drive(-39);
+      telemetry.addLine("Strafing left");
+      telemetry.update();
+      strafe(88);
+      sleep(800);
+      telemetry.addLine("Turning");
+      telemetry.update();
+      turn(90);
+      telemetry.addLine("Strafing");
+      telemetry.update();
+      drive(48);
+      strafe(21);
+      
+      telemetry.addLine("sample dropped");
+      telemetry.update();
+      
+      drive(-60);
+      sleep(250);
+      turn(0);
+      
+      drive(95);
+      turn(-90);
+      
+      drive(20);
       /*robot.turnTo(-90, 0.45, 0.05);
       robot.drive(30, 0.60, 0.05);
       robot.turnTo(-180, 0.45, 0.05);
@@ -73,6 +90,21 @@ public class OdometrySampleAutonomous extends LinearOpMode
       robot.drive(-30, 0.60, 0.1);
       robot.strafe(30, 0.60, 0.1);*/
     }
+  }
+  
+  public void drive(double distanceCm)
+  {
+    driveChassisOdom.drive(distanceCm, DEFAULT_POWER, DEFAULT_HOLD_TIME);
+  }
+  
+  public void strafe(double distanceCm)
+  {
+    driveChassisOdom.strafe(distanceCm, DEFAULT_POWER, DEFAULT_HOLD_TIME);
+  }
+  
+  public void turn(double degree)
+  {
+    driveChassisOdom.turnTo(degree, DEFAULT_POWER, DEFAULT_HOLD_TIME);
   }
 }
 // im bigger and better and ill host the famous sumo reslting fight of tony and grayson

@@ -2,45 +2,48 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Arm Test")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Test Auto")
 
 public class ArmTest extends LinearOpMode
 {
-  public ArmControl arm;
+  public MecanumDriveChassis driveChassis;
   
   @Override
   
   public void runOpMode()
   {
-    arm = new ArmControl(hardwareMap, telemetry);
+    driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
     waitForStart();
-    arm.fullExtend();
-    telemetry.addLine("Arm extended");
+    //driveChassis.wheelTest(0.5, 50);
+    //hi
+    waitForStart();
+    driveChassis.moveForward(30);
+    telemetry.addLine("moving forward");
     telemetry.update();
-    sleep(1000);
-    arm.reset();
-    telemetry.addLine("Arm reset");
+    driveChassis.moveBackward(20);
+    telemetry.addLine("moving backward");
     telemetry.update();
-    sleep(1000);
-    arm.moveArmTo(100);
-    telemetry.addLine("Arm moved 100");
+    driveChassis.turnRight();
+    telemetry.addLine("Turning right");
+    driveChassis.turnLeft();
+    telemetry.addLine("Turning left");
     telemetry.update();
-    sleep(1000);
-    arm.moveArmTo(0);
-    telemetry.addLine("Arm moved 0");
+    /*
+    driveChassis.moveForward(30);
+    telemetry.addLine("mobing forward");
     telemetry.update();
-    sleep(1000);
-    arm.openGripper();
-    telemetry.addLine("Toggle gripper1");
+    sleep(1500);
+    driveChassis.moveBackward(30);
+    telemetry.addLine("mobing backword");
     telemetry.update();
-    sleep(1000);
-    arm.closeGripper();
-    telemetry.addLine("Toggle gripper2");
+    sleep(1500);
+    driveChassis.strafeLeft(40);
+    telemetry.addLine("strabing left");
     telemetry.update();
-    sleep(1000);
-    arm.openGripper();
-    telemetry.addLine("Toggle gripper3");
+    sleep(1500);
+    driveChassis.strafeRight(40);
+    telemetry.addLine("strabing right");
     telemetry.update();
-    sleep(1000);
+    */
   }
 }

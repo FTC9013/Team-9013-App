@@ -34,15 +34,15 @@ public class SimplifiedOdometryRobotInches
   private static final double DRIVE_MAX_AUTO = 1.0;     // "default" Maximum Axial power limit during autonomous
   
   private static final double STRAFE_GAIN = 0.06;       // Strength of lateral position control
-  private static final double STRAFE_ACCEL = 2.0;       // Acceleration limit.  Percent Power change per second.  1.0 = 0-100% power in 1 sec.
-  private static final double STRAFE_TOLERANCE = 0.75;  // Controller is is "inPosition" if position error is < +/- this amount
-  private static final double STRAFE_DEADBAND = 0.4;    // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
+  private static final double STRAFE_ACCEL = 1.0;       // Acceleration limit.  Percent Power change per second.  1.0 = 0-100% power in 1 sec.
+  private static final double STRAFE_TOLERANCE = 0.25;  // Controller is is "inPosition" if position error is < +/- this amount
+  private static final double STRAFE_DEADBAND = 0.2;    // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
   private static final double STRAFE_MAX_AUTO = 1.0;    // "default" Maximum Lateral power limit during autonomous
   
   private static final double YAW_GAIN = 0.018;         // Strength of Yaw position control
   private static final double YAW_ACCEL = 3.0;          // Acceleration limit.  Percent Power change per second.  1.0 = 0-100% power in 1 sec.
   private static final double YAW_TOLERANCE = 1.0;      // Controller is is "inPosition" if position error is < +/- this amount
-  private static final double YAW_DEADBAND = 0.25;      // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
+  private static final double YAW_DEADBAND = 0.3;      // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
   private static final double YAW_MAX_AUTO = 0.6;       // "default" Maximum Yaw power limit during autonomous
   //private static final double MIN_MOTOR_SPEED = 0.08;
   // Public Members
@@ -247,6 +247,7 @@ public class SimplifiedOdometryRobotInches
     }
     stopRobot();
   }
+  //bing chilling - Nathaniel was hear
   
   /**
    * Rotate to an absolute heading/direction
@@ -309,6 +310,23 @@ public class SimplifiedOdometryRobotInches
       lB /= max;
       rB /= max;
     }
+    double adjustmentFactor = Math.abs(0.15 / max);
+    if (max > -0.15 && max < 0.15)
+    {
+      lF *= adjustmentFactor;
+      rF *= adjustmentFactor;
+      lB *= adjustmentFactor;
+      rB *= adjustmentFactor;
+    }
+    
+  
+    /*
+    double min = Math.min(Math.abs(lF), Math.abs(rF));
+    min = Math.min(min, Math.abs(lB));
+    min = Math.min(min, Math.abs(rB));
+    */
+    
+    //normalize the motor values
     
     //send power to the motors
     leftFrontDrive.setPower(lF);

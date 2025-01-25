@@ -17,7 +17,7 @@ public class ArmControl
   private final Telemetry telemetry;
   public TouchSensor bottomTouchSensor;
   public TouchSensor topTouchSensor;
-  static final double ARM_SPEED = 0.8;
+  static final double ARM_SPEED = 1.0;
   static final double SLOW_ARM_SPEED = 0.4;
   static final double EXTENSION_SPEED = 1;
   static final int MAX_EXTENSION = 2500;
@@ -48,9 +48,10 @@ public class ArmControl
     //extensionMotor.setDirection(DcMotor.Direction.________);
     extensionMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-    extensionMotor.setDirection(DcMotor.Direction.REVERSE);
+    extensionMotor.setDirection(DcMotor.Direction.FORWARD);
   }
   
+  //we the sigmas
   public void reset()
   {
     armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

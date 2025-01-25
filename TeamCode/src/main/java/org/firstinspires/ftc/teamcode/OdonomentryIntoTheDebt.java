@@ -87,16 +87,16 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     arm.retract();
     sleep(200);
     arm.stop();
-    //√∙·
     telemetry.update();
     arm.stop();
-    arm.moveArmTo(-1600);
+    arm.startMovingTo(-1800);
+    sleep(250);
   }
   
   public void hookSample()
   {
     //arm.moveArmTo(HOOK_POSITION);
-    drive(61);
+    drive(64);
     telemetry.addLine("sigma sigma boy");
     //arm.extendForTime(0.4);
     arm.openGripper();
@@ -105,7 +105,7 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     arm.retract();
     sleep(200);
     arm.stop();
-    drive(-35);
+    drive(-37);
   }
   
   
@@ -113,7 +113,8 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
   {
     telemetry.addLine("Strafing left");
     telemetry.update();
-    strafe(91);
+    arm.startMovingTo(-1400);
+    strafe(89);
   }
   
   public void grabAndDropSample()
@@ -122,17 +123,20 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     arm.moveArmTo(100);
     arm.closeGripper();
     sleep(800);
-    arm.moveArmTo(4300);
-    arm.extendForTime(1.5);
+    arm.startMovingTo(4300);
+    arm.extendTo(1700);
+    telemetry.addLine("Turning");
+    telemetry.update();
     turn(90);
-    
-    goAwayFromLeftWall(15);
-    drive(distanceSensors.frontDistance() - 5);
+    telemetry.addLine("Strafing");
+    telemetry.update();
+    drive(46);
+    strafe(21);
+    arm.extendTo(750);
     arm.moveArmTo(3700);
     arm.openGripper();
-    arm.extendForTime(0.73);
     arm.moveArmTo(4300);
-    
+    //ching billing
     telemetry.addLine("sample dropped");
     telemetry.update();
   }
@@ -167,7 +171,7 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
   
   public void turn(double degree)
   {
-    driveChassisOdom.strafe(degree, DEFAULT_POWER, DEFAULT_HOLD_TIME);
+    driveChassisOdom.turnTo(degree, DEFAULT_POWER, DEFAULT_HOLD_TIME);
   }
 }
 
