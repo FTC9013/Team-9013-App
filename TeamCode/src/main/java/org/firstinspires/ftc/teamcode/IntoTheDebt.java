@@ -28,7 +28,7 @@ public abstract class IntoTheDebt extends LinearOpMode
   @Override
   public void runOpMode()
   {
-    arm = new ArmControl(hardwareMap, telemetry);
+    arm = new ArmControl(this);
     blang = new Blang(hardwareMap);
     distanceSensors = new DistanceSensors(hardwareMap, telemetry);
     telemetry.addData("Status", "Initialized");

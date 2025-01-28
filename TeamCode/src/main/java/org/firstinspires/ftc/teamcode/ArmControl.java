@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -23,18 +23,20 @@ public class ArmControl
   static final int MAX_EXTENSION = 2500;
   private final ElapsedTime runtime = new ElapsedTime();
   private boolean movingUp = false;
+  private final LinearOpMode opMode;
   
   
-  ArmControl(HardwareMap hardwareMap, Telemetry theTelemetry)
+  ArmControl(LinearOpMode opmode)
   
   {
-    telemetry = theTelemetry;
+    opMode = opmode;
+    telemetry = opmode.telemetry;
     // Initialize the hardware variables
-    armMotor = hardwareMap.get(DcMotor.class, "arm");
-    gripper = hardwareMap.get(Servo.class, "gripper");
-    bottomTouchSensor = hardwareMap.get(TouchSensor.class, "arm_failsafe_bottom");
-    topTouchSensor = hardwareMap.get(TouchSensor.class, "arm_failsafe_top");
-    extensionMotor = hardwareMap.get(DcMotor.class, "extension_motor");
+    armMotor = opmode.hardwareMap.get(DcMotor.class, "arm");
+    gripper = opmode.hardwareMap.get(Servo.class, "gripper");
+    bottomTouchSensor = opmode.hardwareMap.get(TouchSensor.class, "arm_failsafe_bottom");
+    topTouchSensor = opmode.hardwareMap.get(TouchSensor.class, "arm_failsafe_top");
+    extensionMotor = opmode.hardwareMap.get(DcMotor.class, "extension_motor");
     gripper.setPosition(0);
     //limitSwitch = hardwareMap.get(TouchSensor.class, "limitSwitch");
     armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -49,6 +51,7 @@ public class ArmControl
     extensionMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     extensionMotor.setDirection(DcMotor.Direction.FORWARD);
+    extensionMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
   }
   
   //we the sigmas
@@ -303,5 +306,12 @@ public class ArmControl
       //look into the void of nothingness and dispare
     }
     extensionMotor.setPower(0);
+  }
+  
+  public void retractAuto()
+  {
+    retract();
+    opMode.sleep(100);
+    stop();
   }
 }

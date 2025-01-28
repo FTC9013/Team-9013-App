@@ -33,8 +33,8 @@ public class SimplifiedOdometryRobotInches
   private static final double DRIVE_DEADBAND = 0.4;     // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
   private static final double DRIVE_MAX_AUTO = 1.0;     // "default" Maximum Axial power limit during autonomous
   
-  private static final double STRAFE_GAIN = 0.06;       // Strength of lateral position control
-  private static final double STRAFE_ACCEL = 1.0;       // Acceleration limit.  Percent Power change per second.  1.0 = 0-100% power in 1 sec.
+  private static final double STRAFE_GAIN = 0.10;       // Strength of lateral position control
+  private static final double STRAFE_ACCEL = 1.5;       // Acceleration limit.  Percent Power change per second.  1.0 = 0-100% power in 1 sec.
   private static final double STRAFE_TOLERANCE = 0.25;  // Controller is is "inPosition" if position error is < +/- this amount
   private static final double STRAFE_DEADBAND = 0.2;    // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
   private static final double STRAFE_MAX_AUTO = 1.0;    // "default" Maximum Lateral power limit during autonomous
@@ -42,7 +42,7 @@ public class SimplifiedOdometryRobotInches
   private static final double YAW_GAIN = 0.018;         // Strength of Yaw position control
   private static final double YAW_ACCEL = 3.0;          // Acceleration limit.  Percent Power change per second.  1.0 = 0-100% power in 1 sec.
   private static final double YAW_TOLERANCE = 1.0;      // Controller is is "inPosition" if position error is < +/- this amount
-  private static final double YAW_DEADBAND = 0.3;      // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
+  private static final double YAW_DEADBAND = 0.25;      // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
   private static final double YAW_MAX_AUTO = 0.6;       // "default" Maximum Yaw power limit during autonomous
   //private static final double MIN_MOTOR_SPEED = 0.08;
   // Public Members
@@ -69,6 +69,7 @@ public class SimplifiedOdometryRobotInches
   private LinearOpMode myOpMode;
   private IMU imu;
   private ElapsedTime holdTimer = new ElapsedTime();  // User for any motion requiring a hold time or timeout.
+  private ElapsedTime failsafeTimeout = new ElapsedTime();
   
   private int rawDriveOdometer = 0; // Unmodified axial odometer count
   private int driveOdometerOffset = 0; // Used to offset axial odometer
@@ -96,6 +97,7 @@ public class SimplifiedOdometryRobotInches
   {
     // Initialize the hardware variables. Note that the strings used to 'get' each
     // motor/device must match the names assigned during the robot configuration.
+    
     
     // !!!  Set the drive direction to ensure positive power drives each wheel forward.
     leftFrontDrive = setupDriveMotor("lFront", DcMotor.Direction.REVERSE);
@@ -180,7 +182,7 @@ public class SimplifiedOdometryRobotInches
    * @param power Maximum power to apply.  This number should always be positive.
    * @param holdTime Minimum time (sec) required to hold the final position.  0 = no hold.
    */
-  public void drive(double distanceCm, double power, double holdTime)
+  public void drive(double distanceCm, double power, double holdTime, double timeout)
   {
     resetOdometry();
     double distanceInches = distanceCm / 2.54;
@@ -188,8 +190,9 @@ public class SimplifiedOdometryRobotInches
     strafeController.reset(0);               // Maintain zero strafe drift
     yawController.reset();                          // Maintain last turn heading
     holdTimer.reset();
+    failsafeTimeout.reset();
     
-    while (myOpMode.opModeIsActive() && readSensors())
+    while (myOpMode.opModeIsActive() && readSensors() && failsafeTimeout.time() < timeout)
     {
       
       // implement desired axis powers
@@ -217,7 +220,7 @@ public class SimplifiedOdometryRobotInches
    * @param power Maximum power to apply.  This number should always be positive.
    * @param holdTime Minimum time (sec) required to hold the final position.  0 = no hold.
    */
-  public void strafe(double distanceCm, double power, double holdTime)
+  public void strafe(double distanceCm, double power, double holdTime, double timeout)
   {
     resetOdometry();
     double distanceInches = distanceCm / 2.54;
@@ -225,8 +228,9 @@ public class SimplifiedOdometryRobotInches
     strafeController.reset(distanceInches, power);  // Achieve desired Strafe distance
     yawController.reset();                          // Maintain last turn angle
     holdTimer.reset();
+    failsafeTimeout.reset();
     
-    while (myOpMode.opModeIsActive() && readSensors())
+    while (myOpMode.opModeIsActive() && readSensors() && failsafeTimeout.time() < timeout)
     {
       
       // implement desired axis powers
@@ -255,11 +259,11 @@ public class SimplifiedOdometryRobotInches
    * @param power Maximum power to apply.  This number should always be positive.
    * @param holdTime Minimum time (sec) required to hold the final position.  0 = no hold.
    */
-  public void turnTo(double headingDeg, double power, double holdTime)
+  public void turnTo(double headingDeg, double power, double holdTime, double timeout)
   {
-    
+    failsafeTimeout.reset();
     yawController.reset(headingDeg, power);
-    while (myOpMode.opModeIsActive() && readSensors())
+    while (myOpMode.opModeIsActive() && readSensors() && failsafeTimeout.time() < timeout)
     {
       
       // implement desired axis powers
@@ -310,7 +314,7 @@ public class SimplifiedOdometryRobotInches
       lB /= max;
       rB /= max;
     }
-    double adjustmentFactor = Math.abs(0.15 / max);
+    /*double adjustmentFactor = Math.abs(0.15 / max);
     if (max > -0.15 && max < 0.15)
     {
       lF *= adjustmentFactor;
@@ -318,7 +322,7 @@ public class SimplifiedOdometryRobotInches
       lB *= adjustmentFactor;
       rB *= adjustmentFactor;
     }
-    
+    */
   
     /*
     double min = Math.min(Math.abs(lF), Math.abs(rF));
@@ -407,6 +411,7 @@ public class SimplifiedOdometryRobotInches
 class ProportionalControlInches
 {
   double lastOutput;
+  double lastError;
   double gain;
   double accelLimit;
   double defaultOutputLimit;
@@ -462,6 +467,7 @@ class ProportionalControlInches
       output = Range.clip(output, -liveOutputLimit, liveOutputLimit);
       
       // Now limit rate of change of output (acceleration)
+      
       if ((output - lastOutput) > dV)
       {
         output = lastOutput + dV;
@@ -469,10 +475,15 @@ class ProportionalControlInches
       {
         output = lastOutput - dV;
       }
-      
     }
     
+    /*if (lastOutput != 0 && lastError == error)
+    {
+      output = lastOutput * 2;
+    }
+    */
     lastOutput = output;
+    lastError = error;
     cycleTime.reset();
     return output;
   }

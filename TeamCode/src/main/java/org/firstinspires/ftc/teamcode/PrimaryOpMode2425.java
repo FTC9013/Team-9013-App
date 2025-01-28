@@ -65,7 +65,7 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
     mast = new MastArm(hardwareMap, telemetry);
     driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
     distanceSensors = new DistanceSensors(hardwareMap, telemetry);
-    arm = new ArmControl(hardwareMap, telemetry);
+    arm = new ArmControl(this);
     blang = new Blang(hardwareMap);
     telemetry.addData(">", "Robot Ready. Press Play.");
     telemetry.addData(">", "Hit that sigma grind in your winter arc and do a 5x30 five minutes a day.");

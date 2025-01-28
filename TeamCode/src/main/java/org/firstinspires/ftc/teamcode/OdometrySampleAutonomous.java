@@ -23,6 +23,7 @@ public class OdometrySampleAutonomous extends LinearOpMode
   private SimplifiedOdometryRobotInches driveChassisOdom = new SimplifiedOdometryRobotInches(this);
   static final double DEFAULT_POWER = 0.8;
   static final double DEFAULT_HOLD_TIME = 0;
+  static final double DEFAULT_TIMEOUT = 4;
   
   @Override
   public void runOpMode()
@@ -94,17 +95,17 @@ public class OdometrySampleAutonomous extends LinearOpMode
   
   public void drive(double distanceCm)
   {
-    driveChassisOdom.drive(distanceCm, DEFAULT_POWER, DEFAULT_HOLD_TIME);
+    driveChassisOdom.drive(distanceCm, DEFAULT_POWER, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
   }
   
   public void strafe(double distanceCm)
   {
-    driveChassisOdom.strafe(distanceCm, DEFAULT_POWER, DEFAULT_HOLD_TIME);
+    driveChassisOdom.strafe(distanceCm, DEFAULT_POWER, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
   }
   
   public void turn(double degree)
   {
-    driveChassisOdom.turnTo(degree, DEFAULT_POWER, DEFAULT_HOLD_TIME);
+    driveChassisOdom.turnTo(degree, DEFAULT_POWER, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
   }
 }
 // im bigger and better and ill host the famous sumo reslting fight of tony and grayson
