@@ -1,49 +1,111 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Test Auto")
 
 public class ArmTest extends LinearOpMode
+
 {
-  public MecanumDriveChassis driveChassis;
+  public SimplifiedOdometryRobotInches driveChassis;
+  static final double DEFAULT_POWER = 0.8;
+  static final double DEFAULT_HOLD_TIME = 0;
+  static final double DEFAULT_TIMEOUT = 3;
+  private ElapsedTime runTimer = new ElapsedTime();
   
   @Override
   
   public void runOpMode()
   {
-    driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
     waitForStart();
+    
+    //testDrive(0.8, 0.03, 1, 0.5, 0.4);
+    testDrive(1, 0.03, 1, 0.5, 0.4);
+    testDrive(0.8, 0.03, 0.5, 0.5, 0.4);
+    
     //driveChassis.wheelTest(0.5, 50);
     //hi
-    waitForStart();
+    /*
     driveChassis.moveForward(30);
     telemetry.addLine("moving forward");
     telemetry.update();
-    driveChassis.moveBackward(20);
-    telemetry.addLine("moving backward");
-    telemetry.update();
-    driveChassis.turnRight();
-    telemetry.addLine("Turning right");
-    driveChassis.turnLeft();
-    telemetry.addLine("Turning left");
-    telemetry.update();
-    /*
-    driveChassis.moveForward(30);
-    telemetry.addLine("mobing forward");
-    telemetry.update();
     sleep(1500);
     driveChassis.moveBackward(30);
-    telemetry.addLine("mobing backword");
+    telemetry.addLine("moving backward");
     telemetry.update();
     sleep(1500);
     driveChassis.strafeLeft(40);
-    telemetry.addLine("strabing left");
+    telemetry.addLine("strafing left");
     telemetry.update();
     sleep(1500);
     driveChassis.strafeRight(40);
-    telemetry.addLine("strabing right");
+    telemetry.addLine("strafing right");
     telemetry.update();
     */
   }
+  
+  
+  public void testStrafe(double power, double gain, double accel, double tolerance, double deadband)
+  {
+    SimplifiedOdometryRobotInches.STRAFE_ACCEL = accel;
+    SimplifiedOdometryRobotInches.STRAFE_TOLERANCE = tolerance;
+    SimplifiedOdometryRobotInches.STRAFE_DEADBAND = deadband;
+    SimplifiedOdometryRobotInches.STRAFE_GAIN = gain;
+    driveChassis = new SimplifiedOdometryRobotInches(this);
+    driveChassis.initialize(false);
+    driveChassis.resetHeading();
+    telemetry.addData("power: ", power);
+    telemetry.addData("gain: ", gain);
+    telemetry.addData("accel: ", accel);
+    telemetry.addData("tolerance: ", tolerance);
+    telemetry.addData("deadband: ", deadband);
+    telemetry.update();
+    runTimer.reset();
+    driveChassis.strafe(90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.strafe(-90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.strafe(90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.strafe(-90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.strafe(90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.strafe(-90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.strafe(90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.strafe(-90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.strafe(90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.strafe(-90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    telemetry.addData("runtime: ", runTimer.seconds() / 10);
+    telemetry.update();
+    sleep(5000);
+  }
+  
+  public void testDrive(double power, double gain, double accel, double tolerance, double deadband)
+  {
+    SimplifiedOdometryRobotInches.DRIVE_ACCEL = accel;
+    SimplifiedOdometryRobotInches.DRIVE_TOLERANCE = tolerance;
+    SimplifiedOdometryRobotInches.DRIVE_DEADBAND = deadband;
+    SimplifiedOdometryRobotInches.DRIVE_GAIN = gain;
+    driveChassis = new SimplifiedOdometryRobotInches(this);
+    driveChassis.initialize(false);
+    driveChassis.resetHeading();
+    telemetry.addData("power: ", power);
+    telemetry.addData("gain: ", gain);
+    telemetry.addData("accel: ", accel);
+    telemetry.addData("tolerance: ", tolerance);
+    telemetry.addData("deadband: ", deadband);
+    telemetry.update();
+    runTimer.reset();
+    driveChassis.drive(90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.drive(-90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.drive(90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.drive(-90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.drive(90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.drive(-90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.drive(90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.drive(-90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.drive(90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.drive(-90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    telemetry.addData("runtime: ", runTimer.seconds() / 10);
+    telemetry.update();
+    sleep(5000);
+  }
 }
+

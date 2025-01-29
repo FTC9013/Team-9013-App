@@ -27,16 +27,16 @@ public class SimplifiedOdometryRobotInches
   private final boolean INVERT_DRIVE_ODOMETRY = true;       //  When driving FORWARD, the odometry value MUST increase.  If it does not, flip the value of this constant.
   private final boolean INVERT_STRAFE_ODOMETRY = false;     //  When strafing to the LEFT, the odometry value MUST increase.  If it does not, flip the value of this constant.
   
-  private static final double DRIVE_GAIN = 0.06;        // Strength of axial position control
-  private static final double DRIVE_ACCEL = 2.0;        // Acceleration limit.  Percent Power change per second.  1.0 = 0-100% power in 1 sec.
-  private static final double DRIVE_TOLERANCE = 0.5;    // Controller is is "inPosition" if position error is < +/- this amount
-  private static final double DRIVE_DEADBAND = 0.4;     // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
+  public static double DRIVE_GAIN = 0.06;        // Strength of axial position control
+  public static double DRIVE_ACCEL = 2.0;        // Acceleration limit.  Percent Power change per second.  1.0 = 0-100% power in 1 sec.
+  public static double DRIVE_TOLERANCE = 0.5;    // Controller is is "inPosition" if position error is < +/- this amount
+  public static double DRIVE_DEADBAND = 0.4;     // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
   private static final double DRIVE_MAX_AUTO = 1.0;     // "default" Maximum Axial power limit during autonomous
   
-  private static final double STRAFE_GAIN = 0.10;       // Strength of lateral position control
-  private static final double STRAFE_ACCEL = 1.5;       // Acceleration limit.  Percent Power change per second.  1.0 = 0-100% power in 1 sec.
-  private static final double STRAFE_TOLERANCE = 0.25;  // Controller is is "inPosition" if position error is < +/- this amount
-  private static final double STRAFE_DEADBAND = 0.2;    // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
+  public static double STRAFE_GAIN = 0.03;       // Strength of lateral position control
+  public static double STRAFE_ACCEL = 0.5;       // Acceleration limit.  Percent Power change per second.  1.0 = 0-100% power in 1 sec.
+  public static double STRAFE_TOLERANCE = 0.25;  // Controller is is "inPosition" if position error is < +/- this amount
+  public static double STRAFE_DEADBAND = 0.2;    // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
   private static final double STRAFE_MAX_AUTO = 1.0;    // "default" Maximum Lateral power limit during autonomous
   
   private static final double YAW_GAIN = 0.018;         // Strength of Yaw position control

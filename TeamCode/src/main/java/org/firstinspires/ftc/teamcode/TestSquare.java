@@ -27,16 +27,16 @@ public abstract class TestSquare extends LinearOpMode
   
     /*
     driveChassis.turnLeft();
-    telemetry.addLine("Turnin left");
+    telemetry.addLine("Turning left");
     telemetry.update();
     driveChassis.moveForward(20);
-    telemetry.addLine("mobing forward");
+    telemetry.addLine("moving forward");
     telemetry.update();
     driveChassis.turnLeft();
-    telemetry.addLine("Turnin left");
+    telemetry.addLine("Turning left");
     telemetry.update();
     driveChassis.moveForward(20);
-    telemetry.addLine("mobing forward");
+    telemetry.addLine("moving forward");
     telemetry.update();
     driveChassis.turnLeft();
     telemetry.addLine("Turnin left");

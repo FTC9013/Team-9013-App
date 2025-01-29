@@ -314,4 +314,27 @@ public class ArmControl
     opMode.sleep(100);
     stop();
   }
+  
+  public void waitUntilExtended()
+  {
+    runtime.reset();
+    while (extensionMotor.isBusy() && runtime.seconds() < 3)
+    {
+      telemetry.addData("extension position", extensionMotor.getCurrentPosition());
+      telemetry.update();
+      //look into the void of nothingness and dispare
+    }
+    extensionMotor.setPower(0);
+  }
+  
+  public void startExtendingTo(int distance)
+  {
+    telemetry.addLine("Extending the arm");
+    telemetry.update();
+    extensionMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    extensionMotor.setTargetPosition(distance);
+    extensionMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    extensionMotor.setPower(EXTENSION_SPEED);
+  }
 }
