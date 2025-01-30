@@ -19,7 +19,7 @@ public class ArmControl
   public TouchSensor topTouchSensor;
   static final double ARM_SPEED = 1.0;
   static final double SLOW_ARM_SPEED = 0.4;
-  static final double EXTENSION_SPEED = 1;
+  static final double EXTENSION_SPEED = 0.8;
   static final int MAX_EXTENSION = 2500;
   private final ElapsedTime runtime = new ElapsedTime();
   private boolean movingUp = false;
@@ -336,5 +336,14 @@ public class ArmControl
     extensionMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     extensionMotor.setPower(EXTENSION_SPEED);
+  }
+  
+  public void waitTillExtended()
+  {
+    double lastTick = extensionMotor.getCurrentPosition();
+    while (extensionMotor.getCurrentPosition() != lastTick)
+    {
+    
+    }
   }
 }

@@ -11,7 +11,7 @@ public class ArmTest extends LinearOpMode
   public SimplifiedOdometryRobotInches driveChassis;
   static final double DEFAULT_POWER = 0.8;
   static final double DEFAULT_HOLD_TIME = 0;
-  static final double DEFAULT_TIMEOUT = 3;
+  static final double DEFAULT_TIMEOUT = 4;
   private ElapsedTime runTimer = new ElapsedTime();
   
   @Override
@@ -21,8 +21,13 @@ public class ArmTest extends LinearOpMode
     waitForStart();
     
     //testDrive(0.8, 0.03, 1, 0.5, 0.4);
-    testDrive(1, 0.03, 1, 0.5, 0.4);
-    testDrive(0.8, 0.03, 0.5, 0.5, 0.4);
+    //testStrafe(1, 0.03, 1, 0.25, 0.2);
+    //testStrafe(1, 0.03, 1, 0.2, 0.15);
+    testStrafe(0.8, 0.03, 1, 0.25, 0.2);
+    testStrafe(0.8, 0.03, 0.5, 0.25, 0.2);
+    testStrafe(0.8, 0.03, 2, 0.25, 0.2);
+    testStrafe(0.8, 0.03, 5, 0.25, 0.2);
+    //testDrive(0.8, 0.03, 0.5, 0.5, 0.4);
     
     //driveChassis.wheelTest(0.5, 50);
     //hi
@@ -62,16 +67,16 @@ public class ArmTest extends LinearOpMode
     telemetry.addData("deadband: ", deadband);
     telemetry.update();
     runTimer.reset();
-    driveChassis.strafe(90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
-    driveChassis.strafe(-90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
-    driveChassis.strafe(90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
-    driveChassis.strafe(-90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
-    driveChassis.strafe(90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
-    driveChassis.strafe(-90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
-    driveChassis.strafe(90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
-    driveChassis.strafe(-90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
-    driveChassis.strafe(90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
-    driveChassis.strafe(-90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.strafe(95, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.strafe(-95, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.strafe(95, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.strafe(-95, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.strafe(95, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.strafe(-95, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.strafe(95, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.strafe(-95, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.strafe(95, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.strafe(-95, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
     telemetry.addData("runtime: ", runTimer.seconds() / 10);
     telemetry.update();
     sleep(5000);
