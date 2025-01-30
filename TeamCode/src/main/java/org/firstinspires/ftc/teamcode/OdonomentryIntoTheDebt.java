@@ -155,6 +155,7 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     strafe(21, 1);
     arm.openGripper();
     arm.moveArmTo(3700);
+    sleep(500);
     //arm.moveArmTo(4300);
     telemetry.addLine("sample is drop");
     telemetry.update();
