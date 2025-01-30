@@ -19,7 +19,7 @@ public class ArmControl
   public TouchSensor topTouchSensor;
   static final double ARM_SPEED = 1.0;
   static final double SLOW_ARM_SPEED = 0.4;
-  static final double EXTENSION_SPEED = 0.8;
+  static final double EXTENSION_SPEED = 0.5;
   static final int MAX_EXTENSION = 2500;
   private final ElapsedTime runtime = new ElapsedTime();
   private boolean movingUp = false;
@@ -329,13 +329,18 @@ public class ArmControl
   
   public void startExtendingTo(int distance)
   {
-    telemetry.addLine("Extending the arm");
+    startExtendingTo(distance, EXTENSION_SPEED);
+  }
+  
+  public void startExtendingTo(int distance, double power)
+  {
+    telemetry.addLine("Extending the arm  :D");
     telemetry.update();
     extensionMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     extensionMotor.setTargetPosition(distance);
     extensionMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    extensionMotor.setPower(EXTENSION_SPEED);
+    extensionMotor.setPower(power);
   }
   
   public void waitTillExtended()

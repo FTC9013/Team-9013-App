@@ -81,9 +81,9 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
   
   public void initialize()
   {
-    arm.startExtendingTo(INITIAL_EXTENSION);
+    arm.startExtendingTo(INITIAL_EXTENSION, 1);
     arm.resetAuto();
-    sleep(500);
+    sleep(100);
     arm.retractAuto();
     arm.startMovingTo(-1650);
   }
@@ -95,6 +95,7 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     telemetry.addLine("sigma sigma boy");
     //arm.extendForTime(0.4);
     arm.openGripper();
+    sleep(500);
     arm.moveArmTo(-1500);
     //sleep(500);
     drive(-45);
@@ -111,21 +112,20 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
   
   public void grabAndDropSample()
   {
-    arm.reset();
     arm.closeGripper();
+    arm.reset();
     sleep(700);
     arm.startMovingTo(4300);
+    arm.startExtendingTo(1900);
     telemetry.addLine("Turning");
     telemetry.update();
     turn(90, 2);
     telemetry.addLine("Strafing");
     telemetry.update();
     goAwayFromLeftWall(15);
-    arm.startExtendingTo(2000);
     drive(52.5);
-    arm.moveArmTo(3700);
     arm.openGripper();
-    sleep(700);
+    arm.moveArmTo(3700);
     arm.moveArmTo(4000);
     arm.retractAuto();
     telemetry.addLine("sample is drop");
@@ -149,16 +149,26 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     arm.closeGripper();
     sleep(575);
     arm.moveArmTo(4100);
+    arm.startExtendingTo(1900);
     turn(90, 2);
-    arm.startExtendingTo(2000);
     drive(29, 1);
     strafe(21, 1);
-    arm.moveArmTo(3700);
     arm.openGripper();
-    sleep(700);
+    arm.moveArmTo(3700);
     //arm.moveArmTo(4300);
     telemetry.addLine("sample is drop");
     telemetry.update();
+    
+  }
+  
+  public void afterSecond()
+  {
+    arm.moveArmTo(3900);
+    strafe(-20);
+    turn(0, 2);
+    arm.moveArmTo(50);
+    arm.openGripper();
+    sleep(575);
   }
   
   public void touchBar()

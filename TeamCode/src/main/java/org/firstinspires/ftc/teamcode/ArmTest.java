@@ -13,20 +13,27 @@ public class ArmTest extends LinearOpMode
   static final double DEFAULT_HOLD_TIME = 0;
   static final double DEFAULT_TIMEOUT = 4;
   private ElapsedTime runTimer = new ElapsedTime();
+  public ArmControl arm;
   
   @Override
   
   public void runOpMode()
   {
     waitForStart();
+    arm = new ArmControl(this);
+    extensionTest(1885);
+    extensionTest(1890);
+    extensionTest(1895);
+    extensionTest(1900);
+    extensionTest(1905);
     
     //testDrive(0.8, 0.03, 1, 0.5, 0.4);
     //testStrafe(1, 0.03, 1, 0.25, 0.2);
     //testStrafe(1, 0.03, 1, 0.2, 0.15);
-    testStrafe(0.8, 0.03, 1, 0.25, 0.2);
-    testStrafe(0.8, 0.03, 0.5, 0.25, 0.2);
-    testStrafe(0.8, 0.03, 2, 0.25, 0.2);
-    testStrafe(0.8, 0.03, 5, 0.25, 0.2);
+    //testStrafe(0.8, 0.03, 1, 0.25, 0.2);
+    //testStrafe(0.8, 0.03, 0.5, 0.25, 0.2);
+    //testStrafe(0.8, 0.03, 2, 0.25, 0.2);
+    //testStrafe(0.8, 0.03, 5, 0.25, 0.2);
     //testDrive(0.8, 0.03, 0.5, 0.5, 0.4);
     
     //driveChassis.wheelTest(0.5, 50);
@@ -110,6 +117,15 @@ public class ArmTest extends LinearOpMode
     driveChassis.drive(-90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
     telemetry.addData("runtime: ", runTimer.seconds() / 10);
     telemetry.update();
+    sleep(5000);
+  }
+  
+  public void extensionTest(int extension)
+  {
+    telemetry.addData("current extension", extension);
+    telemetry.update();
+    arm.extendTo(extension);
+    arm.retractAuto();
     sleep(5000);
   }
 }
