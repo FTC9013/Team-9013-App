@@ -21,11 +21,19 @@ public class ArmTest extends LinearOpMode
   {
     waitForStart();
     arm = new ArmControl(this);
-    extensionTest(1885);
+    
+    testTurn(1, 0.018, 3, 1, 0.25);
+    testTurn(0.8, 0.018, 3, 1, 0.25);
+    testTurn(0.8, 0.018, 1.5, 1, 0.25);
+    testTurn(0.6, 0.018, 3, 1, 0.25);
+    testTurn(0.6, 0.018, 1.5, 1, 0.25);
+    /*extensionTest(1885);
     extensionTest(1890);
     extensionTest(1895);
     extensionTest(1900);
     extensionTest(1905);
+    */
+    
     
     //testDrive(0.8, 0.03, 1, 0.5, 0.4);
     //testStrafe(1, 0.03, 1, 0.25, 0.2);
@@ -57,6 +65,35 @@ public class ArmTest extends LinearOpMode
     */
   }
   
+  public void testTurn(double power, double gain, double accel, double tolerance, double deadband)
+  {
+    SimplifiedOdometryRobotInches.YAW_ACCEL = accel;
+    SimplifiedOdometryRobotInches.YAW_TOLERANCE = tolerance;
+    SimplifiedOdometryRobotInches.YAW_DEADBAND = deadband;
+    SimplifiedOdometryRobotInches.YAW_GAIN = gain;
+    
+    driveChassis = new SimplifiedOdometryRobotInches(this);
+    driveChassis.initialize(false);
+    driveChassis.resetHeading();
+    telemetry.addData("power: ", power);
+    telemetry.addData("gain: ", gain);
+    telemetry.addData("accel: ", accel);
+    telemetry.addData("tolerance: ", tolerance);
+    telemetry.addData("deadband: ", deadband);
+    telemetry.update();
+    runTimer.reset();
+    driveChassis.turnTo(90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.turnTo(0, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.turnTo(90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.turnTo(0, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.turnTo(90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.turnTo(0, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.turnTo(90, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    driveChassis.turnTo(0, power, DEFAULT_HOLD_TIME, DEFAULT_TIMEOUT);
+    telemetry.addData("runtime: ", runTimer.seconds() / 8);
+    telemetry.update();
+    sleep(5000);
+  }
   
   public void testStrafe(double power, double gain, double accel, double tolerance, double deadband)
   {

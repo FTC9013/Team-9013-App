@@ -80,6 +80,10 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
     //2 driver controls:
     while (opModeIsActive())
     {
+      if (gamepad2.dpad_right)
+      {
+        arm.resetTelop();
+      }
       if (gamepad2.dpad_up)
       {
         mast.mastUp();

@@ -11,7 +11,7 @@ public abstract class OdonomentryAutonomousMain extends OdonomentryIntoTheDebt
     strafeToBasket();
     grabAndDropSample();
     secondSample();
-    //afterSecond();
+    afterSecond();
     //touchBar();
     //parkBeforeBackWall();
   }

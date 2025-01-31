@@ -74,6 +74,8 @@ public class ArmControl
   {
     armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    extensionMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    extensionMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
   }
   
   public void resetAuto()
@@ -249,6 +251,10 @@ public class ArmControl
       telemetry.addLine("Estending with lck");
       extensionMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
       extensionMotor.setPower(EXTENSION_SPEED);
+    } else
+    {
+      telemetry.addData("Im no extend :(, arm is at: ", extensionMotor.getCurrentPosition());
+      
     }
   }
   

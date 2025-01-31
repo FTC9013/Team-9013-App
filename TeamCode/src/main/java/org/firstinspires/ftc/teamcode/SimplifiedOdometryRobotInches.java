@@ -39,10 +39,10 @@ public class SimplifiedOdometryRobotInches
   public static double STRAFE_DEADBAND = 0.2;    // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
   private static final double STRAFE_MAX_AUTO = 0.8;    // "default" Maximum Lateral power limit during autonomous
   
-  private static final double YAW_GAIN = 0.018;         // Strength of Yaw position control
-  private static final double YAW_ACCEL = 3.0;          // Acceleration limit.  Percent Power change per second.  1.0 = 0-100% power in 1 sec.
-  private static final double YAW_TOLERANCE = 1.0;      // Controller is is "inPosition" if position error is < +/- this amount
-  private static final double YAW_DEADBAND = 0.25;      // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
+  public static double YAW_GAIN = 0.018;         // Strength of Yaw position control
+  public static double YAW_ACCEL = 3.0;          // Acceleration limit.  Percent Power change per second.  1.0 = 0-100% power in 1 sec.
+  public static double YAW_TOLERANCE = 1.0;      // Controller is is "inPosition" if position error is < +/- this amount
+  public static double YAW_DEADBAND = 0.25;      // Error less than this causes zero output.  Must be smaller than DRIVE_TOLERANCE
   private static final double YAW_MAX_AUTO = 0.6;       // "default" Maximum Yaw power limit during autonomous
   //private static final double MIN_MOTOR_SPEED = 0.08;
   // Public Members
