@@ -246,6 +246,11 @@ public class ArmControl
   
   public void extendLock()
   {
+    if (extensionMotor.getCurrentPosition() > 1750)
+    {
+      telemetry.addLine("arm to extender");
+      return;
+    }
     if (armMotor.getCurrentPosition() > 0)
     {
       telemetry.addLine("Estending with lck");
@@ -260,6 +265,12 @@ public class ArmControl
   
   public void lower(boolean slow)
   {
+    if (extensionMotor.getCurrentPosition() > 1200 && armMotor.getCurrentPosition() < 1800)
+    {
+      telemetry.addLine("armo to hight and extend");
+      return;
+      
+    }
     if (!bottomTouchSensor.isPressed() && slow)
     {
       armMotor.setPower(-SLOW_ARM_SPEED);
@@ -272,6 +283,7 @@ public class ArmControl
     {
       telemetry.addLine("Stopping the arm");
       stop();
+      
     }
     telemetry.addData("Arm Position: ", armMotor.getCurrentPosition());
   }

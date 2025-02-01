@@ -98,7 +98,7 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     arm.openGripper();
     sleep(500);
     //sleep(500);
-    drive(-45);
+    drive(-45.5);
   }
   
   
@@ -107,7 +107,7 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     telemetry.addLine("Strafing left");
     telemetry.update();
     arm.startMovingTo(-3800);
-    strafe(96, 5);
+    strafe(93, 5);
   }
   
   public void grabAndDropSample()
@@ -116,7 +116,7 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     arm.reset();
     sleep(200);
     arm.startMovingTo(4300);
-    arm.startExtendingTo(1900);
+    arm.startExtendingTo(1850);
     telemetry.addLine("Turning");
     telemetry.update();
     turn(90, 2);
@@ -125,7 +125,7 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     goAwayFromLeftWall(15);
     drive(52);
     arm.openGripper();
-    arm.moveArmTo(3700);
+    arm.moveArmTo(3600);
     sleep(300);
     arm.moveArmTo(4000);
     arm.retractAuto();
@@ -139,10 +139,10 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
   {
     telemetry.addLine("strafing");
     telemetry.update();
-    strafe(-19, 1);
+    strafe(-24, 1);
     telemetry.addLine("driving");
     telemetry.update();
-    drive(-30, 1);
+    drive(-29, 1);
     telemetry.addLine("turning");
     telemetry.update();
     turn(0, 3.25);
@@ -150,12 +150,12 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     arm.closeGripper();
     sleep(575);
     arm.moveArmTo(4100);
-    arm.startExtendingTo(1900);
+    arm.startExtendingTo(1850);
     turn(90, 2);
-    drive(23, 1);
-    strafe(21, 1);
+    drive(24, 1);
+    strafe(26 , 1);
     arm.openGripper();
-    arm.moveArmTo(3700);
+    arm.moveArmTo(3600);
     sleep(500);
     //arm.moveArmTo(4300);
     telemetry.addLine("sample is drop");
@@ -165,12 +165,17 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
   
   public void afterSecond()
   {
-    arm.moveArmTo(3900);
+    arm.moveArmTo(3500);
     drive(-28);
     arm.retractAuto();
     arm.startMovingTo(1800);
     turn(-45, 2);
-    drive(75);
+    drive(75.25);
+    turn(-50);
+  }
+  public void tripleSample()
+  {
+    
   }
   
   public void touchBar()
@@ -180,11 +185,11 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     arm.retractAuto();
     turn(0);
     
-    arm.startMovingTo(STARTING_POSITION - 350);
+    arm.startMovingTo(STARTING_POSITION - 450);
     drive(95);
     turn(-90);
     
-    drive(distanceSensors.frontDistance() - 2);
+    drive(distanceSensors.frontDistance() - 1);
     
     //6C 69 67 6D 61 SPECIAL VALUES HEX TRANSLATION
   }

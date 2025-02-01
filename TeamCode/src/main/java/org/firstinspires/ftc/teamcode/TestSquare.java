@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+@Disabled
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "go box")
 // ticks per centepeder = 17.7914
 public abstract class TestSquare extends LinearOpMode

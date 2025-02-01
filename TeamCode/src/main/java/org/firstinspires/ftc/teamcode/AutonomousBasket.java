@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
+@Disabled
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Super seven")
 
 public class AutonomousBasket extends IntoTheDebt
