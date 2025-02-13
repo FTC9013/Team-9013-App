@@ -26,7 +26,7 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
   static final int DROP_POSITION = 3350;
   static final int MAX_EXTENSION = 2400;
   static final int MEDIUM_ARM = 2000;
-  static final int INITIAL_EXTENSION = 2600;
+  static final int INITIAL_EXTENSION = 2700;
   
   
   // a timer for the various automation activities.
@@ -148,12 +148,12 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
     turn(0, 3.25);
     arm.moveArmTo(0);
     arm.closeGripper();
-    sleep(575);
+    sleep(1500);
     arm.moveArmTo(4100);
     arm.startExtendingTo(1850);
     turn(90, 2);
-    drive(24, 1);
-    strafe(26 , 1);
+    drive(25, 1);
+    strafe(26, 1);
     arm.openGripper();
     arm.moveArmTo(3600);
     sleep(500);
@@ -164,18 +164,37 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
   }
   
   public void afterSecond()
+  
   {
-    arm.moveArmTo(3500);
-    drive(-28);
+    arm.moveArmTo(3800);
+    drive(-30);
     arm.retractAuto();
-    arm.startMovingTo(1800);
+    arm.startMovingTo(1780);
     turn(-45, 2);
     drive(75.25);
     turn(-50);
   }
+  
   public void tripleSample()
   {
-    
+    drive(24.5);
+    strafe(48);
+    arm.startExtendingTo(1850);
+    turn(90, 2);
+    goAwayFromLeftWall(15);
+    drive(52);
+    arm.openGripper();
+    arm.moveArmTo(3600);
+    sleep(300);
+    arm.moveArmTo(4000);
+    arm.retractAuto();
+    telemetry.addLine("sample is drop");
+    telemetry.update();
+    strafe(-53);
+    drive(-24.5);
+    turn(0, 2);
+    grabAndDropSample();
+    secondSample();
   }
   
   public void touchBar()
@@ -225,4 +244,4 @@ public abstract class OdonomentryIntoTheDebt extends LinearOpMode
   }
 }
 
-
+//we the sigmas
