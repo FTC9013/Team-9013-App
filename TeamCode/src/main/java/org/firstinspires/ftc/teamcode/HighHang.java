@@ -31,7 +31,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -47,61 +46,41 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-public class MastArm
+public class HighHang
 {
   public DcMotor driveMotor;
   private final Telemetry telemetry;
-  public TouchSensor bottomTouchSensor;
-  public TouchSensor topTouchSensor;
   
-  MastArm(HardwareMap hardwareMap, Telemetry theTelemetry)
+  HighHang(HardwareMap hardwareMap, Telemetry theTelemetry)
   {
-    
-    telemetry = theTelemetry;
     double drive;
+    telemetry = theTelemetry;
     
-    bottomTouchSensor = hardwareMap.get(TouchSensor.class, "bottom mast limit");
-    topTouchSensor = hardwareMap.get(TouchSensor.class, "top mast limit");
-    // Define and Initialize Motors
-    driveMotor = hardwareMap.get(DcMotor.class, "mast");
+    driveMotor = hardwareMap.get(DcMotor.class, "highMast");
     driveMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     driveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-    // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
-    // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-    driveMotor.setDirection(DcMotor.Direction.REVERSE);
-    
   }
+
+
+// To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
+// Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
+// Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
   
   public void mastUp()
   {
-    if (!topTouchSensor.isPressed())
-    {
-      driveMotor.setPower(0.75);
-      telemetry.addLine("Pulling up ;- )");
-    } else
-    {
-      telemetry.addLine("Mast stopped :) Due to Touch Sensor");
-      mastStop();
-    }
+    driveMotor.setPower(0.75);
+    telemetry.addLine("Raising high mast");
   }
   
   public void mastDown()
   {
-    if (!bottomTouchSensor.isPressed())
-    {
-      driveMotor.setPower(-0.75);
-      telemetry.addLine("Pulling down ;- )");
-    } else
-    {
-      telemetry.addLine("Mast stopped :) Due to Touch Sensor");
-      driveMotor.setPower(-0.3);
-    }
+    driveMotor.setPower(-0.75);
+    telemetry.addLine("Lowering high mast");
   }
   
   public void mastStop()
   {
-    telemetry.addData("Touch Sensor: ", bottomTouchSensor.isPressed());
+    telemetry.addLine("High Mast stopping");
     driveMotor.setPower(0);
   }
 }

@@ -67,6 +67,7 @@ public class SimplifiedOdometryRobotInches
   private DcMotor driveEncoder;       //  the Axial (front/back) Odometry Module (may overlap with motor, or may not)
   private DcMotor strafeEncoder;      //  the Lateral (left/right) Odometry Module (may overlap with motor, or may not)
   
+  
   private LinearOpMode myOpMode;
   private IMU imu;
   private ElapsedTime holdTimer = new ElapsedTime();  // User for any motion requiring a hold time or timeout.
@@ -101,16 +102,15 @@ public class SimplifiedOdometryRobotInches
     
     
     // !!!  Set the drive direction to ensure positive power drives each wheel forward.
-    leftFrontDrive = setupDriveMotor("lFront", DcMotor.Direction.REVERSE);
-    rightFrontDrive = setupDriveMotor("rFront", DcMotor.Direction.FORWARD);
-    leftBackDrive = setupDriveMotor("lRear", DcMotor.Direction.REVERSE);
+    leftFrontDrive = setupDriveMotor("lFront + axial", DcMotor.Direction.REVERSE);
+    rightFrontDrive = setupDriveMotor("rFront + rLateral", DcMotor.Direction.FORWARD);
+    leftBackDrive = setupDriveMotor("lRear + lLateral", DcMotor.Direction.REVERSE);
     rightBackDrive = setupDriveMotor("rRear", DcMotor.Direction.FORWARD);
     imu = myOpMode.hardwareMap.get(IMU.class, "imu");
     
     //  Connect to the encoder channels using the name of that channel.
-    driveEncoder = myOpMode.hardwareMap.get(DcMotor.class, "mast + axial");
-    strafeEncoder = myOpMode.hardwareMap.get(DcMotor.class, "lateral");
-    
+    driveEncoder = myOpMode.hardwareMap.get(DcMotor.class, "rFront + rLateral");
+    strafeEncoder = myOpMode.hardwareMap.get(DcMotor.class, "lFront + axial");
     // Set all hubs to use the AUTO Bulk Caching mode for faster encoder reads
     List<LynxModule> allHubs = myOpMode.hardwareMap.getAll(LynxModule.class);
     for (LynxModule module : allHubs)
@@ -143,9 +143,10 @@ public class SimplifiedOdometryRobotInches
     aMotor.setDirection(direction);
     aMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);  // Reset Encoders to zero
     aMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    aMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);  // Requires motor encoder cables to be hooked up.
+    aMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);  // Requires motor encoder cables to be hooked up.
     return aMotor;
   }
+  //sigma boy + good boooooooooy = good
   
   /**
    * Read all input devices to determine the robot's motion
@@ -534,6 +535,8 @@ class ProportionalControlInches
   }
 }
 
-// their in the wals
-// their in the wals
-// their in the wals
+// th31r 1n th3 w@ls
+// th31r 1n th3 w@ls
+// th31r 1n th3 w@ls
+// we are the sigmas and nothing can stop us or put us down. We are the sigma 9013 Matrix!!!!!
+//no im real smega segmea sigmea segma simga sigma sorry i had to keep correcting my spelling

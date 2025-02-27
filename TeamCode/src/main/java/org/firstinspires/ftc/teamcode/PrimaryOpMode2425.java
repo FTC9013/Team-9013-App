@@ -26,7 +26,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
+//Unable to find hardware device "mast + axial"
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -49,6 +49,7 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
   
   /* Declare OpMode members. */
   public MastArm mast;
+  public HighHang highMast;
   public MecanumDriveChassis driveChassis;
   public DistanceSensors distanceSensors;
   public ArmControl arm;
@@ -63,12 +64,12 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
   public void runOpMode()
   {
     mast = new MastArm(hardwareMap, telemetry);
+    highMast = new HighHang(hardwareMap, telemetry);
     driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
     distanceSensors = new DistanceSensors(hardwareMap, telemetry);
     arm = new ArmControl(this);
     blang = new Blang(hardwareMap);
     telemetry.addData(">", "Robot Ready. Press Play.");
-    telemetry.addData(">", "Hit that sigma grind in your winter arc and do a 5x30 five minutes a day.");
     telemetry.update();
     turnColor();
     
@@ -133,6 +134,16 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
       if (gamepad1.left_trigger > 0.75 && gamepad1.right_trigger > 0.75)
       {
         //hangSpecimen();
+      }
+      if (gamepad1.right_trigger > 0)
+      {
+        highMast.mastUp();
+      } else if (gamepad1.right_bumper)
+      {
+        highMast.mastDown();
+      } else
+      {
+        highMast.mastStop();
       }
       
       telemetry.addData("LStickY", gamepad1.left_stick_y * -1);
