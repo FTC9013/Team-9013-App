@@ -1,10 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Disabled
+
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Test Auto")
 
 public class ArmTest extends LinearOpMode
@@ -23,8 +22,15 @@ public class ArmTest extends LinearOpMode
   {
     waitForStart();
     arm = new ArmControl(this);
+    driveChassis = new SimplifiedOdometryRobotInches(this);
+    driveChassis.initialize(true);
+    driveChassis.resetHeading();
+    driveChassis.drive(100, DEFAULT_POWER, DEFAULT_HOLD_TIME, 7);
     
-    testTurn(1, 0.018, 3, 1, 0.25);
+    
+    
+    
+    /*testTurn(1, 0.018, 3, 1, 0.25);
     testTurn(0.8, 0.018, 3, 1, 0.25);
     testTurn(0.8, 0.018, 1.5, 1, 0.25);
     testTurn(0.6, 0.018, 3, 1, 0.25);

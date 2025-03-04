@@ -24,7 +24,7 @@ public class SimplifiedOdometryRobotInches
 {
   // Adjust these numbers to suit your robot.
   private final double ODOM_INCHES_PER_COUNT = 0.002969;    //  GoBilda Odometry Pod (1/226.8)
-  private final boolean INVERT_DRIVE_ODOMETRY = true;       //  When driving FORWARD, the odometry value MUST increase.  If it does not, flip the value of this constant.
+  private final boolean INVERT_DRIVE_ODOMETRY = false;       //  When driving FORWARD, the odometry value MUST increase.  If it does not, flip the value of this constant.
   private final boolean INVERT_STRAFE_ODOMETRY = false;     //  When strafing to the LEFT, the odometry value MUST increase.  If it does not, flip the value of this constant.
   private static double TICKS_PER_REV = 2000;
   
@@ -110,7 +110,7 @@ public class SimplifiedOdometryRobotInches
     
     //  Connect to the encoder channels using the name of that channel.
     driveEncoder = myOpMode.hardwareMap.get(DcMotor.class, "rFront + rLateral");
-    strafeEncoder = myOpMode.hardwareMap.get(DcMotor.class, "lFront + axial");
+    strafeEncoder = myOpMode.hardwareMap.get(DcMotor.class, "lRear + lLateral");
     // Set all hubs to use the AUTO Bulk Caching mode for faster encoder reads
     List<LynxModule> allHubs = myOpMode.hardwareMap.getAll(LynxModule.class);
     for (LynxModule module : allHubs)
