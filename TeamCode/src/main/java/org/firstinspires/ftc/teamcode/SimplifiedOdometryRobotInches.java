@@ -110,7 +110,7 @@ public class SimplifiedOdometryRobotInches
     
     //  Connect to the encoder channels using the name of that channel.
     driveEncoder = myOpMode.hardwareMap.get(DcMotor.class, "rFront + rLateral");
-    strafeEncoder = myOpMode.hardwareMap.get(DcMotor.class, "lRear + lLateral");
+    strafeEncoder = myOpMode.hardwareMap.get(DcMotor.class, "lFront + axial");
     // Set all hubs to use the AUTO Bulk Caching mode for faster encoder reads
     List<LynxModule> allHubs = myOpMode.hardwareMap.getAll(LynxModule.class);
     for (LynxModule module : allHubs)
