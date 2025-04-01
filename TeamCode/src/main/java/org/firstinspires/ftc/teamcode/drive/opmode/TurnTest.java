@@ -11,17 +11,19 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  */
 @Config
 @Autonomous(group = "drive")
-public class TurnTest extends LinearOpMode {
-    public static double ANGLE = 90; // deg
-
-    @Override
-    public void runOpMode() throws InterruptedException {
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-
-        waitForStart();
-
-        if (isStopRequested()) return;
-
-        drive.turn(Math.toRadians(ANGLE));
-    }
+public class TurnTest extends LinearOpMode
+{
+  public static double ANGLE = 90; // deg
+  
+  @Override
+  public void runOpMode() throws InterruptedException
+  {
+    SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap, telemetry);
+    
+    waitForStart();
+    
+    if (isStopRequested()) return;
+    
+    drive.turn(Math.toRadians(ANGLE));
+  }
 }
