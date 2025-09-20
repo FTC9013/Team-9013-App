@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+import androidx.annotation.NonNull;
+
 
 public class GripperControl
 {
@@ -12,7 +14,7 @@ public class GripperControl
   private final DcMotor gripperMotor;
   private final Telemetry telemetry;
   
-  GripperControl(HardwareMap hardwareMap, Telemetry theTelemetry)
+  GripperControl(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry)
   {
     telemetry = theTelemetry;
     // Initialize the hardware variables
