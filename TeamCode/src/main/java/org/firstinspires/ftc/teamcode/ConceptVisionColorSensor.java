@@ -62,6 +62,8 @@ public class ConceptVisionColorSensor
 {
   private final Telemetry telemetry;
   private final PredominantColorProcessor colorSensor;
+  private String color;
+  //private Swatch returnResult;
   
   ConceptVisionColorSensor(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry)
   {
@@ -70,12 +72,12 @@ public class ConceptVisionColorSensor
       .setRoi(ImageRegion.asUnityCenterCoordinates(-0.1, 0.1, 0.1, -0.1))
       .setSwatches(
         PredominantColorProcessor.Swatch.ARTIFACT_GREEN,
-        PredominantColorProcessor.Swatch.ARTIFACT_PURPLE,
-        PredominantColorProcessor.Swatch.RED,
-        PredominantColorProcessor.Swatch.BLUE,
-        PredominantColorProcessor.Swatch.YELLOW,
-        PredominantColorProcessor.Swatch.BLACK,
-        PredominantColorProcessor.Swatch.WHITE)
+        PredominantColorProcessor.Swatch.ARTIFACT_PURPLE)
+//        PredominantColorProcessor.Swatch.RED,
+//        PredominantColorProcessor.Swatch.BLUE,
+//        PredominantColorProcessor.Swatch.YELLOW,
+//        PredominantColorProcessor.Swatch.BLACK,
+//        PredominantColorProcessor.Swatch.WHITE)
       .build();
     VisionPortal portal = new VisionPortal.Builder()
       .addProcessor(colorSensor)
@@ -86,7 +88,7 @@ public class ConceptVisionColorSensor
     telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
   }
   
-  public void colorSensing()
+  public String colorSensing()
   {
     telemetry.addLine("Preview on/off: 3 dots, Camera Stream\n");
     // Request the most recent color analysis.  This will return the closest matching
@@ -109,9 +111,14 @@ public class ConceptVisionColorSensor
       result.RGB[0], result.RGB[1], result.RGB[2]));
     telemetry.addLine(String.format("HSV   (%3d, %3d, %3d)",
       result.HSV[0], result.HSV[1], result.HSV[2]));
-    telemetry.addLine(String.format("YCrCb (%3d, %3d, %3d)",
+    telemetry.addLine(String.format("YCrCb   (%3d, %3d, %3d)",
       result.YCrCb[0], result.YCrCb[1], result.YCrCb[2]));
+    Object obj = result.closestSwatch;
+    color = obj.toString();
+    
     telemetry.update();
+    return color;
+    //return returnResult;
   }
   /*
    * Build a vision portal to run the Color Sensor process.
