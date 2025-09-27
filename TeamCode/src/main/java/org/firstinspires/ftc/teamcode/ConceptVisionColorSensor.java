@@ -89,7 +89,7 @@ public class ConceptVisionColorSensor
     telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
   }
   
-  public String colorSensing()
+  public PredominantColorProcessor.Swatch colorSensing()
   {
     telemetry.addLine("Preview on/off: 3 dots, Camera Stream\n");
     // Request the most recent color analysis.  This will return the closest matching
@@ -114,11 +114,8 @@ public class ConceptVisionColorSensor
       result.HSV[0], result.HSV[1], result.HSV[2]));
     telemetry.addLine(String.format("YCrCb   (%3d, %3d, %3d)",
       result.YCrCb[0], result.YCrCb[1], result.YCrCb[2]));
-    Object obj = result.closestSwatch;
-    color = obj.toString();
     
-    telemetry.update();
-    return color;
+    return result.closestSwatch;
     //return returnResult;
   }
   /*

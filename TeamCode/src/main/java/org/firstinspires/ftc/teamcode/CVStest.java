@@ -25,6 +25,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.vision.opencv.PredominantColorProcessor;
+
 /*
  * This OpMode illustrates how to use a video source (camera) as a color sensor
  *
@@ -64,8 +66,19 @@ public class CVStest extends LinearOpMode
     // WARNING:  To view the stream preview on the Driver Station, this code runs in INIT mode.
     while (opModeIsActive() || opModeInInit())
     {
-      telemetry.addLine(conceptVisionColorSensor.colorSensing());
+      
+      if (conceptVisionColorSensor.colorSensing() == PredominantColorProcessor.Swatch.ARTIFACT_PURPLE)
+      {
+        telemetry.addLine("Sensed Purple");
+      } else if (conceptVisionColorSensor.colorSensing() == PredominantColorProcessor.Swatch.ARTIFACT_GREEN)
+      {
+        telemetry.addLine("Sensed Green");
+      } else
+      {
+        telemetry.addLine("Sensed Black");
+      }
       telemetry.update();
+      sleep(2000);
     }
   }
 }
