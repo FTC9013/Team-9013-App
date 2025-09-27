@@ -54,14 +54,16 @@ import org.firstinspires.ftc.vision.opencv.PredominantColorProcessor;
  */
 
 //@Disabled
-@TeleOp(name = "Concept: Vision Color-Sensor", group = "Linear Opmode")
+@TeleOp(name = "CVS + Apriltag", group = "Linear Opmode")
 public class CVStest extends LinearOpMode
 {
   private ConceptVisionColorSensor conceptVisionColorSensor;
+  private AprilTagCamera aprilTagCamera;
   
   @Override
   public void runOpMode()
   {
+    aprilTagCamera = new AprilTagCamera(hardwareMap, telemetry);
     conceptVisionColorSensor = new ConceptVisionColorSensor(hardwareMap, telemetry);
     // WARNING:  To view the stream preview on the Driver Station, this code runs in INIT mode.
     while (opModeIsActive() || opModeInInit())
@@ -77,6 +79,7 @@ public class CVStest extends LinearOpMode
       {
         telemetry.addLine("Sensed Black");
       }
+      telemetry.addLine(String.format("Apriltag ID:", aprilTagCamera.detectAprilTag()));
       telemetry.update();
       sleep(2000);
     }
