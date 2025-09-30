@@ -84,6 +84,7 @@ public class ConceptVisionColorSensor
       .addProcessor(colorSensor)
       .setCameraResolution(new Size(320, 240))
       .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+      .enableLiveView(false)
       .build();
     telemetry.setMsTransmissionInterval(100);  // Speed up telemetry updates, for debugging.
     telemetry.setDisplayFormat(Telemetry.DisplayFormat.MONOSPACE);
@@ -107,6 +108,7 @@ public class ConceptVisionColorSensor
     //    if (result.RGB[0] > 128) {... some code  ...}
     PredominantColorProcessor.Result result = colorSensor.getAnalysis();
     // Display the Color Sensor result.
+    /*
     telemetry.addData("Best Match", result.closestSwatch);
     telemetry.addLine(String.format("RGB   (%3d, %3d, %3d)",
       result.RGB[0], result.RGB[1], result.RGB[2]));
@@ -114,7 +116,7 @@ public class ConceptVisionColorSensor
       result.HSV[0], result.HSV[1], result.HSV[2]));
     telemetry.addLine(String.format("YCrCb   (%3d, %3d, %3d)",
       result.YCrCb[0], result.YCrCb[1], result.YCrCb[2]));
-    
+    */
     return result.closestSwatch;
     //return returnResult;
   }

@@ -68,20 +68,21 @@ public class CVStest extends LinearOpMode
     // WARNING:  To view the stream preview on the Driver Station, this code runs in INIT mode.
     while (opModeIsActive() || opModeInInit())
     {
-      
-      if (conceptVisionColorSensor.colorSensing() == PredominantColorProcessor.Swatch.ARTIFACT_PURPLE)
+      PredominantColorProcessor.Swatch color;
+      color = conceptVisionColorSensor.colorSensing();
+      if (color == PredominantColorProcessor.Swatch.ARTIFACT_PURPLE)
       {
         telemetry.addLine("Sensed Purple");
-      } else if (conceptVisionColorSensor.colorSensing() == PredominantColorProcessor.Swatch.ARTIFACT_GREEN)
+      } else if (color == PredominantColorProcessor.Swatch.ARTIFACT_GREEN)
       {
         telemetry.addLine("Sensed Green");
       } else
       {
         telemetry.addLine("Sensed Black");
       }
-      telemetry.addLine(String.format("Apriltag ID:", aprilTagCamera.detectAprilTag()));
+      telemetry.addData("Apriltag ID:", aprilTagCamera.detectAprilTag());
       telemetry.update();
-      sleep(2000);
+      sleep(200);
     }
   }
 }
