@@ -64,6 +64,7 @@ public class ConceptVisionColorSensor
   private final Telemetry telemetry;
   private final PredominantColorProcessor colorSensor;
   private String color;
+  
   //private Swatch returnResult;
   
   ConceptVisionColorSensor(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry)
@@ -79,11 +80,12 @@ public class ConceptVisionColorSensor
 //        PredominantColorProcessor.Swatch.YELLOW,
 //        PredominantColorProcessor.Swatch.BLACK,
 //        PredominantColorProcessor.Swatch.WHITE)
+      //vwsgiuiuhwodughiwodughouhyeog8qeyhgo88ugod8gqd8guqduo guqe8dghqdguhq  dguohqedgh oquerg uhergu horh h    h rgpqe8gyg98y9y4y983rugh9uhg98h9hfghsrgphuefpgisl
       .build();
     VisionPortal portal = new VisionPortal.Builder()
       .addProcessor(colorSensor)
       .setCameraResolution(new Size(320, 240))
-      .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+      .setCamera(hardwareMap.get(WebcamName.class, "ColorSensor"))
       .enableLiveView(false)
       .build();
     telemetry.setMsTransmissionInterval(100);  // Speed up telemetry updates, for debugging.
