@@ -8,7 +8,7 @@ public class Test extends  LinearOpMode {
 
     public ConveyorBelt conveyorBelt = null;
     public Launcher launcher = null;
-
+    public Intake intake = null;
 
     //public MecanumDriveChassis ServoTest;
     @Override
@@ -17,6 +17,7 @@ public class Test extends  LinearOpMode {
         telemetry.addData("Status" , "Initialized");
         conveyorBelt = new ConveyorBelt(hardwareMap, telemetry);
         launcher = new Launcher(hardwareMap, telemetry);
+        intake = new Intake(hardwareMap, telemetry);
         waitForStart();
         while (opModeIsActive()) {
             if (gamepad1.right_bumper)
@@ -33,6 +34,12 @@ public class Test extends  LinearOpMode {
             }
             else {
                 launcher.stopLaunching();
+            }
+            if(gamepad1.b){
+                intake.startIntaking();
+            }
+            else{
+                intake.stopIntaking();
             }
             telemetry.update();
 
