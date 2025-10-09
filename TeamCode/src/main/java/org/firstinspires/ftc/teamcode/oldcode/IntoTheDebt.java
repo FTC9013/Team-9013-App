@@ -1,6 +1,9 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.oldcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+import org.firstinspires.ftc.teamcode.DistanceSensors;
+import org.firstinspires.ftc.teamcode.MecanumDriveChassis;
 
 
 // ticks per centepeder = 17.7914
@@ -30,12 +33,12 @@ public abstract class IntoTheDebt extends LinearOpMode
   {
     arm = new ArmControl(this);
     blang = new Blang(hardwareMap);
-    distanceSensors = new DistanceSensors(hardwareMap, telemetry);
+    //distanceSensors = new DistanceSensors(hardwareMap, telemetry);
     telemetry.addData("Status", "Initialized");
     telemetry.update();
     // setup a instance of our drive system
     // Declare OpMode members.
-    driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
+    //driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
     turnColor();
     // Wait for the game to start (driver presses PLAY)
     waitForStart();
