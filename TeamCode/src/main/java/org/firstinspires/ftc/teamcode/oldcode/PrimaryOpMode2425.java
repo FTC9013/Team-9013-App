@@ -27,9 +27,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 //Unable to find hardware device "mast + axial"
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.oldcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+import org.firstinspires.ftc.teamcode.DistanceSensors;
+import org.firstinspires.ftc.teamcode.MastArm;
+import org.firstinspires.ftc.teamcode.MecanumDriveChassis;
 
 /*
  * This OpMode executes a POV Game style Teleop for a direct drive robot
@@ -63,10 +67,10 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
   @Override
   public void runOpMode()
   {
-    mast = new MastArm(hardwareMap, telemetry);
-    highMast = new HighHang(hardwareMap, telemetry);
-    driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
-    distanceSensors = new DistanceSensors(hardwareMap, telemetry);
+    //mast = new MastArm(hardwareMap, telemetry);
+    //highMast = new HighHang(hardwareMap, telemetry);
+    //driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
+    //distanceSensors = new DistanceSensors(hardwareMap, telemetry);
     arm = new ArmControl(this);
     blang = new Blang(hardwareMap);
     telemetry.addData(">", "Robot Ready. Press Play.");
@@ -159,8 +163,8 @@ public abstract class PrimaryOpMode2425 extends LinearOpMode
       {
         turnColor();
       }*/
-      driveChassis.drive(gamepad1.left_stick_y, gamepad1.right_stick_x,
-        gamepad1.left_stick_x, gamepad1.left_bumper);
+      //driveChassis.drive(gamepad1.left_stick_y, gamepad1.right_stick_x,
+       // gamepad1.left_stick_x, gamepad1.left_bumper);
       
       // Pace this loop so jaw action is reasonable speed.
       sleep(50);
