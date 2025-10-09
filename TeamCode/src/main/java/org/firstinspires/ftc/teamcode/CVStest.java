@@ -25,8 +25,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.vision.opencv.PredominantColorProcessor;
-
 /*
  * This OpMode illustrates how to use a video source (camera) as a color sensor
  *
@@ -54,31 +52,40 @@ import org.firstinspires.ftc.vision.opencv.PredominantColorProcessor;
  */
 
 //@Disabled
-@TeleOp(name = "Concept: Vision Color-Sensor", group = "Linear Opmode")
+@TeleOp(name = "CVS + Apriltag", group = "Linear Opmode")
 public class CVStest extends LinearOpMode
 {
   private ConceptVisionColorSensor conceptVisionColorSensor;
+  private AprilTagCamera aprilTagCamera;
   
   @Override
   public void runOpMode()
   {
-    conceptVisionColorSensor = new ConceptVisionColorSensor(hardwareMap, telemetry);
+    aprilTagCamera = new AprilTagCamera(this);
+    //conceptVisionColorSensor = new ConceptVisionColorSensor(hardwareMap, telemetry);
     // WARNING:  To view the stream preview on the Driver Station, this code runs in INIT mode.
+    /*
     while (opModeIsActive() || opModeInInit())
     {
-      
-      if (conceptVisionColorSensor.colorSensing() == PredominantColorProcessor.Swatch.ARTIFACT_PURPLE)
+      PredominantColorProcessor.Swatch color;
+      color = conceptVisionColorSensor.colorSensing();
+      if (color == PredominantColorProcessor.Swatch.ARTIFACT_PURPLE)
       {
         telemetry.addLine("Sensed Purple");
-      } else if (conceptVisionColorSensor.colorSensing() == PredominantColorProcessor.Swatch.ARTIFACT_GREEN)
+      } else if (color == PredominantColorProcessor.Swatch.ARTIFACT_GREEN)
       {
         telemetry.addLine("Sensed Green");
       } else
       {
         telemetry.addLine("Sensed Black");
+        
+       
       }
-      telemetry.update();
-      sleep(2000);
-    }
+      */
+    waitForStart();
+    telemetry.addData("Apriltag ID:", aprilTagCamera.detectAprilTag());
+    telemetry.update();
+    sleep(5000);
   }
 }
+
