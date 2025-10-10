@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.oldcode;
 
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Tripple Basket Blue")
 
-public class AutonomousBasketBlue extends OdonomentryIntoTheDebt
+public class AutonomousBasketBlue extends AutonomousParqueBlue.OdonomentryIntoTheDebt
 {
   @Override
   public void runAuto()

@@ -27,32 +27,69 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.oldcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
-/*
- * This OpMode executes a POV Game style Teleop for a direct drive robot
- * The code is structured as a LinearOpMode
- *
- * In this mode the left stick moves the robot FWD and back, the Right stick turns left and right.
- * It raises and lowers the arm using the Gamepad Y and A buttons respectively.
- * It also opens and closes the claws slowly using the left and right Bumper buttons.
- *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
- */
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@TeleOp(name = "Red :)", group = "Robot")
-public class RedTeleop extends PrimaryOpMode2425
+
+public class PixelDropper
 {
-  public void turnFastColor()
+  
+  /* Declare OpMode members. */
+  public Servo pixelMotor = null;
+  private final Telemetry telemetry;
+  private ElapsedTime runTime = new ElapsedTime();
+  
+  PixelDropper(HardwareMap hardwareMap, Telemetry theTelemetry, String dropperType)
   {
-    blang.turnFastRed();
+    telemetry = theTelemetry;
+    pixelMotor = hardwareMap.get(Servo.class, dropperType);
+    
+    pixelMotor.setDirection(Servo.Direction.REVERSE);
+    pixelMotor.setPosition(1);
   }
   
-  public void turnColor()
+  public void drop_pixel()
   {
-    blang.turnRed();
+    runTime.reset();
+    pixelMotor.setPosition(0);
+    while (runTime.seconds() < 2)
+    {
+    }
+    telemetry.addLine("Dropping Pixel");
+    resetDropper();
+  }
+  
+  public void drop_Purple()
+  {
+    runTime.reset();
+    pixelMotor.setPosition(0);
+    telemetry.addLine("Doppign");
+  }
+  
+  public void lift()
+  {
+    telemetry.addLine("Liftig");
+    pixelMotor.setPosition(1);
+  }
+  
+  public void resetDropper()
+  {
+    runTime.reset();
+    pixelMotor.setPosition(1);
+    while (runTime.seconds() < 2)
+    {
+    }
+    telemetry.addLine("Resetting Servo Position");
   }
 }
+
+
+//OAHWOAHOHHHHHHH
+//OAHWOAHOHHHHHHH
+//everybodywas kung foo fightingg
+//ding dingding ding dingding ding ding dingh

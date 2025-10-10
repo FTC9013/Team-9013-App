@@ -1,7 +1,9 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.oldcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+import org.firstinspires.ftc.teamcode.MecanumDriveChassis;
 
 @Disabled
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "go box")
@@ -13,7 +15,7 @@ public abstract class TestSquare extends LinearOpMode
   @Override
   public void runOpMode()
   {
-    driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
+    //driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
     waitForStart();
     driveChassis.moveForward(20);
     telemetry.addLine("moving forward");
