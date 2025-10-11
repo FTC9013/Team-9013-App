@@ -1,21 +1,42 @@
 # How we use github
 
-This repo, [Team-9013-App](https://github.com/FTC9013/Team-9013-App), is forked from the upstream FTC code base, [FtcRobotController](https://github.com/FIRST-Tech-Challenge/FtcRobotController).
+This repo, [Team-9013-App](https://github.com/FTC9013/Team-9013-App), is forked from the upstream [Roadrunner](https://github.com/acmerobotics/road-runner-quickstart) repository, which itself is forked from the FTC code base, [FtcRobotController](https://github.com/FIRST-Tech-Challenge/FtcRobotController).
 
-As we update code locally, we push to the `master` branch.
-
+As we update code locally, we push to the `master` branch.  We never submit any changes back upstream.
 
 ## Staying in sync with FTC
 
 Each season, and sometimes periodically during the season, the upstream code changes and we must stay up to date.  The easiest way to do this is from the command line.
 
+First, make sure the upstream repos are set up correctly.
+
 ```
-git fetch upstream
-git merge upstream/master
+git remote -v
+```
+
+You should see the upstream repos.  If not, run:
+
+```
+git remote add ftc https://github.com/FIRST-Tech-Challenge/FtcRobotController
+git remote add roadrunner https://github.com/acmerobotics/road-runner-quickstart
+```
+
+Assuming the roadrunner repo is already up to date with the latest FTC, run:
+
+```
+git fetch roadrunner
+git merge roadrunner/master
 git commit
 ```
 
-In rare cases, `git merge` may result in merge conflicts.  To resolve, open the offending files and decide how to fix them.  Then run `git add <file>` on each one before committing.
+If not, you may want to pull from FTC while waiting for Roadrunner to catch up:
+```
+git fetch ftc
+git merge ftc/master
+git commit
+```
+
+In rare cases, `git merge` may result in merge conflicts.  Use Android Studio's merge tool to decide how to fix them. 
 
 ## Tags
 
