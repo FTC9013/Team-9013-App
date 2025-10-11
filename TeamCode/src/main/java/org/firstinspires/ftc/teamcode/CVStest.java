@@ -65,7 +65,6 @@ public class CVStest extends LinearOpMode
     aprilTagCamera = new AprilTagCamera(this);
     conceptVisionColorSensor = new ConceptVisionColorSensor(hardwareMap, telemetry);
     // WARNING:  To view the stream preview on the Driver Station, this code runs in INIT mode
-    //677777777777777777777777777777777777777777777777777777777777
     
     
     waitForStart();
@@ -85,7 +84,7 @@ public class CVStest extends LinearOpMode
         telemetry.addLine("Sensed Green");
       } else
       {
-        telemetry.addLine("Sensed Black");
+        telemetry.addLine("Sensed Noting");
       }
       sleep(67);
       telemetry.update();
