@@ -28,6 +28,16 @@ public class Test extends  LinearOpMode {
             {
                 conveyorBelt.stopConveying();
             }
+            if (gamepad1.right_trigger > 0)
+            {
+                conveyorBelt.startConveyingIncreasing();
+                telemetry.addLine("Pressing right trigger");
+            }
+            if (gamepad1.left_trigger > 0)
+            {
+                conveyorBelt.startConveyingDecreasing();
+                telemetry.addLine("Pressing left trigger");
+            }
             if (gamepad1.y)
             {
                 launcher.startLaunching();
