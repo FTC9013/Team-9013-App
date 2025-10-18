@@ -24,7 +24,7 @@ public abstract class DacodAuto extends LinearOpMode
     
     
     //the auto method
-//    findObelisk();
+    findObelisk();
 //    aprilTagCamera.detectAprilTag();//we need to improve on this line later
     launchArtifacts();
     collectArtifacts(aprilTagCamera.detectAprilTag());
