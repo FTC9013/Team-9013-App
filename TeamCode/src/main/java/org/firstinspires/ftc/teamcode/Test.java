@@ -12,48 +12,48 @@ public class Test extends  LinearOpMode {
 
     //public MecanumDriveChassis ServoTest;
     @Override
-    public void runOpMode()
-    {
-        telemetry.addData("Status" , "Initialized");
+    public void runOpMode() {
+        telemetry.addData("Status", "Initialized");
         conveyorBelt = new ConveyorBelt(hardwareMap, telemetry);
         launcher = new Launcher(hardwareMap, telemetry);
         intake = new Intake(hardwareMap, telemetry);
         waitForStart();
         while (opModeIsActive()) {
-            if (gamepad1.right_bumper)
-            {
-                conveyorBelt.startConveying();
-            }
-            if (gamepad1.left_bumper)
-            {
-                conveyorBelt.stopConveying();
-            }
-            if (gamepad1.right_trigger > 0)
-            {
+            if (gamepad1.right_bumper) {
                 conveyorBelt.startConveyingIncreasing();
-                telemetry.addLine("Pressing right trigger");
+                telemetry.addLine("Pressing right bumper");
             }
-            if (gamepad1.left_trigger > 0)
-            {
+            if (gamepad1.left_bumper) {
                 conveyorBelt.startConveyingDecreasing();
-                telemetry.addLine("Pressing left trigger");
+                telemetry.addLine("Pressing left bumper");
             }
-            if (gamepad1.y)
-            {
+
+            if (gamepad1.x) {
+                intake.stopIntaking();
+                launcher.stopLaunching();
+                conveyorBelt.stopConveying();
+                telemetry.addLine("Stopping motors and servo");
+            }
+            if (gamepad1.y) {
                 launcher.startLaunching();
             }
-            else {
-                launcher.stopLaunching();
-            }
-            if(gamepad1.b){
+
+
+            if (gamepad1.b) {
                 intake.startIntaking();
+                telemetry.addLine("Pressing key X");
             }
-            else{
-                intake.stopIntaking();
+
+            if (gamepad1.dpad_up) {
+                launcher.launchSpeedIncreasing();
+            }
+            if (gamepad1.dpad_down) {
+                launcher.launchSpeedDecreasing();
             }
             telemetry.update();
 
         }
     }
 }
+
 //we are working with a motor that does not spin infinitly so,... we   are   cooked

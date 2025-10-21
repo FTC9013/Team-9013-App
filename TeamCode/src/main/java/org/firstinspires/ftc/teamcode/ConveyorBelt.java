@@ -28,12 +28,12 @@ public class ConveyorBelt
         desiredSpeed = 1;
 
     }
-    public void startConveying()
-    {
-        desiredSpeed = 1;
-        servo.setPower(desiredSpeed);
-        telemetry.addData("Conveying in artifacts. Speed is " , desiredSpeed);
-    }
+    //public void startConveying()
+    //{
+    //    desiredSpeed = 1;
+    //    servo.setPower(desiredSpeed);
+     //   telemetry.addData("Conveying in artifacts. Speed is " , desiredSpeed);
+    //}
     public void startConveyingIncreasing()
     {
         desiredSpeed += 0.0001;
