@@ -16,17 +16,19 @@ public class MeepMeepTesting
     Pose2d SPIKE1 = new Pose2d(-11.25, 31, Math.toRadians(90));
     Pose2d SPIKE2 = new Pose2d(12, 31, Math.toRadians(90));
     Pose2d SPIKE3 = new Pose2d(35, 31, Math.toRadians(90));
+    Pose2d SCANNING_POINT = new Pose2d(-31.25, 11.5, Math.toRadians(0));
     Double INTAKE = 45.0;
     Double BACK_UP = 31.0;
     Pose2d STARTING1 = new Pose2d(-61.25, 11.5, 0);
+    Pose2d STARTING2 = new Pose2d(-56, 50, Math.toRadians(-45));
     RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
       // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
       .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
       .setDimensions(16.5, 17)
       .build();
     
-    myBot.runAction(myBot.getDrive().actionBuilder(STARTING1)
-      .lineToX(-31.25)
+    myBot.runAction(myBot.getDrive().actionBuilder(STARTING2)
+      .splineToLinearHeading(SCANNING_POINT, Math.toRadians(0))
       .splineToLinearHeading(LAUNCH_POSITION, LAUNCH_POSITION.heading)
       .splineToLinearHeading(SPIKE1, SPIKE1.heading)
       .lineToY(INTAKE)
@@ -35,7 +37,7 @@ public class MeepMeepTesting
       .lineToY(INTAKE)
       .lineToY(BACK_UP)
       .splineToLinearHeading(LAUNCH_POSITION, LAUNCH_POSITION.heading)
-      //.lineToSplineHeading(SPIKE3, SPIKE3.heading)
+      .splineToLinearHeading(SPIKE3, SPIKE3.heading)
       .lineToY(INTAKE)
       .lineToY(BACK_UP)
       .splineToLinearHeading(LAUNCH_POSITION, LAUNCH_POSITION.heading)
