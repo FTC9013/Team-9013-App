@@ -12,6 +12,8 @@ public class BlueAutoBackOne extends DacodAuto
     return adjust(STARTING1);
   }
   
+  // public final double amIBlue = -1;
+  
   public boolean amIBlue()
   {
     return true;

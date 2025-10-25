@@ -1,7 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
-
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 public abstract class DacodAuto extends LinearOpMode
@@ -42,8 +43,15 @@ public abstract class DacodAuto extends LinearOpMode
   .build());
   */
   public Pose2d adjust(Pose2d pose)
-  {
   
+  {
+    if (amIBlue())
+    {
+      return new Pose2d(pose.position.x, pose.position.y * -1, 0);
+    } else
+    {
+      return pose;
+    }
   }
   
   public abstract boolean amIBlue();
@@ -57,6 +65,30 @@ public abstract class DacodAuto extends LinearOpMode
     launcher = new Launcher(hardwareMap, telemetry);
     telemetry.addLine("Initialized");
     telemetry.update();
+    
+    //4 paths and actions
+    Action MoveToScanning = robot.actionBuilder(getStartingPose())
+        .splineToLinearHeading(adjust(SCANNING_POINT), Math.toRadians(0)).build();
+    
+    
+    Action GotoSpikes = robot.actionBuilder(adjust(SCANNING_POINT))
+      .splineToLinearHeading(LAUNCH_POSITION, LAUNCH_POSITION.heading)
+      .splineToLinearHeading(SPIKE1, SPIKE1.heading)
+      .lineToY(INTAKE)
+      .splineToLinearHeading(LAUNCH_POSITION, LAUNCH_POSITION.heading)
+      .splineToLinearHeading(SPIKE2, SPIKE2.heading)
+      .lineToY(INTAKE)
+      .lineToY(BACK_UP)
+      .splineToLinearHeading(LAUNCH_POSITION, LAUNCH_POSITION.heading)
+      .splineToLinearHeading(SPIKE3, SPIKE3.heading)
+      .lineToY(INTAKE)
+      .lineToY(BACK_UP)
+      .splineToLinearHeading(LAUNCH_POSITION, LAUNCH_POSITION.heading)
+      .strafeTo(new Vector2d(-16, 38))
+      .build());
+      
+
+
     waitForStart();
     Motif motifPattern = aprilTagCamera.detectAprilTag();
     
@@ -69,8 +101,6 @@ public abstract class DacodAuto extends LinearOpMode
     launchArtifacts();
     collectArtifacts(aprilTagCamera.detectAprilTag());
     launchArtifacts();
-    
-    
   }
   
   public void launchPreloaded()
@@ -98,7 +128,7 @@ public abstract class DacodAuto extends LinearOpMode
   }
   
   /*
-   Auto routine:
+   Auto routine:z
    call findObelisk()
    do something with the aprilTagCamera.detectAprilTag() method
    call goToLaunchPosition()
