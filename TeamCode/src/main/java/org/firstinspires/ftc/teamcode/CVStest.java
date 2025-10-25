@@ -25,6 +25,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.vision.opencv.PredominantColorProcessor;
+
 /*
  * This OpMode illustrates how to use a video source (camera) as a color sensor
  *
@@ -50,7 +52,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
-
 //@Disabled
 @TeleOp(name = "CVS + Apriltag", group = "Linear Opmode")
 public class CVStest extends LinearOpMode
@@ -62,9 +63,15 @@ public class CVStest extends LinearOpMode
   public void runOpMode()
   {
     aprilTagCamera = new AprilTagCamera(this);
-    //conceptVisionColorSensor = new ConceptVisionColorSensor(hardwareMap, telemetry);
-    // WARNING:  To view the stream preview on the Driver Station, this code runs in INIT mode.
-    /*
+    conceptVisionColorSensor = new ConceptVisionColorSensor(hardwareMap, telemetry);
+    // WARNING:  To view the stream preview on the Driver Station, this code runs in INIT mode
+    
+    
+    waitForStart();
+    telemetry.addData("Apriltag ID:", aprilTagCamera.detectAprilTag());
+    aprilTagCamera = null;
+    
+    
     while (opModeIsActive() || opModeInInit())
     {
       PredominantColorProcessor.Swatch color;
@@ -77,15 +84,12 @@ public class CVStest extends LinearOpMode
         telemetry.addLine("Sensed Green");
       } else
       {
-        telemetry.addLine("Sensed Black");
-        
-       
+        telemetry.addLine("Sensed Noting");
       }
-      */
-    waitForStart();
-    telemetry.addData("Apriltag ID:", aprilTagCamera.detectAprilTag());
-    telemetry.update();
-    sleep(5000);
+      sleep(67);
+      telemetry.update();
+    }
   }
+  
 }
 

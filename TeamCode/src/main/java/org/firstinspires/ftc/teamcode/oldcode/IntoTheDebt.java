@@ -41,7 +41,6 @@ public abstract class IntoTheDebt extends LinearOpMode
     //driveChassis = new MecanumDriveChassis(hardwareMap, telemetry);
     turnColor();
     // Wait for the game to start (driver presses PLAY)
-    waitForStart();
     runAuto();
     //goFromLeftWall(30);
     //sleep(5000);
