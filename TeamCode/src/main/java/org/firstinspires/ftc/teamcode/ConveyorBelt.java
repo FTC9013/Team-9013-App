@@ -16,7 +16,7 @@ public class ConveyorBelt
 {
     private final CRServo servo;
     private final Telemetry telemetry;
-    private double desiredSpeed;
+    private double desiredSpeed = 1;
 
 
     ConveyorBelt(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry)
@@ -25,15 +25,13 @@ public class ConveyorBelt
         servo = hardwareMap.get(CRServo.class, "servo");
 
         servo.setDirection(CRServo.Direction.FORWARD);
-        desiredSpeed = 1;
 
     }
-    //public void startConveying()
-    //{
-    //    desiredSpeed = 1;
-    //    servo.setPower(desiredSpeed);
-     //   telemetry.addData("Conveying in artifacts. Speed is " , desiredSpeed);
-    //}
+    public void startConveying()
+    {
+        servo.setPower(1);
+        telemetry.addData("Conveying in artifacts. Speed is " , desiredSpeed);
+    }
     public void startConveyingIncreasing()
     {
         desiredSpeed += 0.0001;

@@ -27,6 +27,10 @@ public class Test extends  LinearOpMode {
                 conveyorBelt.startConveyingDecreasing();
                 telemetry.addLine("Pressing left bumper");
             }
+            if (gamepad1.a) {
+                conveyorBelt.startConveying();
+                telemetry.addLine("Pressing key A");
+            }
 
             if (gamepad1.x) {
                 intake.stopIntaking();
