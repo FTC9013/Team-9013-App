@@ -14,6 +14,7 @@ public class Intake
 {
     private final DcMotor intakeMotor;
     private final Telemetry telemetry;
+    private double desiredSpeed = 1;
 
 
     Intake(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry)
@@ -25,7 +26,7 @@ public class Intake
     }
     public void startIntaking()
     {
-        intakeMotor.setPower(1);
+        intakeMotor.setPower(desiredSpeed);
         telemetry.addData("Intake artifacts", "True");
     }
     public void stopIntaking()
@@ -34,6 +35,27 @@ public class Intake
         telemetry.addData("No more Intaking", "True");
 
 
+    }
+    public void startSpeedIncreasing()
+    {
+        desiredSpeed += 0.0001;
+        if (desiredSpeed > 1)
+        {
+            desiredSpeed = 1;
+        }
+        intakeMotor.setPower(desiredSpeed);
+        telemetry.addData("Intake speed in artifacts. Speed is " , desiredSpeed);
+    }
+
+    public void startSpeedDecreasing()
+    {
+        desiredSpeed -= 0.0001;
+        if (desiredSpeed < 0)
+        {
+            desiredSpeed = 0;
+        }
+        intakeMotor.setPower(desiredSpeed);
+        telemetry.addData("Intake speed in artifacts. Speed is " , desiredSpeed);
     }
 }
 
