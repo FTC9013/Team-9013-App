@@ -33,7 +33,7 @@ public abstract class DacodAuto extends LinearOpMode
   {
     if (amIBlue())
     {
-      return new Pose2d(pose.position.x, pose.position.y * -1, 0);
+      return new Pose2d(pose.position.x, pose.position.y * -1, pose.heading.inverse().toDouble());
     } else
     {
       return pose;
