@@ -127,7 +127,6 @@ public abstract class DacodAuto extends LinearOpMode
     Motif motifPattern = aprilTagCamera.detectAprilTag();
     Actions.runBlocking(launchPreloaded);
     
-    
     //go to the spike marks with correct motif first and collect artifacts
     if (motifPattern == Motif.GPP)
     {
