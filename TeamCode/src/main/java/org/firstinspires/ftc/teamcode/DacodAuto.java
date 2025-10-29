@@ -10,8 +10,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public abstract class DacodAuto extends LinearOpMode
 {
   public AprilTagCamera aprilTagCamera;
-  public ConveyorBelt conveyorBelt;
-  public Launcher launcher;
   public MecanumDrive robot;
   public ConceptVisionColorSensor conceptVisionColorSensor;
   
@@ -69,9 +67,8 @@ public abstract class DacodAuto extends LinearOpMode
   {
     robot = new MecanumDrive(hardwareMap, getStartingPose());
     aprilTagCamera = new AprilTagCamera(this);
-    conceptVisionColorSensor = new ConceptVisionColorSensor(hardwareMap, telemetry);
-    conveyorBelt = new ConveyorBelt(hardwareMap, telemetry);
-    launcher = new Launcher(hardwareMap, telemetry);
+    // conceptVisionColorSensor = new ConceptVisionColorSensor(hardwareMap, telemetry);
+    Shooter shooter = new Shooter(hardwareMap, telemetry);
     telemetry.addLine("Initialized");
     telemetry.update();
     
@@ -128,6 +125,7 @@ public abstract class DacodAuto extends LinearOpMode
     waitForStart();
     Actions.runBlocking(moveToScanning);
     Motif motifPattern = aprilTagCamera.detectAprilTag();
+    Actions.runBlocking(launchPreloaded);
     
     
     //go to the spike marks with correct motif first and collect artifacts
