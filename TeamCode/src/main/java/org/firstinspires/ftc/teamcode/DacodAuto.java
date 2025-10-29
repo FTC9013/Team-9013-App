@@ -46,7 +46,6 @@ public abstract class DacodAuto extends LinearOpMode
     {
       return para;
     }
-    
   }
   
   //convert vectors
@@ -85,41 +84,27 @@ public abstract class DacodAuto extends LinearOpMode
     
     
     //4 paths and actions
-    Action moveToScanning = robot.actionBuilder(getStartingPose())
-      .splineToLinearHeading(ACTUAL_SCANNING_POINT, Math.toRadians(0)).build();
+    Action moveToScanning = robot.actionBuilder(getStartingPose()).splineToLinearHeading(ACTUAL_SCANNING_POINT, Math.toRadians(0)).build();
     
     Action launchPreloaded = robot.actionBuilder(ACTUAL_SCANNING_POINT)
       //preloaded
-      .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
-      .build();
+      .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading).build();
     
     Action gotoSpikeGPP = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
       //spike GPP
-      .splineToLinearHeading(ACTUAL_SPIKE_GPP, ACTUAL_SPIKE_GPP.heading)
-      .lineToY(ACTUAL_INTAKE)
-      .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
-      .build();
+      .splineToLinearHeading(ACTUAL_SPIKE_GPP, ACTUAL_SPIKE_GPP.heading).lineToY(ACTUAL_INTAKE).splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading).build();
     
     Action gotoSpikePGP = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
       //spike PGP
-      .splineToLinearHeading(ACTUAL_SPIKE_PGP, ACTUAL_SPIKE_PGP.heading)
-      .lineToY(ACTUAL_INTAKE)
-      .lineToY(ACTUAL_BACK_UP)
-      .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
-      .build();
+      .splineToLinearHeading(ACTUAL_SPIKE_PGP, ACTUAL_SPIKE_PGP.heading).lineToY(ACTUAL_INTAKE).lineToY(ACTUAL_BACK_UP).splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading).build();
     
     Action gotoSpikePPG = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
       //spike PPG
-      .splineToLinearHeading(ACTUAL_SPIKE_PPG, ACTUAL_SPIKE_PPG.heading)
-      .lineToY(ACTUAL_INTAKE)
-      .lineToY(ACTUAL_BACK_UP)
-      .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
-      .build();
+      .splineToLinearHeading(ACTUAL_SPIKE_PPG, ACTUAL_SPIKE_PPG.heading).lineToY(ACTUAL_INTAKE).lineToY(ACTUAL_BACK_UP).splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading).build();
     
     Action getOut = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
       // out of launch_position
-      .strafeTo(ACTUAL_OUT_OF_LAUNCH)
-      .build();
+      .strafeTo(ACTUAL_OUT_OF_LAUNCH).build();
     
     
     waitForStart();
@@ -130,21 +115,15 @@ public abstract class DacodAuto extends LinearOpMode
     //go to the spike marks with correct motif first and collect artifacts
     if (motifPattern == Motif.GPP)
     {
-      Actions.runBlocking(
-        new SequentialAction(
-          gotoSpikeGPP, gotoSpikePGP, gotoSpikePPG));
+      Actions.runBlocking(new SequentialAction(gotoSpikeGPP, gotoSpikePGP, gotoSpikePPG));
       
     } else if (motifPattern == Motif.PGP)
     {
-      Actions.runBlocking(
-        new SequentialAction(
-          gotoSpikePGP, gotoSpikePPG, gotoSpikeGPP));
+      Actions.runBlocking(new SequentialAction(gotoSpikePGP, gotoSpikePPG, gotoSpikeGPP));
       
     } else if (motifPattern == Motif.PPG)
     {
-      Actions.runBlocking(
-        new SequentialAction(
-          gotoSpikePPG, gotoSpikePGP, gotoSpikeGPP));
+      Actions.runBlocking(new SequentialAction(gotoSpikePPG, gotoSpikePGP, gotoSpikeGPP));
     }
     Actions.runBlocking(getOut);
   }
