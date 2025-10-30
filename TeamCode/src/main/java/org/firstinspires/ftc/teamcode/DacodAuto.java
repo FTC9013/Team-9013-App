@@ -14,7 +14,7 @@ public abstract class DacodAuto extends LinearOpMode
   public ConceptVisionColorSensor conceptVisionColorSensor;
   
   //set convertable constants
-  Pose2d LAUNCH_POSITION = new Pose2d(-40.25, 15.5, Math.toRadians(-45));
+  Pose2d LAUNCH_POSITION = new Pose2d(-40.25, 15.5, Math.toRadians(135));
   Pose2d SPIKE_GPP = new Pose2d(-11.25, 31, Math.toRadians(90));
   Pose2d SPIKE_PGP = new Pose2d(12, 31, Math.toRadians(90));
   Pose2d SPIKE_PPG = new Pose2d(35, 31, Math.toRadians(90));
@@ -88,19 +88,41 @@ public abstract class DacodAuto extends LinearOpMode
     
     Action launchPreloaded = robot.actionBuilder(ACTUAL_SCANNING_POINT)
       //preloaded
-      .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading).build();
+      .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
+      .stopAndAdd(shooter.shootingAction())
+      .build();
     
     Action gotoSpikeGPP = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
       //spike GPP
-      .splineToLinearHeading(ACTUAL_SPIKE_GPP, ACTUAL_SPIKE_GPP.heading).lineToY(ACTUAL_INTAKE).splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading).build();
+      .splineToLinearHeading(ACTUAL_SPIKE_GPP, ACTUAL_SPIKE_GPP.heading)
+      .stopAndAdd(shooter.startIntakingAction())
+      .lineToY(ACTUAL_INTAKE)
+      .stopAndAdd(shooter.stopAllMotorsAction())
+      .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
+      .stopAndAdd(shooter.shootingAction())
+      .build();
     
     Action gotoSpikePGP = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
       //spike PGP
-      .splineToLinearHeading(ACTUAL_SPIKE_PGP, ACTUAL_SPIKE_PGP.heading).lineToY(ACTUAL_INTAKE).lineToY(ACTUAL_BACK_UP).splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading).build();
+      .splineToLinearHeading(ACTUAL_SPIKE_PGP, ACTUAL_SPIKE_PGP.heading)
+      .stopAndAdd(shooter.startIntakingAction())
+      .lineToY(ACTUAL_INTAKE)
+      .stopAndAdd(shooter.stopAllMotorsAction())
+      .lineToY(ACTUAL_BACK_UP)
+      .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
+      .stopAndAdd(shooter.shootingAction())
+      .build();
     
     Action gotoSpikePPG = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
       //spike PPG
-      .splineToLinearHeading(ACTUAL_SPIKE_PPG, ACTUAL_SPIKE_PPG.heading).lineToY(ACTUAL_INTAKE).lineToY(ACTUAL_BACK_UP).splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading).build();
+      .splineToLinearHeading(ACTUAL_SPIKE_PPG, ACTUAL_SPIKE_PPG.heading)
+      .stopAndAdd(shooter.startIntakingAction())
+      .lineToY(ACTUAL_INTAKE)
+      .stopAndAdd(shooter.stopAllMotorsAction())
+      .lineToY(ACTUAL_BACK_UP)
+      .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
+      .stopAndAdd(shooter.shootingAction())
+      .build();
     
     Action getOut = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
       // out of launch_position
@@ -111,7 +133,6 @@ public abstract class DacodAuto extends LinearOpMode
     Actions.runBlocking(moveToScanning);
     Motif motifPattern = aprilTagCamera.detectAprilTag();
     Actions.runBlocking(launchPreloaded);
-    
     //go to the spike marks with correct motif first and collect artifacts
     if (motifPattern == Motif.GPP)
     {
