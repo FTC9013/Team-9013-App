@@ -9,29 +9,40 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class Shooter {
+public class CurvingShooter {
     private final Launcher launchWheel;
     private final Telemetry telemetry;
-    private final ConveyorBelt conveyor;
+    private final ConveyorBelt greenConveyor;
+    private final ConveyorBelt purpleConveyor;
     private final Intake intake;
 
 
-    Shooter(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry) {
+    CurvingShooter(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry) {
         telemetry = theTelemetry;
         launchWheel = new Launcher(hardwareMap, telemetry);
-        conveyor = new ConveyorBelt(hardwareMap, telemetry, "green");
+        greenConveyor = new ConveyorBelt(hardwareMap, telemetry, "green");
+        purpleConveyor = new ConveyorBelt(hardwareMap, telemetry, "purple");
         intake = new Intake(hardwareMap, telemetry);
     }
 
-    public void launchArtifact() {
-        conveyor.startConveying();
+    public void launchGreenArtifact() {
+        greenConveyor.startConveying();
         telemetry.addLine("Conveying artifact");
         launchWheel.startLaunching();
         telemetry.addLine("Launching artifact");
         launchWheel.stopLaunching();
-        conveyor.stopConveying();
+        greenConveyor.stopConveying();
         telemetry.update();
+    }
 
+    public void launchPurpleArtifact() {
+        purpleConveyor.startConveying();
+        telemetry.addLine("Conveying artifact");
+        launchWheel.startLaunching();
+        telemetry.addLine("Launching artifact");
+        launchWheel.stopLaunching();
+        purpleConveyor.stopConveying();
+        telemetry.update();
     }
 
     public void startLaunching() {
@@ -116,18 +127,20 @@ public class Shooter {
     }
 
     public Action intakingAction() {
-        return new IntakingAction();
+        return new CurvingShooter.IntakingAction();
     }
 
     public Action shootingAction() {
-        return new ShootingAction();
+        return new CurvingShooter.ShootingAction();
     }
 
     public Action startIntakingAction() {
-        return new StartIntakingAction();
+        return new CurvingShooter.StartIntakingAction();
     }
 
     public Action stopAllMotorsAction() {
-        return new StopAllMotorsAction();
+        return new CurvingShooter.StopAllMotorsAction();
     }
 }
+
+
