@@ -22,7 +22,11 @@ import java.util.Collections;
 import java.util.List;
 
 public class DecodeOpMode extends LinearOpMode {
-
+    public ConveyorBelt conveyorBelt = null;
+    public Launcher launcher = null;
+    public Intake intake = null;
+    public ConveyorBelt greenConveyor;
+    public ConveyorBelt purpleConveyor;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -55,6 +59,59 @@ public class DecodeOpMode extends LinearOpMode {
             Drawing.drawRobot(packet.fieldOverlay(), pose);
             FtcDashboard.getInstance().sendTelemetryPacket(packet);
         }
-    }
+        telemetry.addData("Status", "Initialized");
+        //conveyorBelt = new ConveyorBelt(hardwareMap, telemetry);
+        greenConveyor = new ConveyorBelt(hardwareMap, telemetry, "green");
+        purpleConveyor = new ConveyorBelt(hardwareMap, telemetry, "purple");
+        launcher = new Launcher(hardwareMap, telemetry);
+        intake = new Intake(hardwareMap, telemetry);
+        waitForStart();
+        while (opModeIsActive()) {
+            if (gamepad1.right_bumper) {
+                greenConveyor.startConveying();
+                telemetry.addLine("Pressing right bumper");
+            }
+            if (gamepad1.left_bumper) {
+                purpleConveyor.startConveying();
+                telemetry.addLine("Pressing right bumper");
+            }
 
+            // if (gamepad1.right_bumper) {
+            //     conveyorBelt.startConveyingIncreasing();
+            //     telemetry.addLine("Pressing right bumper");
+            // }
+            // if (gamepad1.left_bumper) {
+            //    conveyorBelt.startConveyingDecreasing();
+            //   telemetry.addLine("Pressing left bumper");
+            //  }
+            //if (gamepad1.a) {
+            //     conveyorBelt.startConveying();
+            //    telemetry.addLine("Pressing key A");
+            // }
+
+            if (gamepad1.x) {
+                intake.stopIntaking();
+                launcher.stopLaunching();
+                conveyorBelt.stopConveying();
+                telemetry.addLine("Stopping motors and servo");
+            }
+            if (gamepad1.y) {
+                launcher.startLaunching();
+            }
+
+
+            if (gamepad1.b) {
+                intake.startIntaking();
+                telemetry.addLine("Pressing key X");
+            }
+
+            if (gamepad1.dpad_up) {
+                launcher.launchSpeedIncreasing();
+            }
+            if (gamepad1.dpad_down) {
+                launcher.launchSpeedDecreasing();
+            }
+            telemetry.update();
+        }
+    }
 }
