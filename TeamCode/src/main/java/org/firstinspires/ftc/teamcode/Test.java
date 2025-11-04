@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 
 @TeleOp(name = "Test", group = "Linear Opmode")
-public class Test extends  LinearOpMode {
+public class Test extends LinearOpMode {
 
     public ConveyorBelt conveyorBelt = null;
     public Launcher launcher = null;
@@ -14,7 +15,7 @@ public class Test extends  LinearOpMode {
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
-        conveyorBelt = new ConveyorBelt(hardwareMap, telemetry);
+        conveyorBelt = new ConveyorBelt(hardwareMap, telemetry, "green");
         launcher = new Launcher(hardwareMap, telemetry);
         intake = new Intake(hardwareMap, telemetry);
         waitForStart();

@@ -76,9 +76,9 @@ public class MecanumDriveChassis
     YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
     orientation.getYaw(AngleUnit.DEGREES);
     
-    leftFrontDrive = hardwareMap.get(DcMotor.class, "lFront");
-    leftRearDrive = hardwareMap.get(DcMotor.class, "lRear");
-    rightFrontDrive = hardwareMap.get(DcMotor.class, "rFront");
+    leftFrontDrive = hardwareMap.get(DcMotor.class, "lFront + axial");
+    leftRearDrive = hardwareMap.get(DcMotor.class, "lRear + lLateral");
+    rightFrontDrive = hardwareMap.get(DcMotor.class, "rFront + rLateral");
     rightRearDrive = hardwareMap.get(DcMotor.class, "rRear");
     
     leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
