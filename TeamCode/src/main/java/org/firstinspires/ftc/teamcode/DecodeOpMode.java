@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -21,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@TeleOp(name = "Decode", group = "Linear Opmode")
 public class DecodeOpMode extends LinearOpMode {
     public ConveyorBelt conveyorBelt = null;
     public Launcher launcher = null;
@@ -32,7 +34,11 @@ public class DecodeOpMode extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         //telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         Shooter shooter = new Shooter(hardwareMap, telemetry);
-
+//conveyorBelt = new ConveyorBelt(hardwareMap, telemetry);
+        greenConveyor = new ConveyorBelt(hardwareMap, telemetry, "green");
+        purpleConveyor = new ConveyorBelt(hardwareMap, telemetry, "purple");
+        launcher = new Launcher(hardwareMap, telemetry);
+        intake = new Intake(hardwareMap, telemetry);
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
         waitForStart();
@@ -58,15 +64,11 @@ public class DecodeOpMode extends LinearOpMode {
             packet.fieldOverlay().setStroke("#3F51B5");
             Drawing.drawRobot(packet.fieldOverlay(), pose);
             FtcDashboard.getInstance().sendTelemetryPacket(packet);
-        }
-        telemetry.addData("Status", "Initialized");
-        //conveyorBelt = new ConveyorBelt(hardwareMap, telemetry);
-        greenConveyor = new ConveyorBelt(hardwareMap, telemetry, "green");
-        purpleConveyor = new ConveyorBelt(hardwareMap, telemetry, "purple");
-        launcher = new Launcher(hardwareMap, telemetry);
-        intake = new Intake(hardwareMap, telemetry);
-        waitForStart();
-        while (opModeIsActive()) {
+
+            telemetry.addData("Status", "Initialized");
+
+            //waitForStart();
+            //  while (opModeIsActive()) {
             if (gamepad1.right_bumper) {
                 greenConveyor.startConveying();
                 telemetry.addLine("Pressing right bumper");
@@ -105,12 +107,12 @@ public class DecodeOpMode extends LinearOpMode {
                 telemetry.addLine("Pressing key X");
             }
 
-            if (gamepad1.dpad_up) {
-                launcher.launchSpeedIncreasing();
-            }
-            if (gamepad1.dpad_down) {
-                launcher.launchSpeedDecreasing();
-            }
+            // if (gamepad1.dpad_up) {
+            //    launcher.launchSpeedIncreasing();
+            // }
+            // if (gamepad1.dpad_down) {
+            //     launcher.launchSpeedDecreasing();
+            //  }
             telemetry.update();
         }
     }

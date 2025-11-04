@@ -27,7 +27,7 @@ public class ConveyorBelt {
     }
 
     public void startConveying() {
-        servo.setPower(1);
+        servo.setPower(desiredSpeed);
         telemetry.addData("Conveying in artifacts. Speed is ", desiredSpeed);
     }
 
