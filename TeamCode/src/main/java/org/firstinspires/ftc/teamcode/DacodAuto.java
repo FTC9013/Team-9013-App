@@ -15,14 +15,14 @@ public abstract class DacodAuto extends LinearOpMode
   
   //set convertable constants
   Pose2d LAUNCH_POSITION = new Pose2d(-40.25, 15.5, Math.toRadians(135));
-  Pose2d SPIKE_GPP = new Pose2d(-11.25, 31, Math.toRadians(90));
+  Pose2d SPIKE_PPG = new Pose2d(-11.25, 31, Math.toRadians(90));
   Pose2d SPIKE_PGP = new Pose2d(12, 31, Math.toRadians(90));
-  Pose2d SPIKE_PPG = new Pose2d(35, 31, Math.toRadians(90));
+  Pose2d SPIKE_GPP = new Pose2d(35, 31, Math.toRadians(90));
   Pose2d SCANNING_POINT = new Pose2d(-31.25, 11.5, Math.toRadians(0));
   Double INTAKE = 45.0;
   Double BACK_UP = 31.0;
-  Pose2d STARTING1 = new Pose2d(-61.25, 11.5, 0);
-  Pose2d STARTING2 = new Pose2d(-56, 50, Math.toRadians(-45));
+  Pose2d STARTING1 = new Pose2d(-61.25, 11.5, Math.toRadians(180));
+  Pose2d STARTING2 = new Pose2d(-56, 50, Math.toRadians(135));
   Vector2d OUT_OF_LAUNCH = new Vector2d(-16, 38);
   
   public Pose2d adjust(Pose2d pose)
