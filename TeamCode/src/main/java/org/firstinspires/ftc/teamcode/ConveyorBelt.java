@@ -17,21 +17,28 @@ public class ConveyorBelt {
     private double desiredSpeed = 1;
 
 
-    ConveyorBelt(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry, String color) {
+    ConveyorBelt(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry, String direction) {
         telemetry = theTelemetry;
-        servo = hardwareMap.get(CRServo.class, color + "_conveyor");
+        //  servo = hardwareMap.get(CRServo.class, color + "_conveyor");
+        servo = hardwareMap.get(CRServo.class, direction + "_conveyor");
 
-
-        servo.setDirection(CRServo.Direction.FORWARD);
 
     }
 
-    public void startConveying() {
+    public void startConveyingForward() {
         servo.setPower(desiredSpeed);
+        servo.setDirection(CRServo.Direction.FORWARD);
+        //telemetry.addData("Conveying in artifacts. Speed is ", desiredSpeed);
+    }
+
+    public void startConveyingBackward() {
+        servo.setPower(desiredSpeed);
+        servo.setDirection(CRServo.Direction.REVERSE);
         telemetry.addData("Conveying in artifacts. Speed is ", desiredSpeed);
     }
 
     public void startConveyingIncreasing() {
+        servo.setDirection(CRServo.Direction.FORWARD);
         desiredSpeed += 0.0001;
         if (desiredSpeed > 1) {
             desiredSpeed = 1;
@@ -41,6 +48,7 @@ public class ConveyorBelt {
     }
 
     public void startConveyingDecreasing() {
+        servo.setDirection(CRServo.Direction.FORWARD);
         desiredSpeed -= 0.0001;
         if (desiredSpeed < 0) {
             desiredSpeed = 0;
@@ -51,6 +59,7 @@ public class ConveyorBelt {
 
     public void stopConveying() {
         servo.setPower(0);
+        servo.setDirection(CRServo.Direction.FORWARD);
         telemetry.addData("Stop conveying in artifact. Speed is ", desiredSpeed);
 
     }

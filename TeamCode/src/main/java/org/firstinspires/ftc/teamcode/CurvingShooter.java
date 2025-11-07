@@ -12,36 +12,36 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class CurvingShooter {
     private final Launcher launchWheel;
     private final Telemetry telemetry;
-    private final ConveyorBelt greenConveyor;
-    private final ConveyorBelt purpleConveyor;
+    private final ConveyorBelt conveyorForward;
+    private final ConveyorBelt conveyorBackward;
     private final Intake intake;
 
 
     CurvingShooter(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry) {
         telemetry = theTelemetry;
         launchWheel = new Launcher(hardwareMap, telemetry);
-        greenConveyor = new ConveyorBelt(hardwareMap, telemetry, "green");
-        purpleConveyor = new ConveyorBelt(hardwareMap, telemetry, "purple");
+        conveyorForward = new ConveyorBelt(hardwareMap, telemetry, "forward");
+        conveyorBackward = new ConveyorBelt(hardwareMap, telemetry, "backward");
         intake = new Intake(hardwareMap, telemetry);
     }
 
     public void launchGreenArtifact() {
-        greenConveyor.startConveying();
+        conveyorForward.startConveyingForward();
         telemetry.addLine("Conveying artifact");
         launchWheel.startLaunching();
         telemetry.addLine("Launching artifact");
         launchWheel.stopLaunching();
-        greenConveyor.stopConveying();
+        conveyorForward.stopConveying();
         telemetry.update();
     }
 
     public void launchPurpleArtifact() {
-        purpleConveyor.startConveying();
+        conveyorForward.startConveyingForward();
         telemetry.addLine("Conveying artifact");
         launchWheel.startLaunching();
         telemetry.addLine("Launching artifact");
         launchWheel.stopLaunching();
-        purpleConveyor.stopConveying();
+        conveyorForward.stopConveying();
         telemetry.update();
     }
 

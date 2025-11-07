@@ -27,16 +27,18 @@ public class DecodeOpMode extends LinearOpMode {
     public ConveyorBelt conveyorBelt = null;
     public Launcher launcher = null;
     public Intake intake = null;
-    public ConveyorBelt greenConveyor;
-    public ConveyorBelt purpleConveyor;
+    public ConveyorBelt conveyorForward;
+    public ConveyorBelt conveyorBackward;
 
     @Override
     public void runOpMode() throws InterruptedException {
         //telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         Shooter shooter = new Shooter(hardwareMap, telemetry);
-//conveyorBelt = new ConveyorBelt(hardwareMap, telemetry);
-        greenConveyor = new ConveyorBelt(hardwareMap, telemetry, "green");
-        purpleConveyor = new ConveyorBelt(hardwareMap, telemetry, "purple");
+        //conveyorBelt = new ConveyorBelt(hardwareMap, telemetry);
+        //greenConveyor = new ConveyorBelt(hardwareMap, telemetry, "green");
+        //purpleConveyor = new ConveyorBelt(hardwareMap, telemetry, "purple");
+        conveyorForward = new ConveyorBelt(hardwareMap, telemetry, "forward");
+        conveyorBackward = new ConveyorBelt(hardwareMap, telemetry, "backward");
         launcher = new Launcher(hardwareMap, telemetry);
         intake = new Intake(hardwareMap, telemetry);
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
@@ -70,13 +72,15 @@ public class DecodeOpMode extends LinearOpMode {
             //waitForStart();
             //  while (opModeIsActive()) {
             if (gamepad1.right_bumper) {
-                greenConveyor.startConveying();
+                conveyorForward.startConveyingForward();
+                conveyorBackward.startConveyingBackward();
+
+
                 telemetry.addLine("Pressing right bumper");
             }
-            if (gamepad1.left_bumper) {
-                purpleConveyor.startConveying();
-                telemetry.addLine("Pressing right bumper");
-            }
+//            if (gamepad1.left_bumper) {
+//                telemetry.addLine("Pressing left bumper");
+//            }
 
             // if (gamepad1.right_bumper) {
             //     conveyorBelt.startConveyingIncreasing();
@@ -94,7 +98,8 @@ public class DecodeOpMode extends LinearOpMode {
             if (gamepad1.x) {
                 intake.stopIntaking();
                 launcher.stopLaunching();
-                conveyorBelt.stopConveying();
+                conveyorForward.stopConveying();
+                conveyorForward.stopConveying();
                 telemetry.addLine("Stopping motors and servo");
             }
             if (gamepad1.y) {

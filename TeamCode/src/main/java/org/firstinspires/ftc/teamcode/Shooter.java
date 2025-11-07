@@ -4,32 +4,35 @@ import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+@Disabled
+
 public class Shooter {
     private final Launcher launchWheel;
     private final Telemetry telemetry;
-    private final ConveyorBelt conveyor;
+    private final ConveyorBelt conveyorForward;
     private final Intake intake;
 
 
     Shooter(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry) {
         telemetry = theTelemetry;
         launchWheel = new Launcher(hardwareMap, telemetry);
-        conveyor = new ConveyorBelt(hardwareMap, telemetry, "green");
+        conveyorForward = new ConveyorBelt(hardwareMap, telemetry, "forward");
         intake = new Intake(hardwareMap, telemetry);
     }
 
     public void launchArtifact() {
-        conveyor.startConveying();
+        conveyorForward.startConveyingForward();
         telemetry.addLine("Conveying artifact");
         launchWheel.startLaunching();
         telemetry.addLine("Launching artifact");
         launchWheel.stopLaunching();
-        conveyor.stopConveying();
+        conveyorForward.stopConveying();
         telemetry.update();
 
     }
