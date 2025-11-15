@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -12,6 +13,11 @@ public abstract class DacodAuto extends LinearOpMode
   public AprilTagCamera aprilTagCamera;
   public MecanumDrive robot;
   public ConceptVisionColorSensor conceptVisionColorSensor;
+  public ConveyorBelt conveyorBelt = null;
+  public Launcher launcher = null;
+  public Intake intake = null;
+  public ConveyorBelt conveyorForward;
+  public ConveyorBelt conveyorBackward;
   
   //set convertable constants
   Pose2d LAUNCH_POSITION = new Pose2d(-40.25, 15.5, Math.toRadians(135));
@@ -65,12 +71,15 @@ public abstract class DacodAuto extends LinearOpMode
   public void runOpMode()
   {
     robot = new MecanumDrive(hardwareMap, getStartingPose());
+    //robot2 = new MecanumDriveChassis(hardwareMap, telemetry);
     aprilTagCamera = new AprilTagCamera(this);
     // conceptVisionColorSensor = new ConceptVisionColorSensor(hardwareMap, telemetry);
     Shooter shooter = new Shooter(hardwareMap, telemetry);
     telemetry.addLine("Initialized");
     telemetry.update();
-    
+    conveyorForward = new ConveyorBelt(hardwareMap, telemetry, "forward");
+    conveyorBackward = new ConveyorBelt(hardwareMap, telemetry, "backward");
+    launcher = new Launcher(hardwareMap, telemetry);
     
     //adjust all constants to usable values
     Pose2d ACTUAL_LAUNCH_POSITION = adjust(LAUNCH_POSITION);
@@ -131,8 +140,10 @@ public abstract class DacodAuto extends LinearOpMode
     
     waitForStart();
     Actions.runBlocking(moveToScanning);
+    
     Motif motifPattern = aprilTagCamera.detectAprilTag();
     Actions.runBlocking(launchPreloaded);
+    //Actions.runBlocking();
     //go to the spike marks with correct motif first and collect artifacts
     if (motifPattern == Motif.GPP)
     {
@@ -146,12 +157,71 @@ public abstract class DacodAuto extends LinearOpMode
     {
       Actions.runBlocking(new SequentialAction(gotoSpikePPG, gotoSpikePGP, gotoSpikeGPP));
     }
-    Actions.runBlocking(getOut);
+    
+    //Actions.runBlocking();
+    /**
+     waitForStart();
+     //moveForward(2);
+     moveBackward(600);
+     stopMoving();
+     conveyorForward.startConveyingForward();
+     conveyorBackward.startConveyingBackward();
+     launcher.startLaunching();
+     sleep(15000);
+     launcher.stopLaunching();
+     **/
+//
+    if (amIBlue())
+    {
+      strafeRight(500);
+    } else
+    {
+      strafeLeft(500);
+    }
+    
+    //moveForward(1);
+    
+    
   }
   
   
   public abstract Pose2d getStartingPose();
   
+  private void moveForward(int timeDrivenMs)
+  {
+    robot.setDrivePowers(new PoseVelocity2d(new Vector2d(1, 0), 0));
+    sleep(timeDrivenMs);
+  }
+  
+  private void strafeRight(int timeDrivenMs)
+  {
+    robot.setDrivePowers(new PoseVelocity2d(new Vector2d(0, 1), 0));
+    sleep(timeDrivenMs);
+  }
+  
+  private void strafeLeft(int timeDrivenMs)
+  {
+    robot.setDrivePowers(new PoseVelocity2d(new Vector2d(0, -1), 0));
+    sleep(timeDrivenMs);
+  }
+
+//  private void rotate(double timeRotateMs)
+//  {
+//    robot.setDrivePowers(new PoseVelocity2d(new Vector2d(0, 0), 1));
+//    sleep(timeRotateMs * 1000);
+//
+//  }
+  
+  private void moveBackward(int timeDrivenMs)
+  {
+    robot.setDrivePowers(new PoseVelocity2d(new Vector2d(-1, 0), 0));
+    sleep(timeDrivenMs);
+  }
+  
+  private void stopMoving()
+  {
+    robot.setDrivePowers(new PoseVelocity2d(new Vector2d(0, 0), 0));
+  }
   /*
    Auto routine:
    call findObelisk()
@@ -163,4 +233,6 @@ public abstract class DacodAuto extends LinearOpMode
    call launcher.startLaunching()
    repeat up 3 steps above up to 3 times
   */
+  
+  
 }

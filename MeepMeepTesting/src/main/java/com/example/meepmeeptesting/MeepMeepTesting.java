@@ -27,7 +27,7 @@ public class MeepMeepTesting
       .setDimensions(16.5, 17)
       .build();
     
-    myBot.runAction(myBot.getDrive().actionBuilder(STARTING2)
+    myBot.runAction(myBot.getDrive().actionBuilder(STARTING1)
       .splineToLinearHeading(SCANNING_POINT, Math.toRadians(0))
       .splineToLinearHeading(LAUNCH_POSITION, LAUNCH_POSITION.heading)
       .splineToLinearHeading(SPIKE1, SPIKE1.heading)
