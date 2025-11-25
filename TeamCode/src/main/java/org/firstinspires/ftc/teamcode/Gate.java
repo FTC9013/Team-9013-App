@@ -12,23 +12,25 @@ public class Gate
   private final Servo gateServo;
   private final Telemetry telemetry;
   
-  Gate(@NonNull HardwareMap hardwareMap, Servo gateServo, Telemetry theTelemetry)
+  Gate(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry)
   {
-    this.gateServo = gateServo;
     telemetry = theTelemetry;
-    gateServo = hardwareMap.get(Servo.class, "LaunchMotor");
+    gateServo = hardwareMap.get(Servo.class, "GateServo");
     
   }
   
   public void open()
   {
-  
+    //gateServo.setDirection(Servo.Direction.FORWARD);
+    gateServo.setPosition(1);
+    
   }
   
   public void close()
   {
-  
+    gateServo.setPosition(0);
   }
+  
   
 }
 

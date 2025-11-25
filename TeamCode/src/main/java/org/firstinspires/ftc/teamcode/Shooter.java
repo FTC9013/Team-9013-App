@@ -2,16 +2,16 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import androidx.annotation.NonNull;
 
-@Disabled
+//import static android.os.SystemClock.sleep;
+
+//@Disabled
 
 public class Shooter
 {
@@ -20,7 +20,7 @@ public class Shooter
   private final ConveyorBelt conveyorForward;
   private final Intake intake;
   
-  private final Servo gate;
+  private final Gate gate;
   
   
   Shooter(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry)
@@ -29,29 +29,22 @@ public class Shooter
     launchWheel = new Launcher(hardwareMap, telemetry);
     conveyorForward = new ConveyorBelt(hardwareMap, telemetry, "forward");
     intake = new Intake(hardwareMap, telemetry);
+    gate = new Gate(hardwareMap, telemetry);
   }
   
-  public void launchArtifact()
-  {
-    conveyorForward.startConveyingForward();
-    telemetry.addLine("Conveying artifact");
-    launchWheel.startLaunching();
-    telemetry.addLine("Launching artifact");
-    launchWheel.stopLaunching();
-    conveyorForward.stopConveying();
-    telemetry.update();
-    
-  }
   
   public void startLaunching()
   {
+    gate.open();
     launchWheel.startLaunching();
+    //gate.close();
     telemetry.addLine("Launching artifact");
     telemetry.update();
   }
   
   public void stopLaunching()
   {
+    gate.close();
     launchWheel.stopLaunching();
     telemetry.addLine("Stop launching artifact");
     telemetry.update();
