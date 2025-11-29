@@ -4,29 +4,30 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@Disabled
 @TeleOp(name = "Test", group = "Linear Opmode")
 public class Test extends LinearOpMode {
 
     public ConveyorBelt conveyorForward = null;
     public Launcher launcher = null;
     public Intake intake = null;
+    public ConveyorBelt conveyorBackward;
 
     //public MecanumDriveChassis ServoTest;
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         conveyorForward = new ConveyorBelt(hardwareMap, telemetry, "forward");
+        conveyorBackward = new ConveyorBelt(hardwareMap, telemetry, "backward");
         launcher = new Launcher(hardwareMap, telemetry);
         intake = new Intake(hardwareMap, telemetry);
         waitForStart();
         while (opModeIsActive()) {
             if (gamepad1.right_bumper) {
-                conveyorForward.startConveyingIncreasing();
+                conveyorForward.startConveyingForward();
                 telemetry.addLine("Pressing right bumper");
             }
             if (gamepad1.left_bumper) {
-                conveyorForward.startConveyingDecreasing();
+                conveyorBackward.startConveyingBackward();
                 telemetry.addLine("Pressing left bumper");
             }
             if (gamepad1.a) {
