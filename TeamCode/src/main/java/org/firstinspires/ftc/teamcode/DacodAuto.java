@@ -76,6 +76,7 @@ public abstract class DacodAuto extends LinearOpMode
     // conceptVisionColorSensor = new ConceptVisionColorSensor(hardwareMap, telemetry);
     Shooter shooter = new Shooter(hardwareMap, telemetry);
     telemetry.addLine("Initialized");
+    telemetry.addLine("running auto");
     telemetry.update();
     conveyorForward = new ConveyorBelt(hardwareMap, telemetry, "forward");
     conveyorBackward = new ConveyorBelt(hardwareMap, telemetry, "backward");
@@ -157,31 +158,7 @@ public abstract class DacodAuto extends LinearOpMode
     {
       Actions.runBlocking(new SequentialAction(gotoSpikePPG, gotoSpikePGP, gotoSpikeGPP));
     }
-    
-    //Actions.runBlocking();
-    /**
-     waitForStart();
-     //moveForward(2);
-     moveBackward(600);
-     stopMoving();
-     conveyorForward.startConveyingForward();
-     conveyorBackward.startConveyingBackward();
-     launcher.startLaunching();
-     sleep(15000);
-     launcher.stopLaunching();
-     **/
-//
-    if (amIBlue())
-    {
-      strafeRight(500);
-    } else
-    {
-      strafeLeft(500);
-    }
-    
-    //moveForward(1);
-    
-    
+    Actions.runBlocking(getOut);
   }
   
   
