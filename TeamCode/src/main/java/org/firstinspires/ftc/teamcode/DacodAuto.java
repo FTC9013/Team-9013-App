@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
-import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -20,14 +19,14 @@ public abstract class DacodAuto extends LinearOpMode
   public ConveyorBelt conveyorBackward;
   
   //set convertable constants
-  Pose2d LAUNCH_POSITION = new Pose2d(-40.25, 15.5, Math.toRadians(135));
+  Pose2d LAUNCH_POSITION = new Pose2d(-40.25, 15.5, Math.toRadians(90));
   Pose2d SPIKE_PPG = new Pose2d(-11.25, 31, Math.toRadians(90));
   Pose2d SPIKE_PGP = new Pose2d(12, 31, Math.toRadians(90));
   Pose2d SPIKE_GPP = new Pose2d(35, 31, Math.toRadians(90));
   Pose2d SCANNING_POINT = new Pose2d(-31.25, 11.5, Math.toRadians(0));
   Double INTAKE = 45.0;
   Double BACK_UP = 31.0;
-  Pose2d STARTING1 = new Pose2d(-61.25, 11.5, Math.toRadians(180));
+  Pose2d STARTING1 = new Pose2d(-61.25, 11.5, Math.toRadians(0));
   Pose2d STARTING2 = new Pose2d(-56, 50, Math.toRadians(135));
   Vector2d OUT_OF_LAUNCH = new Vector2d(-16, 38);
   
@@ -92,13 +91,20 @@ public abstract class DacodAuto extends LinearOpMode
     Double ACTUAL_INTAKE = adjust(INTAKE);
     Double ACTUAL_BACK_UP = adjust(BACK_UP);
     
-    
+    Action tab1 = robot.actionBuilder(getStartingPose())
+      .splineTo(new Vector2d(33, 20), 0)
+      .lineToX(21)
+      .splineTo(new Vector2d(0, 41), 0)
+      .waitSeconds(2)
+      .build();
     //4 paths and actions
-    Action moveToScanning = robot.actionBuilder(getStartingPose()).splineToLinearHeading(ACTUAL_SCANNING_POINT, Math.toRadians(0)).build();
+    Action moveToScanning = robot.actionBuilder(getStartingPose())
+      .splineToSplineHeading(ACTUAL_SCANNING_POINT, Math.toRadians(0))
+      .build();
     
     Action launchPreloaded = robot.actionBuilder(ACTUAL_SCANNING_POINT)
       //preloaded
-      .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
+      .splineToSplineHeading(ACTUAL_LAUNCH_POSITION, 0)
       .stopAndAdd(shooter.shootingAction())
       .build();
     
@@ -140,8 +146,13 @@ public abstract class DacodAuto extends LinearOpMode
     
     
     waitForStart();
-    Actions.runBlocking(moveToScanning);
     
+    Actions.runBlocking(moveToScanning);
+    Actions.runBlocking(launchPreloaded);
+    
+    
+    //Actions.runBlocking(moveToScanning);
+    /*
     Motif motifPattern = aprilTagCamera.detectAprilTag();
     Actions.runBlocking(launchPreloaded);
     //Actions.runBlocking();
@@ -159,6 +170,8 @@ public abstract class DacodAuto extends LinearOpMode
       Actions.runBlocking(new SequentialAction(gotoSpikePPG, gotoSpikePGP, gotoSpikeGPP));
     }
     Actions.runBlocking(getOut);
+    */
+    
   }
   
   
