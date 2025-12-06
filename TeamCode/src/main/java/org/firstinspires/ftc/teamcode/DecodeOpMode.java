@@ -13,20 +13,21 @@ public class DecodeOpMode extends LinearOpMode {
     public ConveyorBelt conveyorBelt = null;
     public Launcher launcher = null;
     public Intake intake = null;
-    public ConveyorBelt conveyorForward;
-    public ConveyorBelt conveyorBackward;
+    //public ConveyorBelt conveyorForward;
+    //public ConveyorBelt conveyorBackward;
 
     @Override
     public void runOpMode() throws InterruptedException {
         //telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         Shooter shooter = new Shooter(hardwareMap, telemetry);
+        conveyorBelt = new ConveyorBelt(hardwareMap, telemetry, "purple");
         //conveyorBelt = new ConveyorBelt(hardwareMap, telemetry);
         //greenConveyor = new ConveyorBelt(hardwareMap, telemetry, "green");
         //purpleConveyor = new ConveyorBelt(hardwareMap, telemetry, "purple");
 
         //conveyors are second intake
-        conveyorForward = new ConveyorBelt(hardwareMap, telemetry, "forward");
-        conveyorBackward = new ConveyorBelt(hardwareMap, telemetry, "backward");
+        // conveyorForward = new ConveyorBelt(hardwareMap, telemetry, "forward");
+        //conveyorBackward = new ConveyorBelt(hardwareMap, telemetry, "backward");
         launcher = new Launcher(hardwareMap, telemetry);
         //intake is first intake
         intake = new Intake(hardwareMap, telemetry);
@@ -110,15 +111,13 @@ public class DecodeOpMode extends LinearOpMode {
 
 
             if (gamepad1.right_bumper) {
-                conveyorForward.startConveyingForward();
-                conveyorBackward.startConveyingBackward();
+                conveyorBelt.conveyForward();
                 //telemetry.addLine("Pressing key X");
             } else if (gamepad1.right_trigger > 0) {
-                conveyorForward.startConveyingBackward();
-                conveyorBackward.startConveyingForward();
+                conveyorBelt.conveyBackward();
             } else {
-                conveyorBackward.stopConveying();
-                conveyorForward.stopConveying();
+                conveyorBelt.stopConveying();
+
             }
 
             // if (gamepad1.dpad_up) {

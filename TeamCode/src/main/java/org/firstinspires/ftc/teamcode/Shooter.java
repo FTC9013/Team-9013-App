@@ -26,17 +26,18 @@ public class Shooter {
         intake = new Intake(hardwareMap, telemetry);
     }
 
-    public void launchArtifact() {
-        conveyorForward.startConveyingForward();
-        telemetry.addLine("Conveying artifact");
-        launchWheel.startLaunching();
-        telemetry.addLine("Launching artifact");
-        launchWheel.stopLaunching();
-        conveyorForward.stopConveying();
-        telemetry.update();
+    /*
+        public void launchArtifact() {
+            conveyorForward.startConveyingForward();
+            telemetry.addLine("Conveying artifact");
+            launchWheel.startLaunching();
+            telemetry.addLine("Launching artifact");
+            launchWheel.stopLaunching();
+            conveyorForward.stopConveying();
+            telemetry.update();
 
-    }
-
+        }
+    */
     public void startLaunching() {
         launchWheel.startLaunching();
         telemetry.addLine("Launching artifact");

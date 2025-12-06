@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 
 public class CurvingShooter {
     private final Launcher launchWheel;
@@ -25,26 +27,27 @@ public class CurvingShooter {
         intake = new Intake(hardwareMap, telemetry);
     }
 
-    public void launchGreenArtifact() {
-        conveyorForward.startConveyingForward();
-        telemetry.addLine("Conveying artifact");
-        launchWheel.startLaunching();
-        telemetry.addLine("Launching artifact");
-        launchWheel.stopLaunching();
-        conveyorForward.stopConveying();
-        telemetry.update();
-    }
+    /*
+        public void launchGreenArtifact() {
+            conveyorForward.startConveyingForward();
+            telemetry.addLine("Conveying artifact");
+            launchWheel.startLaunching();
+            telemetry.addLine("Launching artifact");
+            launchWheel.stopLaunching();
+            conveyorForward.stopConveying();
+            telemetry.update();
+        }
 
-    public void launchPurpleArtifact() {
-        conveyorForward.startConveyingForward();
-        telemetry.addLine("Conveying artifact");
-        launchWheel.startLaunching();
-        telemetry.addLine("Launching artifact");
-        launchWheel.stopLaunching();
-        conveyorForward.stopConveying();
-        telemetry.update();
-    }
-
+        public void launchPurpleArtifact() {
+            conveyorForward.startConveyingForward();
+            telemetry.addLine("Conveying artifact");
+            launchWheel.startLaunching();
+            telemetry.addLine("Launching artifact");
+            launchWheel.stopLaunching();
+            conveyorForward.stopConveying();
+            telemetry.update();
+        }
+    */
     public void startLaunching() {
         launchWheel.startLaunching();
         telemetry.addLine("Launching artifact");

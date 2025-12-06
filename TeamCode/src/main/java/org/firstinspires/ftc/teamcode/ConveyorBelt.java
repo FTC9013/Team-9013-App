@@ -8,22 +8,42 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import androidx.annotation.NonNull;
 
 
-public class ConveyorBelt
-{
-  private final CRServo servo;
-  private final Telemetry telemetry;
-  private double desiredSpeed = 1;
-  
-  
-  ConveyorBelt(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry, String direction)
-  {
-    telemetry = theTelemetry;
-    //  servo = hardwareMap.get(CRServo.class, color + "_conveyor");
-    servo = hardwareMap.get(CRServo.class, direction + "_conveyor");
-    
-    
-  }
-  
+public class ConveyorBelt {
+    // private final CRServo servo;
+    private final Telemetry telemetry;
+    private double desiredSpeed = 1;
+    public final CRServo servoForward;
+    public final CRServo servoBackward;
+
+
+    ConveyorBelt(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry, String color) {
+        telemetry = theTelemetry;
+        //  servo = hardwareMap.get(CRServo.class, color + "_conveyor");
+        // servo = hardwareMap.get(CRServo.class, direction + "_conveyor");
+        servoForward = hardwareMap.get(CRServo.class, color + "_forward");
+        servoBackward = hardwareMap.get(CRServo.class, color + "_backward");
+        servoForward.setDirection(CRServo.Direction.FORWARD);
+        servoBackward.setDirection(CRServo.Direction.REVERSE);
+
+    }
+
+    public void conveyForward() {
+        servoForward.setPower(1);
+        servoBackward.setPower(1);
+    }
+
+    public void conveyBackward() {
+        servoBackward.setPower(-1);
+        servoForward.setPower(-1);
+    }
+
+    public void stopConveying() {
+        servoForward.setPower(0);
+        servoBackward.setPower(0);
+        telemetry.addData("Stop conveying in artifact. Speed is ", desiredSpeed);
+
+    }
+  /*
   public void startConveyingForward()
   {
     
@@ -63,12 +83,6 @@ public class ConveyorBelt
     servo.setPower(desiredSpeed);
     telemetry.addData("Conveying in artifacts. Speed is ", desiredSpeed);
   }
-  
-  public void stopConveying()
-  {
-    servo.setPower(0);
-    servo.setDirection(CRServo.Direction.FORWARD);
-    telemetry.addData("Stop conveying in artifact. Speed is ", desiredSpeed);
-    
-  }
+  */
+
 }
