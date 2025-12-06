@@ -2,9 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-@Disabled
 @Autonomous(name = "Red 2")
 public class RedAutoBackTwo extends DacodAuto
 {
