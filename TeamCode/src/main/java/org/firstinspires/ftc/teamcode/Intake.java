@@ -23,19 +23,17 @@ public class Intake {
 
     public void startIntaking() {
         intakeMotor.setPower(desiredSpeed);
-
-        telemetry.addData("Intake artifacts", "True");
+        telemetry.addData("Front Intake", "Intake");
     }
 
     public void startIntakingBackward() {
         intakeMotor.setPower(-desiredSpeed);
+        telemetry.addData("Front Intake", "Eject");
     }
 
     public void stopIntaking() {
         intakeMotor.setPower(0);
-        telemetry.addData("No more Intaking", "True");
-
-
+        telemetry.addData("Front Intake", "Stopped");
     }
 
     public void startSpeedIncreasing() {
@@ -56,4 +54,3 @@ public class Intake {
         telemetry.addData("Intake speed in artifacts. Speed is ", desiredSpeed);
     }
 }
-

@@ -18,7 +18,7 @@ public class ConveyorBelt {
 
     ConveyorBelt(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry, String color) {
         telemetry = theTelemetry;
-        //  servo = hardwareMap.get(CRServo.class, color + "_conveyor");
+        // servo = hardwareMap.get(CRServo.class, color + "_conveyor");
         // servo = hardwareMap.get(CRServo.class, direction + "_conveyor");
         servoForward = hardwareMap.get(CRServo.class, color + "_forward");
         servoBackward = hardwareMap.get(CRServo.class, color + "_backward");
@@ -30,17 +30,19 @@ public class ConveyorBelt {
     public void conveyForward() {
         servoForward.setPower(1);
         servoBackward.setPower(1);
+        telemetry.addData("Conveyor", "Intake");
     }
 
     public void conveyBackward() {
         servoBackward.setPower(-1);
         servoForward.setPower(-1);
+        telemetry.addData("Conveyor", "Eject");
     }
 
     public void stopConveying() {
         servoForward.setPower(0);
         servoBackward.setPower(0);
-        telemetry.addData("Stop conveying in artifact. Speed is ", desiredSpeed);
+        telemetry.addData("Conveyor", "Stopped");
 
     }
   /*
