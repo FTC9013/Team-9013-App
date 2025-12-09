@@ -11,6 +11,7 @@ public abstract class DacodAuto extends LinearOpMode
 {
   public AprilTagCamera aprilTagCamera;
   public MecanumDrive robot;
+  
   //public ConceptVisionColorSensor conceptVisionColorSensor;
   
   //set convertable constants
@@ -18,7 +19,7 @@ public abstract class DacodAuto extends LinearOpMode
   Pose2d SPIKE_PPG = new Pose2d(-11.25, 31, Math.toRadians(90));
   Pose2d SPIKE_PGP = new Pose2d(12, 31, Math.toRadians(90));
   Pose2d SPIKE_GPP = new Pose2d(35, 31, Math.toRadians(90));
-  Pose2d SCANNING_POINT = new Pose2d(-31.25, 11.5, Math.toRadians(0));
+  Pose2d SCANNING_POINT = new Pose2d(-41.67, 11.5, Math.toRadians(0));
   Double INTAKE = 45.0;
   Double BACK_UP = 31.0;
   Pose2d STARTING1 = new Pose2d(-61.25, 11.5, Math.toRadians(0));
@@ -99,7 +100,9 @@ public abstract class DacodAuto extends LinearOpMode
       .splineToSplineHeading(ACTUAL_LAUNCH_POSITION, 0)
       .stopAndAdd(shooter.shootingAction())
       .build();
-    
+    Action launchGPP = robot.actionBuilder(ACTUAL_SCANNING_POINT)
+      .stopAndAdd(shooter.ShootGPP())
+      .build();
     Action gotoSpikeGPP = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
       //spike GPP
       .splineToLinearHeading(ACTUAL_SPIKE_GPP, ACTUAL_SPIKE_GPP.heading)
@@ -140,9 +143,16 @@ public abstract class DacodAuto extends LinearOpMode
     
     Actions.runBlocking(moveToScanning);
     Motif motifPattern = aprilTagCamera.detectAprilTag();
+    if (motifPattern == Motif.GPP)
+    {
+    
+    }
+    
     telemetry.addData("Found", motifPattern);
     telemetry.update();
     Actions.runBlocking(launchPreloaded);
+    
+    
     /*
     //Actions.runBlocking();
     //go to the spike marks with correct motif first and collect artifacts

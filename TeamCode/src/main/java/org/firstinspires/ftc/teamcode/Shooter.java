@@ -16,7 +16,8 @@ public class Shooter
 {
   private final Launcher launchWheel;
   private final Telemetry telemetry;
-  private final ConveyorBelt conveyorBelt;
+  private final ConveyorBelt conveyorBeltG;
+  private final ConveyorBelt conveyorBeltP;
   private final Intake intake;
   
   
@@ -24,7 +25,8 @@ public class Shooter
   {
     telemetry = theTelemetry;
     launchWheel = new Launcher(hardwareMap, telemetry);
-    conveyorBelt = new ConveyorBelt(hardwareMap, telemetry, "green");
+    conveyorBeltG = new ConveyorBelt(hardwareMap, telemetry, "green");
+    conveyorBeltP = new ConveyorBelt(hardwareMap, telemetry, "purple");
     intake = new Intake(hardwareMap, telemetry);
   }
   
@@ -112,6 +114,41 @@ public class Shooter
     }
   }
   
+  public class ShootGPP implements Action
+  {
+    private boolean initialized = false;
+    ElapsedTime runtime = new ElapsedTime();
+    
+    @Override
+    public boolean run(@NonNull TelemetryPacket packet)
+    {
+      if (!initialized)
+      {
+        runtime.reset();
+        startLaunching();
+        initialized = true;
+      }
+      if (runtime.seconds() > 1)
+      {
+        conveyorBeltG.conveyForward();
+      }
+      if (runtime.seconds() > 3)
+      {
+        conveyorBeltP.conveyForward();
+      }
+      if (runtime.seconds() > 7)
+      {
+        stopLaunching();
+        conveyorBeltG.stopConveying();
+        conveyorBeltP.stopConveying();
+        return false;
+      }
+      return true;
+    }
+    
+    
+  }
+  
   public class ShootingAction implements Action
   {
     private boolean initialized = false;
@@ -128,12 +165,12 @@ public class Shooter
       }
       if (runtime.seconds() > 1.5)
       {
-        conveyorBelt.conveyForward();
+        conveyorBeltG.conveyForward();
       }
       if (runtime.seconds() > 7)
       {
         stopLaunching();
-        conveyorBelt.stopConveying();
+        conveyorBeltG.stopConveying();
         return false;
       }
       return true;
@@ -150,6 +187,11 @@ public class Shooter
   public Action shootingAction()
   {
     return new ShootingAction();
+  }
+  
+  public Action shootGPP()
+  {
+    return new ShootGPP();
   }
   
   public Action startIntakingAction()
