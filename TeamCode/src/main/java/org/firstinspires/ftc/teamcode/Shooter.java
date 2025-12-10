@@ -14,17 +14,19 @@ import androidx.annotation.NonNull;
 
 public class Shooter
 {
-  private final Launcher launchWheel;
+  private final Launcher launchWheelP;
+  private final Launcher launchWheelG;
   private final Telemetry telemetry;
-  private final ConveyorBelt conveyorBeltG;
-  private final ConveyorBelt conveyorBeltP;
-  private final Intake intake;
+  public final ConveyorBelt conveyorBeltG;
+  public final ConveyorBelt conveyorBeltP;
+  public final Intake intake;
   
   
   Shooter(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry)
   {
     telemetry = theTelemetry;
-    launchWheel = new Launcher(hardwareMap, telemetry);
+    launchWheelP = new Launcher(hardwareMap, telemetry, "purple");
+    launchWheelG = new Launcher(hardwareMap, telemetry, "green");
     conveyorBeltG = new ConveyorBelt(hardwareMap, telemetry, "green");
     conveyorBeltP = new ConveyorBelt(hardwareMap, telemetry, "purple");
     intake = new Intake(hardwareMap, telemetry);
@@ -42,16 +44,30 @@ public class Shooter
 
       }
   */
-  public void startLaunching()
+  public void startLaunchingP()
   {
-    launchWheel.startLaunching();
+    launchWheelP.startLaunching();
     telemetry.addLine("Launching artifact");
     telemetry.update();
   }
   
-  public void stopLaunching()
+  public void stopLaunchingP()
   {
-    launchWheel.stopLaunching();
+    launchWheelP.stopLaunching();
+    telemetry.addLine("Stop launching artifact");
+    telemetry.update();
+  }
+  
+  public void startLaunchingG()
+  {
+    launchWheelG.startLaunching();
+    telemetry.addLine("Launching artifact");
+    telemetry.update();
+  }
+  
+  public void stopLaunchingG()
+  {
+    launchWheelG.stopLaunching();
     telemetry.addLine("Stop launching artifact");
     telemetry.update();
   }
@@ -67,6 +83,13 @@ public class Shooter
   {
     intake.stopIntaking();
     telemetry.addLine("Stop intaking artifact");
+    telemetry.update();
+  }
+  
+  public void startIntakingBackwards()
+  {
+    intake.startIntakingBackward();
+    telemetry.addLine("reversing intake");
     telemetry.update();
   }
   
@@ -86,7 +109,8 @@ public class Shooter
     public boolean run(@NonNull TelemetryPacket packet)
     {
       stopIntaking();
-      stopLaunching();
+      stopLaunchingP();
+      stopLaunchingG();
       return false;
     }
   }
@@ -125,31 +149,31 @@ public class Shooter
       if (!initialized)
       {
         runtime.reset();
-        startLaunching();
+        startLaunchingG();
         initialized = true;
       }
       if (runtime.seconds() > 1)
       {
         conveyorBeltG.conveyForward();
+        startLaunchingP();
       }
       if (runtime.seconds() > 3)
       {
+        stopLaunchingG();
+        conveyorBeltG.stopConveying();
         conveyorBeltP.conveyForward();
       }
       if (runtime.seconds() > 7)
       {
-        stopLaunching();
-        conveyorBeltG.stopConveying();
+        stopLaunchingP();
         conveyorBeltP.stopConveying();
         return false;
       }
       return true;
     }
-    
-    
   }
   
-  public class ShootingAction implements Action
+  public class ShootPGP implements Action
   {
     private boolean initialized = false;
     ElapsedTime runtime = new ElapsedTime();
@@ -160,23 +184,71 @@ public class Shooter
       if (!initialized)
       {
         runtime.reset();
-        startLaunching();
+        startLaunchingP();
         initialized = true;
       }
-      if (runtime.seconds() > 1.5)
+      if (runtime.seconds() > 1)
       {
+        conveyorBeltP.conveyForward();
+        startLaunchingG();
+      }
+      if (runtime.seconds() > 3)
+      {
+        conveyorBeltP.stopConveying();
         conveyorBeltG.conveyForward();
+      }
+      if (runtime.seconds() > 5)
+      {
+        stopLaunchingG();
+        conveyorBeltP.conveyForward();
+        conveyorBeltG.stopConveying();
       }
       if (runtime.seconds() > 7)
       {
-        stopLaunching();
+        stopLaunchingP();
+        conveyorBeltP.stopConveying();
+        return false;
+      }
+      return true;
+    }
+  }
+  
+  public class ShootPPG implements Action
+  {
+    private boolean initialized = false;
+    ElapsedTime runtime = new ElapsedTime();
+    
+    @Override
+    public boolean run(@NonNull TelemetryPacket packet)
+    {
+      if (!initialized)
+      {
+        runtime.reset();
+        startLaunchingP();
+        initialized = true;
+      }
+      if (runtime.seconds() > 1)
+      {
+        conveyorBeltP.conveyForward();
+      }
+      if (runtime.seconds() > 4)
+      {
+        startLaunchingG();
+      }
+      if (runtime.seconds() > 5)
+      {
+        stopLaunchingP();
+        conveyorBeltG.conveyForward();
+        conveyorBeltP.stopConveying();
+      }
+      if (runtime.seconds() > 7)
+      {
+        stopLaunchingG();
         conveyorBeltG.stopConveying();
         return false;
       }
       return true;
     }
-    
-    
   }
   
   public Action intakingAction()
@@ -184,14 +256,20 @@ public class Shooter
     return new IntakingAction();
   }
   
-  public Action shootingAction()
-  {
-    return new ShootingAction();
-  }
   
   public Action shootGPP()
   {
     return new ShootGPP();
+  }
+  
+  public Action shootPGP()
+  {
+    return new ShootPGP();
+  }
+  
+  public Action shootPPG()
+  {
+    return new ShootPPG();
   }
   
   public Action startIntakingAction()
