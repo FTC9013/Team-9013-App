@@ -79,21 +79,24 @@ public class DecodeOpMode extends LinearOpMode
       }
       
       
-      if (gamepad1.right_bumper)
+      if (gamepad2.right_bumper)
       {
         shooter.conveyorBeltG.conveyForward();
-      } else if (gamepad1.right_trigger > 0)
+        telemetry.addLine("Conveying Forward");
+      } else if (gamepad2.right_trigger > 0)
       {
         shooter.conveyorBeltG.conveyBackward();
+        telemetry.addLine("Conveying Backward");
       } else
       {
         shooter.conveyorBeltG.stopConveying();
       }
+      telemetry.update();
       
-      if (gamepad1.left_bumper)
+      if (gamepad2.left_bumper)
       {
         shooter.conveyorBeltP.conveyForward();
-      } else if (gamepad1.left_trigger > 0)
+      } else if (gamepad2.left_trigger > 0)
       {
         shooter.conveyorBeltP.conveyBackward();
       } else

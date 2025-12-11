@@ -100,6 +100,15 @@ public abstract class DacodAuto extends LinearOpMode
       .splineToSplineHeading(ACTUAL_LAUNCH_POSITION, 0)
       .build();
     
+    Action gotoSpikePPG = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
+      //spike GPP
+      .splineToLinearHeading(ACTUAL_SPIKE_PPG, ACTUAL_SPIKE_PPG.heading)
+      .stopAndAdd(shooter.startIntakingAction())
+      .lineToY(ACTUAL_INTAKE)
+      .stopAndAdd(shooter.stopAllMotorsAction())
+      .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
+      .stopAndAdd(shooter.shootGPP())
+      .build();
     Action gotoSpikeGPP = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
       //spike GPP
       .splineToLinearHeading(ACTUAL_SPIKE_GPP, ACTUAL_SPIKE_GPP.heading)
