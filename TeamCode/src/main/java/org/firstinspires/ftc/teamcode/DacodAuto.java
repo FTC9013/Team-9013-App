@@ -11,15 +11,10 @@ public abstract class DacodAuto extends LinearOpMode
 {
   public AprilTagCamera aprilTagCamera;
   public MecanumDrive robot;
-  public ConceptVisionColorSensor conceptVisionColorSensor;
-  public ConveyorBelt conveyorBelt = null;
-  public Launcher launcher = null;
-  public Intake intake = null;
-  public ConveyorBelt conveyorForward;
-  public ConveyorBelt conveyorBackward;
+  //public ConceptVisionColorSensor conceptVisionColorSensor;
   
   //set convertable constants
-  Pose2d LAUNCH_POSITION = new Pose2d(-40.25, 15.5, Math.toRadians(90));
+  Pose2d LAUNCH_POSITION = new Pose2d(-22.25, 29.5, Math.toRadians(135));
   Pose2d SPIKE_PPG = new Pose2d(-11.25, 31, Math.toRadians(90));
   Pose2d SPIKE_PGP = new Pose2d(12, 31, Math.toRadians(90));
   Pose2d SPIKE_GPP = new Pose2d(35, 31, Math.toRadians(90));
@@ -77,9 +72,6 @@ public abstract class DacodAuto extends LinearOpMode
     telemetry.addLine("Initialized");
     telemetry.addLine("running auto");
     telemetry.update();
-    conveyorForward = new ConveyorBelt(hardwareMap, telemetry, "forward");
-    conveyorBackward = new ConveyorBelt(hardwareMap, telemetry, "backward");
-    launcher = new Launcher(hardwareMap, telemetry);
     
     //adjust all constants to usable values
     Pose2d ACTUAL_LAUNCH_POSITION = adjust(LAUNCH_POSITION);
@@ -144,17 +136,14 @@ public abstract class DacodAuto extends LinearOpMode
       // out of launch_position
       .strafeTo(ACTUAL_OUT_OF_LAUNCH).build();
     
-    
     waitForStart();
     
     Actions.runBlocking(moveToScanning);
-    Actions.runBlocking(launchPreloaded);
-    
-    
-    //Actions.runBlocking(moveToScanning);
-    /*
     Motif motifPattern = aprilTagCamera.detectAprilTag();
+    telemetry.addData("Found", motifPattern);
+    telemetry.update();
     Actions.runBlocking(launchPreloaded);
+    /*
     //Actions.runBlocking();
     //go to the spike marks with correct motif first and collect artifacts
     if (motifPattern == Motif.GPP)
