@@ -8,43 +8,49 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import androidx.annotation.NonNull;
 
 
-public class ConveyorBelt {
-    // private final CRServo servo;
-    private final Telemetry telemetry;
-    private double desiredSpeed = 1;
-    public final CRServo servoForward;
-    public final CRServo servoBackward;
-
-
-    ConveyorBelt(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry, String color) {
-        telemetry = theTelemetry;
-        // servo = hardwareMap.get(CRServo.class, color + "_conveyor");
-        // servo = hardwareMap.get(CRServo.class, direction + "_conveyor");
-        servoForward = hardwareMap.get(CRServo.class, color + "_forward");
-        servoBackward = hardwareMap.get(CRServo.class, color + "_backward");
-        servoForward.setDirection(CRServo.Direction.FORWARD);
-        servoBackward.setDirection(CRServo.Direction.REVERSE);
-
-    }
-
-    public void conveyForward() {
-        servoForward.setPower(1);
-        servoBackward.setPower(1);
-        telemetry.addData("Conveyor", "Intake");
-    }
-
-    public void conveyBackward() {
-        servoBackward.setPower(-1);
-        servoForward.setPower(-1);
-        telemetry.addData("Conveyor", "Eject");
-    }
-
-    public void stopConveying() {
-        servoForward.setPower(0);
-        servoBackward.setPower(0);
-        telemetry.addData("Conveyor", "Stopped");
-
-    }
+public class ConveyorBelt
+{
+  // private final CRServo servo;
+  private final Telemetry telemetry;
+  private double desiredSpeed = 1;
+  public final CRServo servoForward;
+  public final CRServo servoBackward;
+  
+  
+  ConveyorBelt(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry, String color)
+  {
+    telemetry = theTelemetry;
+    //  servo = hardwareMap.get(CRServo.class, color + "_conveyor");
+    // servo = hardwareMap.get(CRServo.class, direction + "_conveyor");
+    servoForward = hardwareMap.get(CRServo.class, color + "_forward");
+    servoBackward = hardwareMap.get(CRServo.class, color + "_backward");
+    servoForward.setDirection(CRServo.Direction.FORWARD);
+    servoBackward.setDirection(CRServo.Direction.REVERSE);
+    
+  }
+  
+  public void conveyForward()
+  {
+    servoForward.setPower(1);
+    servoBackward.setPower(1);
+    telemetry.addLine("Adding power yo");
+  }
+  
+  public void conveyBackward()
+  {
+    servoBackward.setPower(-1);
+    servoForward.setPower(-1);
+    telemetry.addLine("Adding power yo");
+    
+  }
+  
+  public void stopConveying()
+  {
+    servoForward.setPower(0);
+    servoBackward.setPower(0);
+    telemetry.addData("Stop conveying in artifact. Speed is ", desiredSpeed);
+    
+  }
   /*
   public void startConveyingForward()
   {
@@ -86,5 +92,5 @@ public class ConveyorBelt {
     telemetry.addData("Conveying in artifacts. Speed is ", desiredSpeed);
   }
   */
-
+  
 }
