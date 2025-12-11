@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import androidx.annotation.NonNull;
+
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -17,8 +20,8 @@ public class CurvingShooter
   private final ConveyorBelt conveyorForward;
   private final ConveyorBelt conveyorBackward;
   private final Intake intake;
-  
-  
+
+
   CurvingShooter(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry)
   {
     telemetry = theTelemetry;
@@ -27,7 +30,7 @@ public class CurvingShooter
     conveyorBackward = new ConveyorBelt(hardwareMap, telemetry, "backward");
     intake = new Intake(hardwareMap, telemetry);
   }
-  
+
   /*
       public void launchGreenArtifact() {
           conveyorForward.startConveyingForward();
@@ -55,28 +58,28 @@ public class CurvingShooter
     telemetry.addLine("Launching artifact");
     telemetry.update();
   }
-  
+
   public void stopLaunching()
   {
     launchWheel.stopLaunching();
     telemetry.addLine("Stop launching artifact");
     telemetry.update();
   }
-  
+
   public void startIntaking()
   {
     intake.startIntaking();
     telemetry.addLine("Intaking artifact");
     telemetry.update();
   }
-  
+
   public void stopIntaking()
   {
     intake.stopIntaking();
     telemetry.addLine("Stop intaking artifact");
     telemetry.update();
   }
-  
+
   public class StartIntakingAction implements Action
   {
     @Override
@@ -86,7 +89,7 @@ public class CurvingShooter
       return true;
     }
   }
-  
+
   public class StopAllMotorsAction implements Action
   {
     @Override
@@ -97,12 +100,12 @@ public class CurvingShooter
       return false;
     }
   }
-  
+
   public class IntakingAction implements Action
   {
     private boolean initialized = false;
     ElapsedTime runtime = new ElapsedTime();
-    
+
     @Override
     public boolean run(@NonNull TelemetryPacket packet)
     {
@@ -120,12 +123,12 @@ public class CurvingShooter
       return true;
     }
   }
-  
+
   public class ShootingAction implements Action
   {
     private boolean initialized = false;
     ElapsedTime runtime = new ElapsedTime();
-    
+
     @Override
     public boolean run(@NonNull TelemetryPacket packet)
     {
@@ -142,25 +145,25 @@ public class CurvingShooter
       }
       return true;
     }
-    
-    
+
+
   }
-  
+
   public Action intakingAction()
   {
     return new CurvingShooter.IntakingAction();
   }
-  
+
   public Action shootingAction()
   {
     return new CurvingShooter.ShootingAction();
   }
-  
+
   public Action startIntakingAction()
   {
     return new CurvingShooter.StartIntakingAction();
   }
-  
+
   public Action stopAllMotorsAction()
   {
     return new CurvingShooter.StopAllMotorsAction();
