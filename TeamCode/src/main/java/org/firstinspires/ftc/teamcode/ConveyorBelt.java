@@ -26,6 +26,11 @@ public class ConveyorBelt
     servoBackward = hardwareMap.get(CRServo.class, color + "_backward");
     servoForward.setDirection(CRServo.Direction.FORWARD);
     servoBackward.setDirection(CRServo.Direction.REVERSE);
+    if (color == "purple")
+    {
+      servoForward.setDirection(CRServo.Direction.REVERSE);
+      servoBackward.setDirection(CRServo.Direction.FORWARD);
+    }
     
   }
   
