@@ -19,12 +19,12 @@ public abstract class DacodAuto extends LinearOpMode
   Pose2d SPIKE_PPG = new Pose2d(-8.75, 31, Math.toRadians(90));
   Pose2d SPIKE_PGP = new Pose2d(12, 31, Math.toRadians(90));
   Pose2d SPIKE_GPP = new Pose2d(35, 31, Math.toRadians(90));
-  Pose2d SCANNING_POINT = new Pose2d(-21, 11.5, Math.toRadians(0));
+  Pose2d SCANNING_POINT = new Pose2d(-16, 11.5, Math.toRadians(0));
   Double INTAKE = 45.0;
   Double BACK_UP = 31.0;
-  Pose2d STARTING1 = new Pose2d(-61.25, 11.5, Math.toRadians(0));
+  Pose2d STARTING1 = new Pose2d(61.25, 11.5, Math.toRadians(0));
   Pose2d STARTING2 = new Pose2d(-61.25, 33, Math.toRadians(0));
-  Vector2d OUT_OF_LAUNCH = new Vector2d(-16, 38);
+  Vector2d OUT_OF_LAUNCH = new Vector2d(0, 20);
   
   public Pose2d adjust(Pose2d pose)
   {
@@ -73,7 +73,7 @@ public abstract class DacodAuto extends LinearOpMode
     shooter.launchWheelG.setSpeed(0.66);
     shooter.launchWheelP.setSpeed(0.66);
     telemetry.addLine("Initialized");
-    telemetry.addLine("running auto");
+    telemetry.addLine("running auto yo");
     telemetry.update();
     
     //adjust all constants to usable values
@@ -94,7 +94,7 @@ public abstract class DacodAuto extends LinearOpMode
       .build();
     //4 paths and actions
     Action moveToScanning = robot.actionBuilder(getStartingPose())
-      .splineToSplineHeading(ACTUAL_SCANNING_POINT, Math.toRadians(0))
+      .lineToX(0)
       .build();
     
     Action goToLaunch = robot.actionBuilder(ACTUAL_SCANNING_POINT)

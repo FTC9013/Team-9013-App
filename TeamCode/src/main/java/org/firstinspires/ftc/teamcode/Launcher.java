@@ -12,7 +12,7 @@ public class Launcher
 {
   private final DcMotor launchMotor;
   private final Telemetry telemetry;
-  private double desiredSpeed = 0.78;
+  private double desiredSpeed = 0.68;
   private boolean isSpinning = false;
   
   
@@ -54,7 +54,7 @@ public class Launcher
   
   public void launchSpeedIncreasing()
   {
-    desiredSpeed += 0.0001;
+    desiredSpeed += 0.1;
     isSpinning = true;
     if (desiredSpeed > 1)
     {
@@ -62,11 +62,12 @@ public class Launcher
     }
     launchMotor.setPower(desiredSpeed);
     telemetry.addData("Intake speed in artifacts. Speed is ", desiredSpeed);
+    telemetry.update();
   }
   
   public void launchSpeedDecreasing()
   {
-    desiredSpeed -= 0.0001;
+    desiredSpeed -= 0.1;
     isSpinning = true;
     if (desiredSpeed < 0)
     {
@@ -75,6 +76,13 @@ public class Launcher
     }
     launchMotor.setPower(desiredSpeed);
     telemetry.addData("Intake speed in artifacts. Speed is ", desiredSpeed);
+    telemetry.update();
+  }
+  
+  public void outputSpeed()
+  {
+    telemetry.addData("Launch speed: ", desiredSpeed);
+    
   }
   
   public void toggle()

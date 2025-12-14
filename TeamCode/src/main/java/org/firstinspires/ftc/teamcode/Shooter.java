@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -10,7 +9,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import androidx.annotation.NonNull;
 
-@Disabled
 
 public class Shooter
 {
@@ -152,21 +150,26 @@ public class Shooter
         startLaunchingG();
         initialized = true;
       }
-      if (runtime.seconds() > 1.2)
+      if (runtime.seconds() > 2)
       {
         conveyorBeltG.conveyForward();
         startLaunchingP();
       }
-      if (runtime.seconds() > 3.2)
+      if (runtime.seconds() > 4)
       {
         stopLaunchingG();
         conveyorBeltG.stopConveying();
         conveyorBeltP.conveyForward();
       }
-      if (runtime.seconds() > 7.2)
+      if (runtime.seconds() > 9)
+      {
+        //stopLaunchingP();
+        conveyorBeltP.stopConveying();
+        //return false;
+      }
+      if (runtime.seconds() > 10)
       {
         stopLaunchingP();
-        conveyorBeltP.stopConveying();
         return false;
       }
       return true;
