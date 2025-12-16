@@ -1,18 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 @Autonomous(name = "Red 2")
 public class RedAutoBackTwo extends DacodAuto
 {
-  @Override
-  public Pose2d getStartingPose()
+  public boolean amIBlue()
   {
-    return adjust(STARTING2);
+    return false;
   }
   
-  public boolean amIBlue()
+  public boolean amIFirst()
   {
     return false;
   }

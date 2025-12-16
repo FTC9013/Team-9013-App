@@ -26,16 +26,31 @@ public class DecodeOpMode extends LinearOpMode
     boolean wasBPressed = false;
     boolean wasdpadupPressed = false;
     boolean wasdpaddownPressed = false;
+    boolean wasAPressed = false;
+    boolean toggleDirection = false;
     waitForStart();
     
     while (opModeIsActive())
     {
+      double gampad1LeftStickY = -gamepad1.left_stick_y;
+      double gampad1LeftStickX = -gamepad1.left_stick_x;
+      double gampad1RightStickX = -gamepad1.right_stick_x;
+      if (!wasAPressed && gamepad1.a)
+      {
+        toggleDirection = !toggleDirection;
+      }
+      wasAPressed = gamepad1.a;
+      if (toggleDirection)
+      {
+        gampad1LeftStickY *= -1;
+        gampad1LeftStickX *= -1;
+      }
       drive.setDrivePowers(new PoseVelocity2d(
         new Vector2d(
-          -gamepad1.left_stick_y,
-          -gamepad1.left_stick_x
+          gampad1LeftStickY,
+          gampad1LeftStickX
         ),
-        -gamepad1.right_stick_x
+        gampad1RightStickX
       ));
       
       drive.updatePoseEstimate();

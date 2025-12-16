@@ -65,7 +65,7 @@ public abstract class DacodAuto extends LinearOpMode
   
   public void runOpMode()
   {
-    robot = new MecanumDrive(hardwareMap, getStartingPose());
+    
     //robot2 = new MecanumDriveChassis(hardwareMap, telemetry);
     aprilTagCamera = new AprilTagCamera(this);
     // conceptVisionColorSensor = new ConceptVisionColorSensor(hardwareMap, telemetry);
@@ -82,24 +82,33 @@ public abstract class DacodAuto extends LinearOpMode
     Pose2d ACTUAL_SPIKE_PGP = adjust(SPIKE_PGP);
     Pose2d ACTUAL_SPIKE_PPG = adjust(SPIKE_PPG);
     Pose2d ACTUAL_SCANNING_POINT = adjust(SCANNING_POINT);
+    Pose2d ACTUAL_STARTING_POINT;
+    if (amIFirst())
+    {
+      ACTUAL_STARTING_POINT = adjust(STARTING1);
+    } else
+    {
+      ACTUAL_STARTING_POINT = adjust(STARTING2);
+    }
+    robot = new MecanumDrive(hardwareMap, ACTUAL_STARTING_POINT);
+    
     Vector2d ACTUAL_OUT_OF_LAUNCH = adjust(OUT_OF_LAUNCH);
     Double ACTUAL_INTAKE = adjust(INTAKE);
     Double ACTUAL_BACK_UP = adjust(BACK_UP);
     
-    Action tab1 = robot.actionBuilder(getStartingPose())
-      .splineTo(new Vector2d(33, 20), 0)
-      .lineToX(21)
-      .splineTo(new Vector2d(0, 41), 0)
-      .waitSeconds(2)
-      .build();
     //4 paths and actions
-    Action moveToScanning = robot.actionBuilder(getStartingPose())
-      .lineToX(0)
+    Action moveToScanningFirst = robot.actionBuilder(ACTUAL_STARTING_POINT)
+      .setReversed(true)
+      .lineToX(ACTUAL_SCANNING_POINT.position.x)
+      .build();
+    
+    Action moveToScanningSecond = robot.actionBuilder(STARTING2)
+      .splineToSplineHeading(ACTUAL_SCANNING_POINT, 0)
       .build();
     
     Action goToLaunch = robot.actionBuilder(ACTUAL_SCANNING_POINT)
       //preloaded
-      .splineToSplineHeading(ACTUAL_LAUNCH_POSITION, 0)
+      .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, 0)
       .build();
     
     Action gotoSpikePPG = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
@@ -149,8 +158,15 @@ public abstract class DacodAuto extends LinearOpMode
       .strafeTo(ACTUAL_OUT_OF_LAUNCH).build();
     
     waitForStart();
+    if (amIFirst())
+    {
+      Actions.runBlocking(moveToScanningFirst);
+      
+    } else
+    {
+      Actions.runBlocking(moveToScanningSecond);
+    }
     
-    Actions.runBlocking(moveToScanning);
     Motif motifPattern = aprilTagCamera.detectAprilTag();
     telemetry.addData("Found", motifPattern);
     telemetry.update();
@@ -195,7 +211,7 @@ public abstract class DacodAuto extends LinearOpMode
   }
   
   
-  public abstract Pose2d getStartingPose();
+  public abstract boolean amIFirst();
   
   private void moveForward(int timeDrivenMs)
   {
