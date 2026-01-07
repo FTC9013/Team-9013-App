@@ -79,7 +79,7 @@ public class Launcher
     telemetry.update();
   }
   
-  public void outputSpeed()
+  public void printOutputSpeed()
   {
     telemetry.addData("Launch speed: ", desiredSpeed);
     

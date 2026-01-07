@@ -83,6 +83,8 @@ public abstract class DacodAuto extends LinearOpMode
     Pose2d ACTUAL_SPIKE_PPG = adjust(SPIKE_PPG);
     Pose2d ACTUAL_SCANNING_POINT = adjust(SCANNING_POINT);
     Pose2d ACTUAL_STARTING_POINT;
+    PoseStorage.launchPose = ACTUAL_LAUNCH_POSITION;
+    
     if (amIFirst())
     {
       ACTUAL_STARTING_POINT = adjust(STARTING1);
@@ -207,7 +209,8 @@ public abstract class DacodAuto extends LinearOpMode
     }
     Actions.runBlocking(getOut);
     */
-    
+    //record location
+    PoseStorage.currentPose = robot.localizer.getPose();
   }
   
   
@@ -248,17 +251,4 @@ public abstract class DacodAuto extends LinearOpMode
   {
     robot.setDrivePowers(new PoseVelocity2d(new Vector2d(0, 0), 0));
   }
-  /*
-   Auto routine:
-   call findObelisk()
-   do something with the aprilTagCamera.detectAprilTag() method
-   call goToLaunchPosition()
-   call launcher.startLaunching()
-   call collectArtifacts()
-   call goToLaunchPosition()
-   call launcher.startLaunching()
-   repeat up 3 steps above up to 3 times
-  */
-  
-  
 }

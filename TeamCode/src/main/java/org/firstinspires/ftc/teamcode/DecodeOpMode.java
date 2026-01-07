@@ -21,7 +21,8 @@ public class DecodeOpMode extends LinearOpMode
     //telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
     Shooter shooter = new Shooter(hardwareMap, telemetry);
     
-    MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+    //define button pressing
+    MecanumDrive drive = new MecanumDrive(hardwareMap, PoseStorage.currentPose);
     boolean wasXPressed = false;
     boolean wasLeftBumperPressed = false;
     boolean wasBPressed = false;
@@ -43,9 +44,9 @@ public class DecodeOpMode extends LinearOpMode
         toggleDirection = !toggleDirection;
       }
       telemetry.addData("Frontside = ", toggleDirection ? "Shooter" : "Intake");
-      
-      
       wasAPressed = gamepad1.a;
+      
+      
       if (gamepad1.left_bumper && !wasLeftBumperPressed)
       {
         toggleTurbo = !toggleTurbo;
@@ -59,11 +60,17 @@ public class DecodeOpMode extends LinearOpMode
         gampad1LeftStickY *= -1;
         gampad1LeftStickX *= -1;
       }
+      //slowing down
       if (toggleTurbo)
       {
         gampad1LeftStickY *= 0.67;
         gampad1LeftStickX *= 0.67;
         gampad1RightStickX *= 0.67;
+      }
+      
+      if (getDistance(PoseStorage.currentPose.position, PoseStorage.launchPose.position) <= 15)
+      {
+        //change speed
       }
       drive.setDrivePowers(new PoseVelocity2d(
         new Vector2d(
@@ -88,7 +95,7 @@ public class DecodeOpMode extends LinearOpMode
       
       telemetry.addData("Status", "Initialized");
       
-      
+      //intake
       if (gamepad1.right_trigger > 0 || gamepad2.a)
       {
         shooter.startIntaking();
@@ -101,24 +108,28 @@ public class DecodeOpMode extends LinearOpMode
         shooter.intake.stopIntaking();
       }
       
+      //green launcher
       if (gamepad2.b && !wasBPressed)
       {
         shooter.launchWheelG.toggle();
       }
       wasBPressed = gamepad2.b;
       
+      //purple launcher
       if (gamepad2.x && !wasXPressed)
       {
         shooter.launchWheelP.toggle();
       }
       wasXPressed = gamepad2.x;
       
+      //green conveyor forward
       if (gamepad2.right_bumper)
       {
         shooter.conveyorBeltG.conveyForward();
         shooter.startIntaking();
         
         telemetry.addLine("Conveying Forward");
+        //backward
       } else if (gamepad2.right_trigger > 0)
       {
         shooter.conveyorBeltG.conveyBackward();
@@ -129,12 +140,13 @@ public class DecodeOpMode extends LinearOpMode
         shooter.intake.stopIntaking();
       }
       
-      
+      //purple conveyor forward
       if (gamepad2.left_bumper)
       {
         shooter.conveyorBeltP.conveyForward();
         shooter.startIntaking();
         
+        //backward
       } else if (gamepad2.left_trigger > 0)
       {
         shooter.conveyorBeltP.conveyBackward();
@@ -143,22 +155,37 @@ public class DecodeOpMode extends LinearOpMode
         shooter.conveyorBeltP.stopConveying();
         shooter.intake.stopIntaking();
       }
+      //increase launch speed
       if (gamepad2.dpad_up && !wasdpadupPressed)
       {
         shooter.launchWheelG.launchSpeedIncreasing();
         shooter.launchWheelP.launchSpeedIncreasing();
         telemetry.addData("Increasing launch speed", gamepad2.dpad_up);
       }
-      wasdpadupPressed = gamepad1.dpad_up;
+      wasdpadupPressed = gamepad2.dpad_up;
+      
+      //decrease launch speed
       if (gamepad2.dpad_down && !wasdpaddownPressed)
       {
         shooter.launchWheelG.launchSpeedDecreasing();
         shooter.launchWheelP.launchSpeedDecreasing();
         telemetry.addData("Decreasing launch speed", gamepad2.dpad_down);
       }
-      wasdpaddownPressed = gamepad1.dpad_down;
-      shooter.launchWheelG.outputSpeed();
+      //speed is same for both, even though code says green
+      wasdpaddownPressed = gamepad2.dpad_down;
+      shooter.launchWheelG.printOutputSpeed();
+      //pose saving
+      PoseStorage.currentPose = drive.localizer.getPose();
+      telemetry.addData("Current x position", PoseStorage.currentPose.position.x);
+      telemetry.addData("Current y position", PoseStorage.currentPose.position.y);
+      telemetry.addData("Current heading", PoseStorage.currentPose.heading);
       telemetry.update();
     }
+  }
+  
+  double getDistance(Vector2d start, Vector2d finish)
+  {
+    return 0;
+    //continue doing pythag for distance
   }
 }
