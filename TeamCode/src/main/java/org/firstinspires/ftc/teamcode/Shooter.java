@@ -150,18 +150,18 @@ public class Shooter
         startLaunchingG();
         initialized = true;
       }
-      if (runtime.seconds() > 2)
+      if (runtime.seconds() > 2.5)
       {
         conveyorBeltG.conveyForward();
         startLaunchingP();
       }
-      if (runtime.seconds() > 4)
+      if (runtime.seconds() > 5)
       {
         stopLaunchingG();
         conveyorBeltG.stopConveying();
         conveyorBeltP.conveyForward();
       }
-      if (runtime.seconds() > 9)
+      if (runtime.seconds() > 10)
       {
         //stopLaunchingP();
         conveyorBeltP.stopConveying();
@@ -190,23 +190,23 @@ public class Shooter
         startLaunchingP();
         initialized = true;
       }
-      if (runtime.seconds() > 1.5)
+      if (runtime.seconds() > 2.5)
       {
         conveyorBeltP.conveyForward();
         startLaunchingG();
       }
-      if (runtime.seconds() > 3.167)
+      if (runtime.seconds() > 4.667)
       {
         conveyorBeltP.stopConveying();
         conveyorBeltG.conveyForward();
       }
-      if (runtime.seconds() > 6)
+      if (runtime.seconds() > 7.5)
       {
         stopLaunchingG();
         conveyorBeltP.conveyForward();
         conveyorBeltG.stopConveying();
       }
-      if (runtime.seconds() > 7.5)
+      if (runtime.seconds() > 9)
       {
         stopLaunchingP();
         conveyorBeltP.stopConveying();
@@ -230,7 +230,7 @@ public class Shooter
         startLaunchingP();
         initialized = true;
       }
-      if (runtime.seconds() > 1)
+      if (runtime.seconds() > 1.5)
       {
         conveyorBeltP.conveyForward();
       }
@@ -238,13 +238,13 @@ public class Shooter
       {
         startLaunchingG();
       }
-      if (runtime.seconds() > 4.75)
+      if (runtime.seconds() > 5.75)
       {
         stopLaunchingP();
         conveyorBeltG.conveyForward();
         conveyorBeltP.stopConveying();
       }
-      if (runtime.seconds() > 7)
+      if (runtime.seconds() > 7.75)
       {
         stopLaunchingG();
         conveyorBeltG.stopConveying();

@@ -104,7 +104,7 @@ public abstract class DacodAuto extends LinearOpMode
       .lineToX(ACTUAL_SCANNING_POINT.position.x)
       .build();
     
-    Action moveToScanningSecond = robot.actionBuilder(STARTING_BACK)
+    Action moveToScanningSecond = robot.actionBuilder(ACTUAL_STARTING_POINT)
       .splineToSplineHeading(ACTUAL_SCANNING_POINT, 0)
       .build();
     
