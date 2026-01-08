@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "Red 1")
+@Autonomous(name = "Red Front")
 
 public class RedAutoBackOne extends DacodAuto
 {
@@ -11,7 +11,7 @@ public class RedAutoBackOne extends DacodAuto
     return false;
   }
   
-  public boolean amIFirst()
+  public boolean amIFront()
   {
     return true;
   }

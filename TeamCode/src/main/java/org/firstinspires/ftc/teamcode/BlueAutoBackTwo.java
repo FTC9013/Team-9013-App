@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Blue 2")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "Blue Back")
 public class BlueAutoBackTwo extends DacodAuto
 {
   public boolean amIBlue()
@@ -8,7 +8,7 @@ public class BlueAutoBackTwo extends DacodAuto
     return true;
   }
   
-  public boolean amIFirst()
+  public boolean amIFront()
   {
     return false;
   }

@@ -30,7 +30,7 @@ public class DecodeOpMode extends LinearOpMode
     boolean wasdpaddownPressed = false;
     boolean wasAPressed = false;
     boolean toggleDirection = false;
-    boolean toggleTurbo = true;
+    boolean toggleSlurbo = true;
     waitForStart();
     
     while (opModeIsActive())
@@ -38,6 +38,7 @@ public class DecodeOpMode extends LinearOpMode
       double gampad1LeftStickY = -gamepad1.left_stick_y;
       double gampad1LeftStickX = -gamepad1.left_stick_x;
       double gampad1RightStickX = -gamepad1.right_stick_x;
+      
       // toggles the speed and front side of robot
       if (!wasAPressed && gamepad1.a)
       {
@@ -49,9 +50,9 @@ public class DecodeOpMode extends LinearOpMode
       
       if (gamepad1.left_bumper && !wasLeftBumperPressed)
       {
-        toggleTurbo = !toggleTurbo;
+        toggleSlurbo = !toggleSlurbo;
       }
-      telemetry.addData("Turbomode = ", toggleTurbo ? "Slurbo" : "Normal");
+      telemetry.addData("Slurbomode = ", toggleSlurbo ? "Slurbo" : "Normal");
       wasLeftBumperPressed = gamepad1.left_bumper;
       
       //flips to the opposite setting
@@ -61,7 +62,7 @@ public class DecodeOpMode extends LinearOpMode
         gampad1LeftStickX *= -1;
       }
       //slowing down
-      if (toggleTurbo)
+      if (toggleSlurbo)
       {
         gampad1LeftStickY *= 0.67;
         gampad1LeftStickX *= 0.67;
@@ -71,6 +72,10 @@ public class DecodeOpMode extends LinearOpMode
       if (getDistance(PoseStorage.currentPose.position, PoseStorage.launchPose.position) <= 15)
       {
         //change speed
+        gampad1LeftStickY *= 0.67;
+        gampad1LeftStickX *= 0.67;
+        gampad1RightStickX *= 0.67;
+        telemetry.addLine("Entered within proximity of launch zone. Slowing down");
       }
       drive.setDrivePowers(new PoseVelocity2d(
         new Vector2d(
@@ -180,12 +185,13 @@ public class DecodeOpMode extends LinearOpMode
       telemetry.addData("Current y position", PoseStorage.currentPose.position.y);
       telemetry.addData("Current heading", PoseStorage.currentPose.heading);
       telemetry.update();
+      
     }
   }
   
   double getDistance(Vector2d start, Vector2d finish)
   {
-    return 0;
+    return Math.sqrt((start.x - finish.x) * (start.x - finish.x) + (start.y - finish.y) * (start.y - finish.y));
     //continue doing pythag for distance
   }
 }

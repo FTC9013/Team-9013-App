@@ -22,8 +22,8 @@ public abstract class DacodAuto extends LinearOpMode
   Pose2d SCANNING_POINT = new Pose2d(-16, 11.5, Math.toRadians(0));
   Double INTAKE = 45.0;
   Double BACK_UP = 31.0;
-  Pose2d STARTING1 = new Pose2d(61.25, 11.5, Math.toRadians(0));
-  Pose2d STARTING2 = new Pose2d(-61.25, 33, Math.toRadians(0));
+  Pose2d STARTING_FRONT = new Pose2d(61.25, 11.5, Math.toRadians(0));
+  Pose2d STARTING_BACK = new Pose2d(-61.25, 33, Math.toRadians(0));
   Vector2d OUT_OF_LAUNCH = new Vector2d(0, 20);
   
   public Pose2d adjust(Pose2d pose)
@@ -85,12 +85,12 @@ public abstract class DacodAuto extends LinearOpMode
     Pose2d ACTUAL_STARTING_POINT;
     PoseStorage.launchPose = ACTUAL_LAUNCH_POSITION;
     
-    if (amIFirst())
+    if (amIFront())
     {
-      ACTUAL_STARTING_POINT = adjust(STARTING1);
+      ACTUAL_STARTING_POINT = adjust(STARTING_FRONT);
     } else
     {
-      ACTUAL_STARTING_POINT = adjust(STARTING2);
+      ACTUAL_STARTING_POINT = adjust(STARTING_BACK);
     }
     robot = new MecanumDrive(hardwareMap, ACTUAL_STARTING_POINT);
     
@@ -104,7 +104,7 @@ public abstract class DacodAuto extends LinearOpMode
       .lineToX(ACTUAL_SCANNING_POINT.position.x)
       .build();
     
-    Action moveToScanningSecond = robot.actionBuilder(STARTING2)
+    Action moveToScanningSecond = robot.actionBuilder(STARTING_BACK)
       .splineToSplineHeading(ACTUAL_SCANNING_POINT, 0)
       .build();
     
@@ -160,7 +160,7 @@ public abstract class DacodAuto extends LinearOpMode
       .strafeTo(ACTUAL_OUT_OF_LAUNCH).build();
     
     waitForStart();
-    if (amIFirst())
+    if (amIFront())
     {
       Actions.runBlocking(moveToScanningFirst);
       
@@ -214,7 +214,7 @@ public abstract class DacodAuto extends LinearOpMode
   }
   
   
-  public abstract boolean amIFirst();
+  public abstract boolean amIFront();
   
   private void moveForward(int timeDrivenMs)
   {
