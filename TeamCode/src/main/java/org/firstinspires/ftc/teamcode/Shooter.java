@@ -150,24 +150,24 @@ public class Shooter
         startLaunchingG();
         initialized = true;
       }
-      if (runtime.seconds() > 2.5)
+      if (runtime.seconds() > 4)
       {
         conveyorBeltG.conveyForward();
         startLaunchingP();
       }
-      if (runtime.seconds() > 5)
+      if (runtime.seconds() > 6.5)
       {
         stopLaunchingG();
         conveyorBeltG.stopConveying();
         conveyorBeltP.conveyForward();
       }
-      if (runtime.seconds() > 10)
+      if (runtime.seconds() > 11)
       {
         //stopLaunchingP();
         conveyorBeltP.stopConveying();
         //return false;
       }
-      if (runtime.seconds() > 10)
+      if (runtime.seconds() > 11)
       {
         stopLaunchingP();
         return false;
@@ -190,14 +190,17 @@ public class Shooter
         startLaunchingP();
         initialized = true;
       }
-      if (runtime.seconds() > 2.5)
+      if (runtime.seconds() > 3)
       {
         conveyorBeltP.conveyForward();
         startLaunchingG();
       }
-      if (runtime.seconds() > 4.667)
+      if (runtime.seconds() > 4)
       {
         conveyorBeltP.stopConveying();
+      }
+      if (runtime.seconds() > 5)
+      {
         conveyorBeltG.conveyForward();
       }
       if (runtime.seconds() > 7.5)
@@ -230,21 +233,21 @@ public class Shooter
         startLaunchingP();
         initialized = true;
       }
-      if (runtime.seconds() > 1.5)
+      if (runtime.seconds() > 2.5)
       {
         conveyorBeltP.conveyForward();
       }
-      if (runtime.seconds() > 3.75)
+      if (runtime.seconds() > 4.75)
       {
         startLaunchingG();
       }
-      if (runtime.seconds() > 5.75)
+      if (runtime.seconds() > 6.75)
       {
         stopLaunchingP();
         conveyorBeltG.conveyForward();
         conveyorBeltP.stopConveying();
       }
-      if (runtime.seconds() > 7.75)
+      if (runtime.seconds() > 8.75)
       {
         stopLaunchingG();
         conveyorBeltG.stopConveying();

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.Vector2d;
@@ -11,18 +12,22 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name = "Decode", group = "Linear Opmode")
 public class DecodeOpMode extends LinearOpMode
 {
-  
-  //public ConveyorBelt conveyorForward;
   //public ConveyorBelt conveyorBackward;
+  
   
   @Override
   public void runOpMode() throws InterruptedException
   {
     //telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
     Shooter shooter = new Shooter(hardwareMap, telemetry);
+    MecanumDrive drive = new MecanumDrive(hardwareMap, PoseStorage.currentPose);
+    
+    Action goToLaunchPos = drive.actionBuilder(PoseStorage.currentPose)
+      .strafeToLinearHeading(new Vector2d(PoseStorage.launchPose.position.x, PoseStorage.launchPose.position.y), Math.toRadians(-43))
+      .build();
+    //public ConveyorBelt conveyorForward;
     
     //define button pressing
-    MecanumDrive drive = new MecanumDrive(hardwareMap, PoseStorage.currentPose);
     boolean wasXPressed = false;
     boolean wasLeftBumperPressed = false;
     boolean wasBPressed = false;
@@ -46,8 +51,12 @@ public class DecodeOpMode extends LinearOpMode
       }
       telemetry.addData("Frontside = ", toggleDirection ? "Shooter" : "Intake");
       wasAPressed = gamepad1.a;
-      
-      
+
+//      if (gamepad1.y)
+//      {
+//        Actions.runBlocking(goToLaunchPos);
+//        telemetry.addLine("moving to launch position");
+//      }
       if (gamepad1.left_bumper && !wasLeftBumperPressed)
       {
         toggleSlurbo = !toggleSlurbo;
@@ -176,6 +185,7 @@ public class DecodeOpMode extends LinearOpMode
         shooter.launchWheelP.launchSpeedDecreasing();
         telemetry.addData("Decreasing launch speed", gamepad2.dpad_down);
       }
+      
       //speed is same for both, even though code says green
       wasdpaddownPressed = gamepad2.dpad_down;
       shooter.launchWheelG.printOutputSpeed();
@@ -194,4 +204,6 @@ public class DecodeOpMode extends LinearOpMode
     return Math.sqrt((start.x - finish.x) * (start.x - finish.x) + (start.y - finish.y) * (start.y - finish.y));
     //continue doing pythag for distance
   }
+  
+  
 }

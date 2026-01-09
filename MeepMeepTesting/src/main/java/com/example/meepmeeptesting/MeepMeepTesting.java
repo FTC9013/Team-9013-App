@@ -89,8 +89,10 @@ public class MeepMeepTesting
       // out of launch_position
       .strafeTo(OUT_OF_LAUNCH).build();
     
-    
-    myBot.runAction(new SequentialAction(moveToScanningSecond, goToLaunch));
+    Action strafe = myBot.getDrive().actionBuilder(STARTING1)
+      .strafeToLinearHeading(new Vector2d(LAUNCH_POSITION.position.x, LAUNCH_POSITION.position.y), Math.toRadians(-43))
+      .build();
+    myBot.runAction(new SequentialAction(moveToScanningSecond, strafe));
     
     meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_OFFICIAL)
       .setDarkMode(true)
