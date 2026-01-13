@@ -12,22 +12,19 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name = "Decode", group = "Linear Opmode")
 public class DecodeOpMode extends LinearOpMode
 {
-  //public ConveyorBelt conveyorBackward;
   
+  //public ConveyorBelt conveyorForward;
+  //public ConveyorBelt conveyorBackward;
   
   @Override
   public void runOpMode() throws InterruptedException
   {
     //telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
     Shooter shooter = new Shooter(hardwareMap, telemetry);
-    MecanumDrive drive = new MecanumDrive(hardwareMap, PoseStorage.currentPose);
-    
-    Action goToLaunchPos = drive.actionBuilder(PoseStorage.currentPose)
-      .strafeToLinearHeading(new Vector2d(PoseStorage.launchPose.position.x, PoseStorage.launchPose.position.y), Math.toRadians(-43))
-      .build();
-    //public ConveyorBelt conveyorForward;
+    Action goToLaunchPos = null;
     
     //define button pressing
+    MecanumDrive drive = new MecanumDrive(hardwareMap, PoseStorage.currentPose);
     boolean wasXPressed = false;
     boolean wasLeftBumperPressed = false;
     boolean wasBPressed = false;
@@ -35,11 +32,18 @@ public class DecodeOpMode extends LinearOpMode
     boolean wasdpaddownPressed = false;
     boolean wasAPressed = false;
     boolean toggleDirection = false;
-    boolean toggleSlurbo = true;
+    boolean toggleSlurbo = false;
     waitForStart();
     
     while (opModeIsActive())
+    
     {
+      TelemetryPacket packet = new TelemetryPacket();
+      PoseStorage.currentPose = drive.localizer.getPose();
+      
+      //public ConveyorBelt conveyorForward;
+      
+      //define button pressing
       double gampad1LeftStickY = -gamepad1.left_stick_y;
       double gampad1LeftStickX = -gamepad1.left_stick_x;
       double gampad1RightStickX = -gamepad1.right_stick_x;
@@ -51,12 +55,23 @@ public class DecodeOpMode extends LinearOpMode
       }
       telemetry.addData("Frontside = ", toggleDirection ? "Shooter" : "Intake");
       wasAPressed = gamepad1.a;
-
-//      if (gamepad1.y)
-//      {
-//        Actions.runBlocking(goToLaunchPos);
-//        telemetry.addLine("moving to launch position");
-//      }
+      
+      if (gamepad1.y)
+      {
+        if (goToLaunchPos == null)
+        {
+          goToLaunchPos = drive.actionBuilder(PoseStorage.currentPose)
+            .splineToLinearHeading(PoseStorage.launchPose, 0)
+            .build();
+        }
+        boolean running = goToLaunchPos.run(packet);
+        if (!running)
+        {
+          goToLaunchPos = null;
+        }
+        telemetry.addLine("moving to launch position");
+      }
+      
       if (gamepad1.left_bumper && !wasLeftBumperPressed)
       {
         toggleSlurbo = !toggleSlurbo;
@@ -86,13 +101,17 @@ public class DecodeOpMode extends LinearOpMode
         gampad1RightStickX *= 0.67;
         telemetry.addLine("Entered within proximity of launch zone. Slowing down");
       }
-      drive.setDrivePowers(new PoseVelocity2d(
-        new Vector2d(
-          gampad1LeftStickY,
-          gampad1LeftStickX
-        ),
-        gampad1RightStickX
-      ));
+      if (!gamepad1.y)
+      {
+        drive.setDrivePowers(new PoseVelocity2d(
+          new Vector2d(
+            gampad1LeftStickY,
+            gampad1LeftStickX
+          ),
+          gampad1RightStickX
+        ));
+      }
+      
       
       drive.updatePoseEstimate();
       
@@ -102,7 +121,6 @@ public class DecodeOpMode extends LinearOpMode
       telemetry.addData("heading (deg)", Math.toDegrees(pose.heading.toDouble()));
       
       
-      TelemetryPacket packet = new TelemetryPacket();
       packet.fieldOverlay().setStroke("#3F51B5");
       Drawing.drawRobot(packet.fieldOverlay(), pose);
       FtcDashboard.getInstance().sendTelemetryPacket(packet);
@@ -185,12 +203,10 @@ public class DecodeOpMode extends LinearOpMode
         shooter.launchWheelP.launchSpeedDecreasing();
         telemetry.addData("Decreasing launch speed", gamepad2.dpad_down);
       }
-      
       //speed is same for both, even though code says green
       wasdpaddownPressed = gamepad2.dpad_down;
       shooter.launchWheelG.printOutputSpeed();
       //pose saving
-      PoseStorage.currentPose = drive.localizer.getPose();
       telemetry.addData("Current x position", PoseStorage.currentPose.position.x);
       telemetry.addData("Current y position", PoseStorage.currentPose.position.y);
       telemetry.addData("Current heading", PoseStorage.currentPose.heading);
@@ -204,6 +220,4 @@ public class DecodeOpMode extends LinearOpMode
     return Math.sqrt((start.x - finish.x) * (start.x - finish.x) + (start.y - finish.y) * (start.y - finish.y));
     //continue doing pythag for distance
   }
-  
-  
 }

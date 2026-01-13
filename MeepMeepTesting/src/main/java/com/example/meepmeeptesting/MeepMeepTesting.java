@@ -90,7 +90,7 @@ public class MeepMeepTesting
       .strafeTo(OUT_OF_LAUNCH).build();
     
     Action strafe = myBot.getDrive().actionBuilder(STARTING1)
-      .strafeToLinearHeading(new Vector2d(LAUNCH_POSITION.position.x, LAUNCH_POSITION.position.y), Math.toRadians(-43))
+      .strafeToLinearHeading(new Vector2d(LAUNCH_POSITION.position.x, LAUNCH_POSITION.position.y), LAUNCH_POSITION.heading)
       .build();
     myBot.runAction(new SequentialAction(moveToScanningSecond, strafe));
     

@@ -19,6 +19,7 @@ public class Shooter
   public final ConveyorBelt conveyorBeltP;
   public final Intake intake;
   
+  public final double chargingTime = 4;
   
   Shooter(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry)
   {
