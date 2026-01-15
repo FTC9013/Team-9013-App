@@ -2,7 +2,6 @@ package com.example.meepmeeptesting;
 
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
@@ -15,7 +14,7 @@ public class MeepMeepTesting
     MeepMeep meepMeep = new MeepMeep(800);
     
     Pose2d LAUNCH_POSITION = new Pose2d(-10, 14.5, Math.toRadians(-43));
-    Pose2d SPIKE_PPG = new Pose2d(-8.75, 31, Math.toRadians(90));
+    Pose2d SPIKE_PPG = new Pose2d(-15.75, 31, Math.toRadians(90));
     Pose2d SPIKE_PGP = new Pose2d(12, 31, Math.toRadians(90));
     Pose2d SPIKE_GPP = new Pose2d(35, 31, Math.toRadians(90));
     Pose2d SCANNING_POINT = new Pose2d(-16, 11.5, Math.toRadians(0));
@@ -72,27 +71,28 @@ public class MeepMeepTesting
       .splineToLinearHeading(LAUNCH_POSITION, LAUNCH_POSITION.heading)
       //.stopAndAdd(shooter.shootPGP())
       .build();
-    /*
-    Action collectPPG = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
+    
+    Action collectPPG = myBot.getDrive().actionBuilder(LAUNCH_POSITION)
       //spike PPG
-      .splineToLinearHeading(ACTUAL_SPIKE_PPG, ACTUAL_SPIKE_PPG.heading)
-      .stopAndAdd(shooter.startIntakingAction())
-      .lineToY(38)
-      .strafeTo(new Vector2d(-3.75, 38))
-      .lineToY(ACTUAL_INTAKE)
-      .stopAndAdd(shooter.stopAllMotorsAction())
-      .lineToY(ACTUAL_BACK_UP)
-      .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
+      .splineToLinearHeading(SPIKE_PPG, SPIKE_PPG.heading)
+      //.turnTo(0)
+      //.stopAndAdd(shooter.startIntakingAction())
+      .strafeToConstantHeading(new Vector2d(SPIKE_PPG.position.x, 38))
+      .strafeTo(new Vector2d(-7.75, 38))
+      .strafeToConstantHeading(new Vector2d(-7.75, INTAKE))
+      //.stopAndAdd(shooter.stopAllMotorsAction())
+      //.lineToY(BACK_UP)
+      //.splineToLinearHeading(LAUNCH_POSITION, LAUNCH_POSITION.heading)
       .build();
-    */
+    
     Action getOut = myBot.getDrive().actionBuilder(LAUNCH_POSITION)
       // out of launch_position
       .strafeTo(OUT_OF_LAUNCH).build();
     
     Action strafe = myBot.getDrive().actionBuilder(STARTING1)
-      .strafeToLinearHeading(new Vector2d(LAUNCH_POSITION.position.x, LAUNCH_POSITION.position.y), LAUNCH_POSITION.heading)
+      .splineToLinearHeading(LAUNCH_POSITION, Math.toRadians(0))
       .build();
-    myBot.runAction(new SequentialAction(moveToScanningSecond, strafe));
+    myBot.runAction(collectPPG);
     
     meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_OFFICIAL)
       .setDarkMode(true)

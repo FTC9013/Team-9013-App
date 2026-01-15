@@ -38,6 +38,11 @@ public class Launcher
     telemetry.addData("Launching artifacts", "True");
   }
   
+  public int actualSpeed()
+  {
+  
+  }
+  
   public void startLaunchingBackward()
   {
     launchMotor.setPower(-0.5);

@@ -26,6 +26,7 @@ public abstract class DacodAuto extends LinearOpMode
   Pose2d STARTING_BACK = new Pose2d(-60.76, 40, Math.toRadians(0));
   Vector2d OUT_OF_LAUNCH = new Vector2d(0, 20);
   
+  
   public Pose2d adjust(Pose2d pose)
   {
     if (amIBlue())
@@ -142,19 +143,18 @@ public abstract class DacodAuto extends LinearOpMode
       .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
       .stopAndAdd(shooter.shootPGP())
       .build();
-    /*
     Action collectPPG = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
       //spike PPG
       .splineToLinearHeading(ACTUAL_SPIKE_PPG, ACTUAL_SPIKE_PPG.heading)
+      //.turnTo(0)
       .stopAndAdd(shooter.startIntakingAction())
-      .lineToY(38)
-      .strafeTo(new Vector2d(-3.75, 38))
-      .lineToY(ACTUAL_INTAKE)
+      .strafeToConstantHeading(new Vector2d(ACTUAL_SPIKE_PPG.position.x, 38))
+      .strafeTo(adjust(new Vector2d(-7.75, 38)))
+      .strafeToConstantHeading(adjust(new Vector2d(-7.75, INTAKE)))
       .stopAndAdd(shooter.stopAllMotorsAction())
-      .lineToY(ACTUAL_BACK_UP)
+      .strafeToConstantHeading(new Vector2d(-7.75, ACTUAL_BACK_UP))
       .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
       .build();
-    */
     Action getOut = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
       // out of launch_position
       .strafeTo(ACTUAL_OUT_OF_LAUNCH).build();
@@ -191,7 +191,7 @@ public abstract class DacodAuto extends LinearOpMode
       //Actions.runBlocking(collectPPG);
       //Actions.runBlocking(shooter.shootPPG());
     }
-    Actions.runBlocking(getOut);
+    Actions.runBlocking(collectPPG);
     /*
     //Actions.runBlocking();
     //go to the spike marks with correct motif first and collect artifacts

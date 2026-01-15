@@ -58,10 +58,11 @@ public class DecodeOpMode extends LinearOpMode
       
       if (gamepad1.y)
       {
+        
         if (goToLaunchPos == null)
         {
           goToLaunchPos = drive.actionBuilder(PoseStorage.currentPose)
-            .splineToLinearHeading(PoseStorage.launchPose, 0)
+            .strafeToLinearHeading(new Vector2d(PoseStorage.launchPose.position.x, PoseStorage.launchPose.position.y), PoseStorage.launchPose.heading)
             .build();
         }
         boolean running = goToLaunchPos.run(packet);
