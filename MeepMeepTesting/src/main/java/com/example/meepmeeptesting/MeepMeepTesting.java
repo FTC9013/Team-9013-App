@@ -2,6 +2,7 @@ package com.example.meepmeeptesting;
 
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
@@ -82,7 +83,7 @@ public class MeepMeepTesting
       .strafeToConstantHeading(new Vector2d(-7.75, INTAKE))
       //.stopAndAdd(shooter.stopAllMotorsAction())
       //.lineToY(BACK_UP)
-      //.splineToLinearHeading(LAUNCH_POSITION, LAUNCH_POSITION.heading)
+      .splineToLinearHeading(LAUNCH_POSITION, LAUNCH_POSITION.heading)
       .build();
     
     Action getOut = myBot.getDrive().actionBuilder(LAUNCH_POSITION)
@@ -92,7 +93,9 @@ public class MeepMeepTesting
     Action strafe = myBot.getDrive().actionBuilder(STARTING1)
       .splineToLinearHeading(LAUNCH_POSITION, Math.toRadians(0))
       .build();
-    myBot.runAction(collectPPG);
+    
+    myBot.runAction(new SequentialAction(collectPPG));
+    
     
     meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_OFFICIAL)
       .setDarkMode(true)

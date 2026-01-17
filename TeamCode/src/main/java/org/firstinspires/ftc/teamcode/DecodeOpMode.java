@@ -207,6 +207,7 @@ public class DecodeOpMode extends LinearOpMode
       //speed is same for both, even though code says green
       wasdpaddownPressed = gamepad2.dpad_down;
       shooter.launchWheelG.printOutputSpeed();
+      shooter.launchWheelP.printOutputSpeed();
       //pose saving
       telemetry.addData("Current x position", PoseStorage.currentPose.position.x);
       telemetry.addData("Current y position", PoseStorage.currentPose.position.y);

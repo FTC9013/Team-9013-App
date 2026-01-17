@@ -71,8 +71,8 @@ public abstract class DacodAuto extends LinearOpMode
     aprilTagCamera = new AprilTagCamera(this);
     // conceptVisionColorSensor = new ConceptVisionColorSensor(hardwareMap, telemetry);
     Shooter shooter = new Shooter(hardwareMap, telemetry);
-    shooter.launchWheelG.setSpeed(0.66);
-    shooter.launchWheelP.setSpeed(0.66);
+    //shooter.launchWheelG.setSpeed(0.66);
+    //shooter.launchWheelP.setSpeed(0.66);
     telemetry.addLine("Initialized");
     telemetry.addLine("running auto yo");
     telemetry.update();

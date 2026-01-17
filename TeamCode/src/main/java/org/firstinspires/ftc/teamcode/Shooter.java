@@ -98,7 +98,7 @@ public class Shooter
     public boolean run(@NonNull TelemetryPacket packet)
     {
       startIntaking();
-      return true;
+      return false;
     }
   }
   
