@@ -75,11 +75,13 @@ public class MeepMeepTesting
     
     Action collectPPG = myBot.getDrive().actionBuilder(LAUNCH_POSITION)
       //spike PPG
-      .splineToLinearHeading(SPIKE_PPG, SPIKE_PPG.heading)
+      .splineToLinearHeading(new Pose2d(SPIKE_PPG.position.x, SPIKE_PPG.position.y, Math.toRadians(90)), SPIKE_PPG.heading)
       //.turnTo(0)
       //.stopAndAdd(shooter.startIntakingAction())
-      .strafeToConstantHeading(new Vector2d(SPIKE_PPG.position.x, 38))
-      .strafeTo(new Vector2d(-7.75, 38))
+      
+      .strafeToConstantHeading(new Vector2d(SPIKE_PPG.position.x, 36.7))
+      //.strafeTo(new Vector2d(-7.75, 36.7))
+      .strafeToConstantHeading(new Vector2d(-7.75, 36.7))
       .strafeToConstantHeading(new Vector2d(-7.75, INTAKE))
       //.stopAndAdd(shooter.stopAllMotorsAction())
       //.lineToY(BACK_UP)

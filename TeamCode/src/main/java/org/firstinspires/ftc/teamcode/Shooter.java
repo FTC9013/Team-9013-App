@@ -114,6 +114,17 @@ public class Shooter
     }
   }
   
+  public class ConveyorAction implements Action
+  {
+    @Override
+    public boolean run(@NonNull TelemetryPacket packet)
+    {
+      conveyorBeltG.conveyForward();
+      conveyorBeltP.conveyForward();
+      return false;
+    }
+  }
+  
   public class IntakingAction implements Action
   {
     private boolean initialized = false;
@@ -277,6 +288,11 @@ public class Shooter
   public Action shootPPG()
   {
     return new ShootPPG();
+  }
+  
+  public Action conveyorAction()
+  {
+    return new ConveyorAction();
   }
   
   public Action startIntakingAction()
