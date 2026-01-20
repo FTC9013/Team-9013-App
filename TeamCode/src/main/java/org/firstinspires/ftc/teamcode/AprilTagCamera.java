@@ -151,7 +151,7 @@ public class AprilTagCamera
     timer.reset();
     
     // Step through the list of detections and display info for each one.
-    while (timer.seconds() <= 30 && opMode.opModeIsActive())
+    while (timer.seconds() <= 4 && opMode.opModeIsActive())
     {
       List<AprilTagDetection> currentDetections = aprilTag.getDetections();
       telemetry.addData("# AprilTags Detected", currentDetections.size());

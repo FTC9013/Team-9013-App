@@ -1,6 +1,8 @@
 package com.example.meepmeeptesting;
 
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
@@ -12,37 +14,88 @@ public class MeepMeepTesting
   {
     MeepMeep meepMeep = new MeepMeep(800);
     
-    Pose2d LAUNCH_POSITION = new Pose2d(-40.25, 15.5, Math.toRadians(135));
-    Pose2d SPIKE1 = new Pose2d(-11.25, 31, Math.toRadians(90));
-    Pose2d SPIKE2 = new Pose2d(12, 31, Math.toRadians(90));
-    Pose2d SPIKE3 = new Pose2d(35, 31, Math.toRadians(90));
-    Pose2d SCANNING_POINT = new Pose2d(-31.25, 11.5, Math.toRadians(0));
+    Pose2d LAUNCH_POSITION = new Pose2d(-10, 14.5, Math.toRadians(-43));
+    Pose2d SPIKE_PPG = new Pose2d(-15.75, 31, Math.toRadians(90));
+    Pose2d SPIKE_PGP = new Pose2d(12, 31, Math.toRadians(90));
+    Pose2d SPIKE_GPP = new Pose2d(35, 31, Math.toRadians(90));
+    Pose2d SCANNING_POINT = new Pose2d(-16, 11.5, Math.toRadians(0));
     Double INTAKE = 45.0;
     Double BACK_UP = 31.0;
-    Pose2d STARTING1 = new Pose2d(-61.25, 11.5, 0);
-    Pose2d STARTING2 = new Pose2d(-56, 50, Math.toRadians(-45));
+    Pose2d STARTING1 = new Pose2d(61.25, 11.5, Math.toRadians(0));
+    Pose2d STARTING2 = new Pose2d(-61.25, 33, Math.toRadians(0));
+    Vector2d OUT_OF_LAUNCH = new Vector2d(0, 20);
     RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
       // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
       .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
       .setDimensions(16.5, 17)
       .build();
+    Action moveToScanningFirst = myBot.getDrive().actionBuilder(STARTING1)
+      .setReversed(true)
+      .lineToX(SCANNING_POINT.position.x)
+      .build();
     
-    myBot.runAction(myBot.getDrive().actionBuilder(STARTING1)
-      .splineToLinearHeading(SCANNING_POINT, Math.toRadians(0))
-      .splineToLinearHeading(LAUNCH_POSITION, LAUNCH_POSITION.heading)
-      .splineToLinearHeading(SPIKE1, SPIKE1.heading)
+    Action moveToScanningSecond = myBot.getDrive().actionBuilder(STARTING2)
+      .splineToSplineHeading(SCANNING_POINT, 0)
+      .build();
+    
+    Action goToLaunch = myBot.getDrive().actionBuilder(SCANNING_POINT)
+      //preloaded
+      .splineToLinearHeading(LAUNCH_POSITION, 0)
+      .build();
+    
+    Action gotoSpikePPG = myBot.getDrive().actionBuilder(LAUNCH_POSITION)
+      //spike GPP
+      .splineToLinearHeading(SPIKE_PPG, SPIKE_PPG.heading)
+      //.stopAndAdd(shooter.startIntakingAction())
       .lineToY(INTAKE)
+      //.stopAndAdd(shooter.stopAllMotorsAction())
       .splineToLinearHeading(LAUNCH_POSITION, LAUNCH_POSITION.heading)
-      .splineToLinearHeading(SPIKE2, SPIKE2.heading)
+      //.stopAndAdd(shooter.shootGPP())
+      .build();
+    Action gotoSpikeGPP = myBot.getDrive().actionBuilder(LAUNCH_POSITION)
+      //spike GPP
+      .splineToLinearHeading(SPIKE_GPP, SPIKE_GPP.heading)
+      //.stopAndAdd(shooter.startIntakingAction())
       .lineToY(INTAKE)
+      //.stopAndAdd(shooter.stopAllMotorsAction())
+      .splineToLinearHeading(LAUNCH_POSITION, LAUNCH_POSITION.heading)
+      //.stopAndAdd(shooter.shootGPP())
+      .build();
+    
+    Action gotoSpikePGP = myBot.getDrive().actionBuilder(LAUNCH_POSITION)
+      //spike PGP
+      .splineToLinearHeading(SPIKE_PGP, SPIKE_PGP.heading)
+      //.stopAndAdd(shooter.startIntakingAction())
+      .lineToY(INTAKE)
+      //.stopAndAdd(shooter.stopAllMotorsAction())
       .lineToY(BACK_UP)
       .splineToLinearHeading(LAUNCH_POSITION, LAUNCH_POSITION.heading)
-      .splineToLinearHeading(SPIKE3, SPIKE3.heading)
-      .lineToY(INTAKE)
-      .lineToY(BACK_UP)
+      //.stopAndAdd(shooter.shootPGP())
+      .build();
+    
+    Action collectPPG = myBot.getDrive().actionBuilder(LAUNCH_POSITION)
+      //spike PPG
+      .splineToLinearHeading(SPIKE_PPG, SPIKE_PPG.heading)
+      //.turnTo(0)
+      //.stopAndAdd(shooter.startIntakingAction())
+      .strafeToConstantHeading(new Vector2d(SPIKE_PPG.position.x, 38))
+      .strafeTo(new Vector2d(-7.75, 38))
+      .strafeToConstantHeading(new Vector2d(-7.75, INTAKE))
+      //.stopAndAdd(shooter.stopAllMotorsAction())
+      //.lineToY(BACK_UP)
       .splineToLinearHeading(LAUNCH_POSITION, LAUNCH_POSITION.heading)
-      .strafeTo(new Vector2d(-16, 38))
-      .build());
+      .build();
+    
+    Action getOut = myBot.getDrive().actionBuilder(LAUNCH_POSITION)
+      // out of launch_position
+      .strafeTo(OUT_OF_LAUNCH).build();
+    
+    Action strafe = myBot.getDrive().actionBuilder(STARTING1)
+      .splineToLinearHeading(LAUNCH_POSITION, Math.toRadians(0))
+      .build();
+    
+    myBot.runAction(new SequentialAction(collectPPG));
+    
     
     meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_OFFICIAL)
       .setDarkMode(true)

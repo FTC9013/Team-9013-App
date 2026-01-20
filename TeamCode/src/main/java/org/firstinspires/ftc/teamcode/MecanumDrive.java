@@ -76,7 +76,7 @@ public final class MecanumDrive
     // drive model parameters
     public double inPerTick = 1.0;
     public double lateralInPerTick = inPerTick;
-    public double trackWidthTicks = 14.747778214428505;
+    public double trackWidthTicks = 16; //14.747778214428505; OLD
     
     // feedforward parameters (in tick units)
     public double kS = 1.074254754476316;
@@ -135,7 +135,6 @@ public final class MecanumDrive
   {
     public final Encoder leftFront, leftBack, rightBack, rightFront;
     public final IMU imu;
-    
     private int lastLeftFrontPos, lastLeftBackPos, lastRightBackPos, lastRightFrontPos;
     private Rotation2d lastHeading;
     private boolean initialized;
