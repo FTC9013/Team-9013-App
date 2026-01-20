@@ -23,6 +23,7 @@ public class Launcher {
         telemetry = theTelemetry;
         launchMotor = hardwareMap.get(DcMotorEx.class, color + "_Launcher");
         rpmLED = hardwareMap.get(LED.class, color + "_LED");
+        rpmLED.off();
 
         if (color.equals("purple")) {
             launchMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -82,7 +83,7 @@ public class Launcher {
     public void printOutputSpeed() {
         telemetry.addData("Launch speed: ", desiredSpeed);
         telemetry.addData("Current speed yo: ", launchMotor.getVelocity());
-        if (launchMotor.getVelocity() == desiredSpeed) {
+        if (desiredSpeed - 15 <= launchMotor.getVelocity() && launchMotor.getVelocity() <= desiredSpeed + 15) {
             rpmLED.on();
         } else {
             rpmLED.off();
