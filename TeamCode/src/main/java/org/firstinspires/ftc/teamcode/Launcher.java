@@ -8,99 +8,92 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import androidx.annotation.NonNull;
 
+import com.qualcomm.robotcore.hardware.LED;
 
-public class Launcher
-{
-  private final DcMotorEx launchMotor;
-  private final Telemetry telemetry;
-  private double desiredSpeed = 1640;
-  private boolean isSpinning = false;
-  
-  
-  Launcher(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry, String color)
-  {
-    telemetry = theTelemetry;
-    launchMotor = hardwareMap.get(DcMotorEx.class, color + "_Launcher");
-    
-    if (color == "purple")
-    {
-      launchMotor.setDirection(DcMotor.Direction.REVERSE);
+
+public class Launcher {
+    private final DcMotorEx launchMotor;
+    private final LED rpmLED;
+    private final Telemetry telemetry;
+    private double desiredSpeed = 1640;
+    private boolean isSpinning = false;
+
+
+    Launcher(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry, String color) {
+        telemetry = theTelemetry;
+        launchMotor = hardwareMap.get(DcMotorEx.class, color + "_Launcher");
+        rpmLED = hardwareMap.get(LED.class, color + "_LED");
+
+        if (color.equals("purple")) {
+            launchMotor.setDirection(DcMotor.Direction.REVERSE);
+        }
     }
-  }
-  
-  public void setSpeed(double speed)
-  {
-    desiredSpeed = speed;
-  }
-  
-  public void startLaunching()
-  {
-    launchMotor.setVelocity(desiredSpeed);
-    isSpinning = true;
-    telemetry.addData("Launching artifacts", "True");
-  }
-  
-  //  public int actualSpeed()
+
+    public void setSpeed(double speed) {
+        desiredSpeed = speed;
+    }
+
+    public void startLaunching() {
+        launchMotor.setVelocity(desiredSpeed);
+        isSpinning = true;
+        telemetry.addData("Launching artifacts", "True");
+    }
+
+    //  public int actualSpeed()
 //  {
 //
 //  }
 //
-  public void startLaunchingBackward()
-  {
-    launchMotor.setVelocity(-desiredSpeed / 2);
-    telemetry.addData("Launching artifacts", "True");
-  }
-  
-  public void stopLaunching()
-  {
-    launchMotor.setPower(0);
-    isSpinning = false;
-    telemetry.addData("No more launch", "True");
-    
-  }
-  
-  public void launchSpeedIncreasing()
-  {
-    desiredSpeed += 160;
-    isSpinning = true;
-    if (desiredSpeed > 1)
-    {
-      desiredSpeed = 1;
+    public void startLaunchingBackward() {
+        launchMotor.setVelocity(-desiredSpeed / 2);
+        telemetry.addData("Launching artifacts", "True");
     }
-    launchMotor.setVelocity(desiredSpeed);
-    telemetry.addData("Intake speed in artifacts. Speed is ", desiredSpeed);
-    telemetry.update();
-  }
-  
-  public void launchSpeedDecreasing()
-  {
-    desiredSpeed -= 160;
-    isSpinning = true;
-    if (desiredSpeed < 0)
-    {
-      desiredSpeed = 0;
-      isSpinning = false;
+
+    public void stopLaunching() {
+        launchMotor.setPower(0);
+        isSpinning = false;
+        telemetry.addData("No more launch", "True");
+
     }
-    launchMotor.setVelocity(desiredSpeed);
-    telemetry.addData("Intake speed in artifacts. Speed is ", desiredSpeed);
-    telemetry.update();
-  }
-  
-  public void printOutputSpeed()
-  {
-    telemetry.addData("Launch speed: ", desiredSpeed);
-    telemetry.addData("Current speed yo: ", launchMotor.getVelocity());
-    
-  }
-  
-  public void toggle()
-  {
-    if (isSpinning)
-    {
-      stopLaunching();
-    } else
-    {
-      startLaunching();
+
+    public void launchSpeedIncreasing() {
+        desiredSpeed += 160;
+        isSpinning = true;
+        if (desiredSpeed > 1) {
+            desiredSpeed = 1;
+        }
+        launchMotor.setVelocity(desiredSpeed);
+        telemetry.addData("Intake speed in artifacts. Speed is ", desiredSpeed);
+        telemetry.update();
     }
-  }
+
+    public void launchSpeedDecreasing() {
+        desiredSpeed -= 160;
+        isSpinning = true;
+        if (desiredSpeed < 0) {
+            desiredSpeed = 0;
+            isSpinning = false;
+        }
+        launchMotor.setVelocity(desiredSpeed);
+        telemetry.addData("Intake speed in artifacts. Speed is ", desiredSpeed);
+        telemetry.update();
+    }
+
+    public void printOutputSpeed() {
+        telemetry.addData("Launch speed: ", desiredSpeed);
+        telemetry.addData("Current speed yo: ", launchMotor.getVelocity());
+        if (launchMotor.getVelocity() == desiredSpeed) {
+            rpmLED.on();
+        } else {
+            rpmLED.off();
+        }
+    }
+
+    public void toggle() {
+        if (isSpinning) {
+            stopLaunching();
+        } else {
+            startLaunching();
+        }
+    }
 }
