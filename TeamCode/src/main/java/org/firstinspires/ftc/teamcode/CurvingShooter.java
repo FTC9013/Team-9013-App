@@ -1,20 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
-import androidx.annotation.NonNull;
-
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.acmerobotics.roadrunner.Action;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-import androidx.annotation.NonNull;
-
-
 public class CurvingShooter
 {
+  /*
   private final Launcher launchWheel;
   private final Telemetry telemetry;
   private final ConveyorBelt conveyorForward;
@@ -51,8 +39,7 @@ public class CurvingShooter
           conveyorForward.stopConveying();
           telemetry.update();
       }
-  */
-  public void startLaunching()
+    public void startLaunching()
   {
     launchWheel.startLaunching();
     telemetry.addLine("Launching artifact");
@@ -168,6 +155,9 @@ public class CurvingShooter
   {
     return new CurvingShooter.StopAllMotorsAction();
   }
+  
+   */
+  
 }
 
 

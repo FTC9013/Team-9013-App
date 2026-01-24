@@ -12,8 +12,7 @@ import androidx.annotation.NonNull;
 
 public class Shooter
 {
-  public final Launcher launchWheelP;
-  public final Launcher launchWheelG;
+  public final Launcher launchWheel;
   private final Telemetry telemetry;
   public final ConveyorBelt conveyorBeltG;
   public final ConveyorBelt conveyorBeltP;
@@ -24,8 +23,7 @@ public class Shooter
   Shooter(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry)
   {
     telemetry = theTelemetry;
-    launchWheelP = new Launcher(hardwareMap, telemetry, "purple");
-    launchWheelG = new Launcher(hardwareMap, telemetry, "green");
+    launchWheel = new Launcher(hardwareMap, telemetry);
     conveyorBeltG = new ConveyorBelt(hardwareMap, telemetry, "green");
     conveyorBeltP = new ConveyorBelt(hardwareMap, telemetry, "purple");
     intake = new Intake(hardwareMap, telemetry);
@@ -45,31 +43,18 @@ public class Shooter
   */
   public void startLaunchingP()
   {
-    launchWheelP.startLaunching();
+    launchWheel.startLaunching();
     telemetry.addLine("Launching artifact");
     telemetry.update();
   }
   
   public void stopLaunchingP()
   {
-    launchWheelP.stopLaunching();
+    launchWheel.stopLaunching();
     telemetry.addLine("Stop launching artifact");
     telemetry.update();
   }
   
-  public void startLaunchingG()
-  {
-    launchWheelG.startLaunching();
-    telemetry.addLine("Launching artifact");
-    telemetry.update();
-  }
-  
-  public void stopLaunchingG()
-  {
-    launchWheelG.stopLaunching();
-    telemetry.addLine("Stop launching artifact");
-    telemetry.update();
-  }
   
   public void startIntaking()
   {
@@ -109,7 +94,6 @@ public class Shooter
     {
       stopIntaking();
       stopLaunchingP();
-      stopLaunchingG();
       return false;
     }
   }
@@ -159,28 +143,22 @@ public class Shooter
       if (!initialized)
       {
         runtime.reset();
-        startLaunchingG();
+        startLaunchingP();
         initialized = true;
       }
       if (runtime.seconds() > 4)
       {
         conveyorBeltG.conveyForward();
-        startLaunchingP();
+        
       }
       if (runtime.seconds() > 6.5)
       {
-        stopLaunchingG();
         conveyorBeltG.stopConveying();
         conveyorBeltP.conveyForward();
       }
       if (runtime.seconds() > 11)
       {
-        //stopLaunchingP();
         conveyorBeltP.stopConveying();
-        //return false;
-      }
-      if (runtime.seconds() > 11)
-      {
         stopLaunchingP();
         return false;
       }
@@ -205,7 +183,6 @@ public class Shooter
       if (runtime.seconds() > 3)
       {
         conveyorBeltP.conveyForward();
-        startLaunchingG();
       }
       if (runtime.seconds() > 4)
       {
@@ -217,7 +194,6 @@ public class Shooter
       }
       if (runtime.seconds() > 7.5)
       {
-        stopLaunchingG();
         conveyorBeltP.conveyForward();
         conveyorBeltG.stopConveying();
       }
@@ -249,19 +225,14 @@ public class Shooter
       {
         conveyorBeltP.conveyForward();
       }
-      if (runtime.seconds() > 4.75)
-      {
-        startLaunchingG();
-      }
       if (runtime.seconds() > 6.75)
       {
-        stopLaunchingP();
         conveyorBeltG.conveyForward();
         conveyorBeltP.stopConveying();
       }
       if (runtime.seconds() > 8.75)
       {
-        stopLaunchingG();
+        stopLaunchingP();
         conveyorBeltG.stopConveying();
         return false;
       }

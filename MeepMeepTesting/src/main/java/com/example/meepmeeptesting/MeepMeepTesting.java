@@ -23,6 +23,7 @@ public class MeepMeepTesting
     Double BACK_UP = 31.0;
     Pose2d STARTING1 = new Pose2d(61.25, 11.5, Math.toRadians(0));
     Pose2d STARTING2 = new Pose2d(-61.25, 33, Math.toRadians(0));
+    Pose2d startingBack = new Pose2d(-50.43, 51.32, Math.toRadians(-53.972626614896));
     Vector2d OUT_OF_LAUNCH = new Vector2d(0, 20);
     RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
       // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
@@ -88,6 +89,10 @@ public class MeepMeepTesting
       .splineToLinearHeading(LAUNCH_POSITION, LAUNCH_POSITION.heading)
       .build();
     
+    Action goToCenter = myBot.getDrive().actionBuilder(startingBack)
+      .strafeToLinearHeading(new Vector2d(0, 0), 0)
+      .build();
+    
     Action getOut = myBot.getDrive().actionBuilder(LAUNCH_POSITION)
       // out of launch_position
       .strafeTo(OUT_OF_LAUNCH).build();
@@ -96,7 +101,7 @@ public class MeepMeepTesting
       .splineToLinearHeading(LAUNCH_POSITION, Math.toRadians(0))
       .build();
     
-    myBot.runAction(new SequentialAction(collectPPG));
+    myBot.runAction(new SequentialAction(goToCenter));
     
     
     meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_OFFICIAL)
@@ -104,6 +109,8 @@ public class MeepMeepTesting
       .setBackgroundAlpha(0.95f)
       .addEntity(myBot)
       .start();
+    
+    
   }
 }
 //FART heheh heheh heheh heheh

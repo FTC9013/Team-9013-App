@@ -144,14 +144,14 @@ public class DecodeOpMode extends LinearOpMode
       //green launcher
       if (gamepad2.b && !wasBPressed)
       {
-        shooter.launchWheelG.toggle();
+        shooter.launchWheel.toggle();
       }
       wasBPressed = gamepad2.b;
       
       //purple launcher
       if (gamepad2.x && !wasXPressed)
       {
-        shooter.launchWheelP.toggle();
+        shooter.launchWheel.toggle();
       }
       wasXPressed = gamepad2.x;
       
@@ -191,8 +191,7 @@ public class DecodeOpMode extends LinearOpMode
       //increase launch speed
       if (gamepad2.dpad_up && !wasdpadupPressed)
       {
-        shooter.launchWheelG.launchSpeedIncreasing();
-        shooter.launchWheelP.launchSpeedIncreasing();
+        shooter.launchWheel.launchSpeedIncreasing();
         telemetry.addData("Increasing launch speed", gamepad2.dpad_up);
       }
       wasdpadupPressed = gamepad2.dpad_up;
@@ -200,14 +199,12 @@ public class DecodeOpMode extends LinearOpMode
       //decrease launch speed
       if (gamepad2.dpad_down && !wasdpaddownPressed)
       {
-        shooter.launchWheelG.launchSpeedDecreasing();
-        shooter.launchWheelP.launchSpeedDecreasing();
+        shooter.launchWheel.launchSpeedDecreasing();
         telemetry.addData("Decreasing launch speed", gamepad2.dpad_down);
       }
       //speed is same for both, even though code says green
       wasdpaddownPressed = gamepad2.dpad_down;
-      shooter.launchWheelG.printOutputSpeed();
-      shooter.launchWheelP.printOutputSpeed();
+      shooter.launchWheel.printOutputSpeed();
       //pose saving
       telemetry.addData("Current x position", PoseStorage.currentPose.position.x);
       telemetry.addData("Current y position", PoseStorage.currentPose.position.y);
