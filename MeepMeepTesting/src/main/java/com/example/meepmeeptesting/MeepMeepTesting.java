@@ -90,7 +90,7 @@ public class MeepMeepTesting
       .build();
     
     Action goToCenter = myBot.getDrive().actionBuilder(startingBack)
-      .strafeToLinearHeading(new Vector2d(0, 0), 0)
+      .splineToLinearHeading(new Pose2d(0, 0, 0), 0)
       .build();
     
     Action getOut = myBot.getDrive().actionBuilder(LAUNCH_POSITION)

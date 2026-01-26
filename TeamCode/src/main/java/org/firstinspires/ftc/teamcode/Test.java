@@ -23,7 +23,7 @@ public class Test extends LinearOpMode
     conveyorBelt = new ConveyorBelt(hardwareMap, telemetry, "purple");
     // conveyorForward = new ConveyorBelt(hardwareMap, telemetry, "forward");
     // conveyorBackward = new ConveyorBelt(hardwareMap, telemetry, "backward");
-    launcher = new Launcher(hardwareMap, telemetry, "purple");
+    launcher = new Launcher(hardwareMap, telemetry);
     intake = new Intake(hardwareMap, telemetry);
     waitForStart();
     while (opModeIsActive())

@@ -13,7 +13,8 @@ import androidx.annotation.NonNull;
 public class Launcher
 {
   private final DcMotorEx launchMotor;
-  private final LED rpmLED;
+  private final LED rpmLEDPurple;
+  private final LED rpmLEDGreen;
   private final Telemetry telemetry;
   private double desiredSpeed = 1640;
   private boolean isSpinning = false;
@@ -23,9 +24,10 @@ public class Launcher
   {
     telemetry = theTelemetry;
     launchMotor = hardwareMap.get(DcMotorEx.class, "Launcher");
-    rpmLED = hardwareMap.get(LED.class, "LED");
-    rpmLED.off();
-    
+    rpmLEDPurple = hardwareMap.get(LED.class, "LED_Purple");
+    rpmLEDGreen = hardwareMap.get(LED.class, "LED_Green");
+    rpmLEDPurple.off();
+    rpmLEDGreen.off();
     launchMotor.setDirection(DcMotor.Direction.REVERSE);
   }
   
@@ -90,10 +92,12 @@ public class Launcher
     telemetry.addData("Current speed yo: ", launchMotor.getVelocity());
     if (desiredSpeed - 15 <= launchMotor.getVelocity() && launchMotor.getVelocity() <= desiredSpeed + 15)
     {
-      rpmLED.on();
+      rpmLEDPurple.on();
+      rpmLEDGreen.on();
     } else
     {
-      rpmLED.off();
+      rpmLEDPurple.off();
+      rpmLEDGreen.off();
     }
   }
   
