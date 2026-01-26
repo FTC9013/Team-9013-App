@@ -23,7 +23,7 @@ public abstract class DacodAuto extends LinearOpMode
   Pose2d SCANNING_POINT = new Pose2d(-16, 11.5, Math.toRadians(0));
   Double INTAKE = 45.0;
   Double BACK_UP = 31.0;
-  Pose2d STARTING_FRONT = new Pose2d(61.25, 11.5, Math.toRadians(0));
+  Pose2d STARTING_FRONT = new Pose2d(61.652, 15.125, Math.toRadians(0)); //DONT SWITCH STARTING POSES THEY ACCURATE FR THIS TIME
   Pose2d STARTING_BACK = new Pose2d(-61.792, 38.285, Math.toRadians(0));
   Vector2d OUT_OF_LAUNCH = new Vector2d(0, 20);
   
