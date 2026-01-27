@@ -43,11 +43,28 @@ public class Launcher
     telemetry.addData("Launching artifacts", "True");
   }
   
-  //  public int actualSpeed()
-//  {
-//
-//  }
-//
+  public boolean reachedDesiredSpeed()
+  {
+    if (desiredSpeed - 15 <= launchMotor.getVelocity() && launchMotor.getVelocity() <= desiredSpeed + 15)
+    {
+      return true;
+    } else
+    {
+      return false;
+    }
+  }
+  
+  public boolean hasSpeedDecreasedQuestionMark()
+  {
+    if (desiredSpeed <= launchMotor.getVelocity() + 40)
+    {
+      return true;
+    } else
+    {
+      return false;
+    }
+  }
+  
   public void startLaunchingBackward()
   {
     launchMotor.setVelocity(-desiredSpeed / 2);

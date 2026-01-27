@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 
 
@@ -17,7 +19,7 @@ public class Shooter
   public final ConveyorBelt conveyorBeltG;
   public final ConveyorBelt conveyorBeltP;
   public final Intake intake;
-  
+  public List<String> MotifBalls;
   public final double chargingTime = 4;
   
   Shooter(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry)
@@ -41,14 +43,14 @@ public class Shooter
 
       }
   */
-  public void startLaunchingP()
+  public void startLaunchMotor()
   {
     launchWheel.startLaunching();
     telemetry.addLine("Launching artifact");
     telemetry.update();
   }
   
-  public void stopLaunchingP()
+  public void stopLaunchMotor()
   {
     launchWheel.stopLaunching();
     telemetry.addLine("Stop launching artifact");
@@ -93,7 +95,7 @@ public class Shooter
     public boolean run(@NonNull TelemetryPacket packet)
     {
       stopIntaking();
-      stopLaunchingP();
+      stopLaunchMotor();
       return false;
     }
   }
@@ -143,23 +145,23 @@ public class Shooter
       if (!initialized)
       {
         runtime.reset();
-        startLaunchingP();
+        startLaunchMotor();
         initialized = true;
       }
-      if (runtime.seconds() > 4)
+      if (launchWheel.reachedDesiredSpeed())
       {
         conveyorBeltG.conveyForward();
         
       }
-      if (runtime.seconds() > 6.5)
+      if (launchWheel.hasSpeedDecreasedQuestionMark())
       {
         conveyorBeltG.stopConveying();
         conveyorBeltP.conveyForward();
       }
-      if (runtime.seconds() > 11)
+      if (!launchWheel.hasSpeedDecreasedQuestionMark())
       {
         conveyorBeltP.stopConveying();
-        stopLaunchingP();
+        stopLaunchMotor();
         return false;
       }
       return true;
@@ -177,7 +179,7 @@ public class Shooter
       if (!initialized)
       {
         runtime.reset();
-        startLaunchingP();
+        startLaunchMotor();
         initialized = true;
       }
       if (runtime.seconds() > 3)
@@ -199,7 +201,7 @@ public class Shooter
       }
       if (runtime.seconds() > 9)
       {
-        stopLaunchingP();
+        stopLaunchMotor();
         conveyorBeltP.stopConveying();
         return false;
       }
@@ -218,7 +220,7 @@ public class Shooter
       if (!initialized)
       {
         runtime.reset();
-        startLaunchingP();
+        startLaunchMotor();
         initialized = true;
       }
       if (runtime.seconds() > 2.5)
@@ -232,7 +234,7 @@ public class Shooter
       }
       if (runtime.seconds() > 8.75)
       {
-        stopLaunchingP();
+        stopLaunchMotor();
         conveyorBeltG.stopConveying();
         return false;
       }

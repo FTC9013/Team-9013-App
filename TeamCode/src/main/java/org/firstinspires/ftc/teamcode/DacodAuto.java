@@ -154,7 +154,7 @@ public abstract class DacodAuto extends LinearOpMode
       .strafeToConstantHeading(adjust(new Vector2d(-7.75, INTAKE)))
       .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
       .build();
-    Action getOut = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
+    Action getOut = robot.actionBuilder(new Pose2d(ACTUAL_LAUNCH_POSITION.position.x, ACTUAL_LAUNCH_POSITION.position.y, 0))
       // out of launch_position
       .strafeTo(ACTUAL_OUT_OF_LAUNCH).build();
     Action go00 = robot.actionBuilder(ACTUAL_STARTING_POINT)

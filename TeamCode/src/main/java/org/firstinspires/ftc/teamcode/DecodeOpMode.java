@@ -22,7 +22,7 @@ public class DecodeOpMode extends LinearOpMode
     //telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
     Shooter shooter = new Shooter(hardwareMap, telemetry);
     Action goToLaunchPos = null;
-    
+    Lift lift = new Lift(hardwareMap, telemetry);
     //define button pressing
     MecanumDrive drive = new MecanumDrive(hardwareMap, PoseStorage.currentPose);
     boolean wasXPressed = false;
@@ -79,7 +79,14 @@ public class DecodeOpMode extends LinearOpMode
       }
       telemetry.addData("Slurbomode = ", toggleSlurbo ? "Slurbo" : "Normal");
       wasLeftBumperPressed = gamepad1.left_bumper;
-      
+      if (gamepad1.x)
+      {
+        lift.liftUp();
+      }
+      if (gamepad1.b)
+      {
+        lift.liftDown();
+      }
       //flips to the opposite setting
       if (toggleDirection)
       {
