@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -19,8 +20,6 @@ public class Shooter
   public final ConveyorBelt conveyorBeltG;
   public final ConveyorBelt conveyorBeltP;
   public final Intake intake;
-  public List<String> MotifBalls;
-  public final double chargingTime = 4;
   
   Shooter(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry)
   {
@@ -31,18 +30,6 @@ public class Shooter
     intake = new Intake(hardwareMap, telemetry);
   }
   
-  /*
-      public void launchArtifact() {
-          conveyorForward.startConveyingForward();
-          telemetry.addLine("Conveying artifact");
-          launchWheel.startLaunching();
-          telemetry.addLine("Launching artifact");
-          launchWheel.stopLaunching();
-          conveyorForward.stopConveying();
-          telemetry.update();
-
-      }
-  */
   public void startLaunchMotor()
   {
     launchWheel.startLaunching();
@@ -134,108 +121,81 @@ public class Shooter
     }
   }
   
-  public class ShootGPP implements Action
+  public enum States
   {
-    private boolean initialized = false;
+    Init,
+    Charging,
+    Launching,
+    Stopping
+  }
+  
+  public class Shoot implements Action
+  {
     ElapsedTime runtime = new ElapsedTime();
+    States currentState = States.Init;
+    List<String> colours;
+    
+    Shoot(List<String> colours)
+    {
+      colours = colours;
+    }
     
     @Override
     public boolean run(@NonNull TelemetryPacket packet)
     {
-      if (!initialized)
+      telemetry.addData("Current state is:", currentState);
+      telemetry.addData("Time in state", runtime.seconds());
+      if (!colours.isEmpty())
+      {
+        telemetry.addData("Next ball is:", colours.get(0));
+      }
+      launchWheel.printOutputSpeed();
+      telemetry.update();
+      if (currentState == States.Init)
       {
         runtime.reset();
         startLaunchMotor();
-        initialized = true;
-      }
-      if (launchWheel.reachedDesiredSpeed())
-      {
-        conveyorBeltG.conveyForward();
+        currentState = States.Charging;
         
-      }
-      if (launchWheel.hasSpeedDecreasedQuestionMark())
+        
+      } else if (currentState == States.Charging)
       {
-        conveyorBeltG.stopConveying();
-        conveyorBeltP.conveyForward();
-      }
-      if (!launchWheel.hasSpeedDecreasedQuestionMark())
+        if (launchWheel.reachedDesiredSpeed() || runtime.seconds() > 5)
+        {
+          if (colours.get(0).equals("Green"))
+          {
+            conveyorBeltG.conveyForward();
+          } else
+          {
+            conveyorBeltP.conveyForward();
+          }
+          runtime.reset();
+          currentState = States.Launching;
+        }
+        
+        
+      } else if (currentState == States.Launching)
       {
-        conveyorBeltP.stopConveying();
-        stopLaunchMotor();
-        return false;
-      }
-      return true;
-    }
-  }
-  
-  public class ShootPGP implements Action
-  {
-    private boolean initialized = false;
-    ElapsedTime runtime = new ElapsedTime();
-    
-    @Override
-    public boolean run(@NonNull TelemetryPacket packet)
-    {
-      if (!initialized)
-      {
-        runtime.reset();
-        startLaunchMotor();
-        initialized = true;
-      }
-      if (runtime.seconds() > 3)
-      {
-        conveyorBeltP.conveyForward();
-      }
-      if (runtime.seconds() > 4)
-      {
-        conveyorBeltP.stopConveying();
-      }
-      if (runtime.seconds() > 5)
-      {
-        conveyorBeltG.conveyForward();
-      }
-      if (runtime.seconds() > 7.5)
-      {
-        conveyorBeltP.conveyForward();
-        conveyorBeltG.stopConveying();
-      }
-      if (runtime.seconds() > 9)
+        if (launchWheel.hasSpeedDecreasedQuestionMark() || runtime.seconds() > 3)
+        {
+          colours.remove(0);
+          conveyorBeltG.stopConveying();
+          conveyorBeltP.stopConveying();
+          if (colours.isEmpty())
+          {
+            runtime.reset();
+            currentState = States.Stopping;
+          } else
+          {
+            runtime.reset();
+            currentState = States.Charging;
+          }
+        }
+        
+        
+      } else if (currentState == States.Stopping)
       {
         stopLaunchMotor();
-        conveyorBeltP.stopConveying();
-        return false;
-      }
-      return true;
-    }
-  }
-  
-  public class ShootPPG implements Action
-  {
-    private boolean initialized = false;
-    ElapsedTime runtime = new ElapsedTime();
-    
-    @Override
-    public boolean run(@NonNull TelemetryPacket packet)
-    {
-      if (!initialized)
-      {
-        runtime.reset();
-        startLaunchMotor();
-        initialized = true;
-      }
-      if (runtime.seconds() > 2.5)
-      {
-        conveyorBeltP.conveyForward();
-      }
-      if (runtime.seconds() > 6.75)
-      {
-        conveyorBeltG.conveyForward();
-        conveyorBeltP.stopConveying();
-      }
-      if (runtime.seconds() > 8.75)
-      {
-        stopLaunchMotor();
-        conveyorBeltG.stopConveying();
         return false;
       }
       return true;
@@ -248,19 +208,18 @@ public class Shooter
   }
   
   
-  public Action shootGPP()
+  public Action shootMotif(Motif pattern)
   {
-    return new ShootGPP();
-  }
-  
-  public Action shootPGP()
-  {
-    return new ShootPGP();
-  }
-  
-  public Action shootPPG()
-  {
-    return new ShootPPG();
+    if (pattern == Motif.GPP)
+    {
+      return new Shoot(Arrays.asList("Green", "Purple", "Purple"));
+    } else if (pattern == Motif.PGP)
+    {
+      return new Shoot(Arrays.asList("Purple", "Green", "Purple"));
+    } else
+    {
+      return new Shoot(Arrays.asList("Purple", "Purple", "Green"));
+    }
   }
   
   public Action conveyorAction()

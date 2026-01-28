@@ -79,13 +79,16 @@ public class DecodeOpMode extends LinearOpMode
       }
       telemetry.addData("Slurbomode = ", toggleSlurbo ? "Slurbo" : "Normal");
       wasLeftBumperPressed = gamepad1.left_bumper;
-      if (gamepad1.x)
+      
+      if (getRuntime() >= 100)
       {
-        lift.liftUp();
-      }
-      if (gamepad1.b)
-      {
-        lift.liftDown();
+        if (gamepad1.x && gamepad1.b)
+        {
+          lift.liftUp();
+        } else
+        {
+          lift.stop();
+        }
       }
       //flips to the opposite setting
       if (toggleDirection)

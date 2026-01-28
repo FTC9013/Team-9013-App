@@ -120,7 +120,6 @@ public abstract class DacodAuto extends LinearOpMode
       .lineToY(ACTUAL_INTAKE)
       .stopAndAdd(shooter.stopAllMotorsAction())
       .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
-      .stopAndAdd(shooter.shootGPP())
       .build();
     Action gotoSpikeGPP = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
       //spike GPP
@@ -129,7 +128,6 @@ public abstract class DacodAuto extends LinearOpMode
       .lineToY(ACTUAL_INTAKE)
       .stopAndAdd(shooter.stopAllMotorsAction())
       .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
-      .stopAndAdd(shooter.shootGPP())
       .build();
     
     Action gotoSpikePGP = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
@@ -140,7 +138,6 @@ public abstract class DacodAuto extends LinearOpMode
       .stopAndAdd(shooter.stopAllMotorsAction())
       .lineToY(ACTUAL_BACK_UP)
       .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
-      .stopAndAdd(shooter.shootPGP())
       .build();
     Action collectPPG = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
       //spike PPG
@@ -176,24 +173,6 @@ public abstract class DacodAuto extends LinearOpMode
     telemetry.addData("Found", motifPattern);
     telemetry.update();
     Actions.runBlocking(goToLaunch);
-    //launchesyo preload
-    
-    if (motifPattern == Motif.GPP)
-    {
-      Actions.runBlocking(shooter.shootGPP());
-      //Actions.runBlocking(collectPPG);
-      //Actions.runBlocking(shooter.shootGPP());
-    } else if (motifPattern == Motif.PGP)
-    {
-      Actions.runBlocking(shooter.shootPGP());
-      //Actions.runBlocking(collectPPG);
-      //Actions.runBlocking(shooter.shootPGP());
-    } else
-    {
-      Actions.runBlocking(shooter.shootPPG());
-      //Actions.runBlocking(collectPPG);
-      //Actions.runBlocking(shooter.shootPPG());
-    }
     
     Actions.runBlocking(collectPPG);
     shooter.conveyorBeltP.stopConveying();

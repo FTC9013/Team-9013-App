@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -25,6 +26,7 @@ public class Lift
     liftMotorLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
     liftMotorRight.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
     liftMotorRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+    liftMotorLeft.setDirection(DcMotorSimple.Direction.REVERSE);
   }
   
   public void liftUp()
@@ -33,13 +35,7 @@ public class Lift
     liftMotorRight.setPower(1);
   }
   
-  public void liftDown()
-  {
-    liftMotorLeft.setPower(-1);
-    liftMotorRight.setPower(-1);
-  }
-  
-  public void stopLift()
+  public void stop()
   {
     liftMotorLeft.setPower(0);
     liftMotorRight.setPower(0);
