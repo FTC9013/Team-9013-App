@@ -20,6 +20,7 @@ public class Shooter
   public final ConveyorBelt conveyorBeltG;
   public final ConveyorBelt conveyorBeltP;
   public final Intake intake;
+  States currentState = States.None;
   
   Shooter(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry)
   {
@@ -100,17 +101,18 @@ public class Shooter
   
   public class IntakingAction implements Action
   {
-    private boolean initialized = false;
+    
+    
     ElapsedTime runtime = new ElapsedTime();
     
     @Override
     public boolean run(@NonNull TelemetryPacket packet)
     {
-      if (!initialized)
+      if (currentState == States.None)
       {
         runtime.reset();
         startIntaking();
-        initialized = true;
+        currentState = States.Init;
       }
       if (runtime.seconds() > 7)
       {
@@ -126,7 +128,9 @@ public class Shooter
     Init,
     Charging,
     Launching,
-    Stopping
+    Stopping,
+    None
+    
   }
   
   public class Shoot implements Action

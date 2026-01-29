@@ -84,7 +84,7 @@ public class DecodeOpMode extends LinearOpMode
       {
         if (gamepad1.x && gamepad1.b)
         {
-          lift.liftUp();
+          lift.startMovingUp();
         } else
         {
           lift.stop();

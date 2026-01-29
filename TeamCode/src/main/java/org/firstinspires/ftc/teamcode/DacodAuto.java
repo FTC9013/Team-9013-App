@@ -173,7 +173,7 @@ public abstract class DacodAuto extends LinearOpMode
     telemetry.addData("Found", motifPattern);
     telemetry.update();
     Actions.runBlocking(goToLaunch);
-    
+    shooter.shootMotif(motifPattern);
     Actions.runBlocking(collectPPG);
     shooter.conveyorBeltP.stopConveying();
     shooter.conveyorBeltG.stopConveying();
