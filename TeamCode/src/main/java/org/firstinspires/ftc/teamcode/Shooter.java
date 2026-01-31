@@ -139,9 +139,9 @@ public class Shooter
     States currentState = States.Init;
     List<String> colours;
     
-    Shoot(List<String> colours)
+    Shoot(List<String> coloursPara)
     {
-      colours = colours;
+      colours = coloursPara;
     }
     
     @Override
@@ -200,6 +200,7 @@ public class Shooter
       } else if (currentState == States.Stopping)
       {
         stopLaunchMotor();
+        
         return false;
       }
       return true;

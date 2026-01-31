@@ -181,18 +181,7 @@ public abstract class DacodAuto extends LinearOpMode
     
     //Actions.runBlocking();
     //go to the spike marks with correct motif first and collect artifacts
-    if (motifPattern == Motif.GPP)
-    {
-      Actions.runBlocking(new SequentialAction(gotoSpikeGPP, gotoSpikePGP, gotoSpikePPG));
-      
-    } else if (motifPattern == Motif.PGP)
-    {
-      Actions.runBlocking(new SequentialAction(gotoSpikePGP, gotoSpikePPG, gotoSpikeGPP));
-      
-    } else if (motifPattern == Motif.PPG)
-    {
-      Actions.runBlocking(new SequentialAction(gotoSpikePPG, gotoSpikePGP, gotoSpikeGPP));
-    }
+//
     Actions.runBlocking(getOut);
     
     //record location

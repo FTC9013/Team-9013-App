@@ -22,23 +22,25 @@ public class Lift
     liftMotorRight = hardwareMap.get(DcMotorEx.class, "Lift_Right");
     liftMotorLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
     liftMotorRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-    liftMotorLeft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-    liftMotorLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-    liftMotorRight.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-    liftMotorRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-    liftMotorLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+    //liftMotorLeft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+    //liftMotorLeft.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+    //liftMotorRight.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+    //liftMotorRight.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+    liftMotorRight.setDirection(DcMotorSimple.Direction.REVERSE);
   }
   
   public void liftUp()
   {
-    liftMotorLeft.setPower(1);
-    liftMotorRight.setPower(1);
+    liftMotorLeft.setPower(0.5);
+    liftMotorRight.setPower(0.5);
+    telemetry.addLine("lifting yo");
   }
   
   public void stop()
   {
     liftMotorLeft.setPower(0);
     liftMotorRight.setPower(0);
+    telemetry.addLine("stopping lift yo");
   }
   
   public void startMovingUp()
