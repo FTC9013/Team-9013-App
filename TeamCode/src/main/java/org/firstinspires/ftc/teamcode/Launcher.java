@@ -16,7 +16,7 @@ public class Launcher
   private final LED rpmLEDPurple;
   private final LED rpmLEDGreen;
   private final Telemetry telemetry;
-  private double desiredSpeed = 1640;
+  private double desiredSpeed = 1320;
   private boolean isSpinning = false;
   
   

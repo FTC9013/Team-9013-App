@@ -143,17 +143,7 @@ public class DecodeOpMode extends LinearOpMode
       telemetry.addData("Status", "Initialized");
       
       //intake
-      if (gamepad1.right_trigger > 0 || gamepad2.a)
-      {
-        shooter.startIntaking();
-      } else if (gamepad1.right_bumper || gamepad2.y)
-      {
-        shooter.startIntakingBackwards();
-        //robert is a nice person <3
-      } else
-      {
-        shooter.intake.stopIntaking();
-      }
+      
       
       //green launcher
       if (gamepad2.b && !wasBPressed)
@@ -170,7 +160,14 @@ public class DecodeOpMode extends LinearOpMode
       wasXPressed = gamepad2.x;
       
       //green conveyor forward
-      if (gamepad2.right_bumper)
+      if (gamepad1.right_trigger > 0 || gamepad2.a)
+      {
+        shooter.startIntaking();
+      } else if (gamepad1.right_bumper || gamepad2.y)
+      {
+        shooter.startIntakingBackwards();
+        //robert is a nice person <3
+      } else if (gamepad2.right_bumper)
       {
         shooter.conveyorBeltG.conveyForward();
         shooter.startIntaking();
@@ -181,18 +178,10 @@ public class DecodeOpMode extends LinearOpMode
       {
         shooter.conveyorBeltG.conveyBackward();
         telemetry.addLine("Conveying Backward");
-      } else
-      {
-        shooter.conveyorBeltG.stopConveying();
-        shooter.intake.stopIntaking();
-      }
-      
-      //purple conveyor forward
-      if (gamepad2.left_bumper)
+      } else if (gamepad2.left_bumper)
       {
         shooter.conveyorBeltP.conveyForward();
         shooter.startIntaking();
-        
         //backward
       } else if (gamepad2.left_trigger > 0)
       {
@@ -200,6 +189,7 @@ public class DecodeOpMode extends LinearOpMode
       } else
       {
         shooter.conveyorBeltP.stopConveying();
+        shooter.conveyorBeltG.stopConveying();
         shooter.intake.stopIntaking();
       }
       //increase launch speed

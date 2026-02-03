@@ -25,7 +25,7 @@ public abstract class DacodAuto extends LinearOpMode
   Double BACK_UP = 31.0;
   Pose2d STARTING_FRONT = new Pose2d(61.652, 15.125, Math.toRadians(0)); //DONT SWITCH STARTING POSES THEY ACCURATE FR THIS TIME
   Pose2d STARTING_BACK = new Pose2d(-61.792, 38.285, Math.toRadians(0));
-  Vector2d OUT_OF_LAUNCH = new Vector2d(0, 20);
+  Vector2d OUT_OF_LAUNCH = new Vector2d(-16, 50);
   
   
   public Pose2d adjust(Pose2d pose)
@@ -99,17 +99,18 @@ public abstract class DacodAuto extends LinearOpMode
     Double ACTUAL_BACK_UP = adjust(BACK_UP);
     
     //4 paths and actions
-    Action moveToScanningFirst = robot.actionBuilder(ACTUAL_STARTING_POINT)
+    Action moveToScanningFront = robot.actionBuilder(ACTUAL_STARTING_POINT)
       .setReversed(true)
       .lineToX(ACTUAL_SCANNING_POINT.position.x)
       .build();
     
-    Action moveToScanningSecond = robot.actionBuilder(ACTUAL_STARTING_POINT)
+    Action moveToScanningBack = robot.actionBuilder(ACTUAL_STARTING_POINT)
       .splineToSplineHeading(ACTUAL_SCANNING_POINT, 0)
       .build();
     
     Action goToLaunch = robot.actionBuilder(ACTUAL_SCANNING_POINT)
       //preloaded
+      
       .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, 0)
       .build();
     
@@ -139,7 +140,10 @@ public abstract class DacodAuto extends LinearOpMode
       .lineToY(ACTUAL_BACK_UP)
       .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
       .build();
+    
+    
     Action collectPPG = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
+      
       //spike PPG
       .splineToLinearHeading(adjust(new Pose2d(-13.75, SPIKE_PPG.position.y, Math.toRadians(90))), ACTUAL_SPIKE_PPG.heading)
       //.turnTo(0)
@@ -153,7 +157,8 @@ public abstract class DacodAuto extends LinearOpMode
       .build();
     Action getOut = robot.actionBuilder(new Pose2d(ACTUAL_LAUNCH_POSITION.position.x, ACTUAL_LAUNCH_POSITION.position.y, 0))
       // out of launch_position
-      .strafeTo(ACTUAL_OUT_OF_LAUNCH).build();
+      .strafeToLinearHeading(ACTUAL_OUT_OF_LAUNCH, 0)
+      .build();
     Action go00 = robot.actionBuilder(ACTUAL_STARTING_POINT)
       .strafeToConstantHeading(new Vector2d(0, 0)).build();
     waitForStart();
@@ -162,27 +167,29 @@ public abstract class DacodAuto extends LinearOpMode
     
     if (amIFront())
     {
-      Actions.runBlocking(moveToScanningFirst);
+      Actions.runBlocking(moveToScanningFront);
       
     } else
     {
-      Actions.runBlocking(moveToScanningSecond);
+      Actions.runBlocking(moveToScanningBack);
     }
     
     Motif motifPattern = aprilTagCamera.detectAprilTag();
     telemetry.addData("Found", motifPattern);
     telemetry.update();
-    Actions.runBlocking(goToLaunch);
-    shooter.shootMotif(motifPattern);
+    Actions.runBlocking(new SequentialAction(goToLaunch, shooter.shootMotif(motifPattern), getOut));
+    
+    /*
     Actions.runBlocking(collectPPG);
     shooter.conveyorBeltP.stopConveying();
     shooter.conveyorBeltG.stopConveying();
-    
+    Actions.runBlocking(goToLaunch);
+    Actions.runBlocking(shooter.shootMotif(motifPattern));
+    */
     
     //Actions.runBlocking();
     //go to the spike marks with correct motif first and collect artifacts
 //
-    Actions.runBlocking(getOut);
     
     //record location
     PoseStorage.currentPose = robot.localizer.getPose();

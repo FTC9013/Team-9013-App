@@ -24,7 +24,7 @@ public class MeepMeepTesting
     Pose2d STARTING1 = new Pose2d(61.25, 11.5, Math.toRadians(0));
     Pose2d STARTING2 = new Pose2d(-61.25, 33, Math.toRadians(0));
     Pose2d startingBack = new Pose2d(-50.43, 51.32, Math.toRadians(-53.972626614896));
-    Vector2d OUT_OF_LAUNCH = new Vector2d(0, 20);
+    Vector2d OUT_OF_LAUNCH = new Vector2d(-16, 50);
     RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
       // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
       .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
@@ -95,13 +95,13 @@ public class MeepMeepTesting
     
     Action getOut = myBot.getDrive().actionBuilder(LAUNCH_POSITION)
       // out of launch_position
-      .strafeTo(OUT_OF_LAUNCH).build();
+      .strafeToLinearHeading(OUT_OF_LAUNCH, 0).build();
     
     Action strafe = myBot.getDrive().actionBuilder(STARTING1)
       .splineToLinearHeading(LAUNCH_POSITION, Math.toRadians(0))
       .build();
     
-    myBot.runAction(new SequentialAction(goToCenter));
+    myBot.runAction(new SequentialAction(moveToScanningSecond, goToLaunch, collectPPG, getOut));
     
     
     meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_OFFICIAL)

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode;//
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import androidx.annotation.NonNull;
 
@@ -20,7 +20,6 @@ public class Shooter
   public final ConveyorBelt conveyorBeltG;
   public final ConveyorBelt conveyorBeltP;
   public final Intake intake;
-  States currentState = States.None;
   
   Shooter(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry)
   {
@@ -99,37 +98,13 @@ public class Shooter
     }
   }
   
-  public class IntakingAction implements Action
-  {
-    
-    
-    ElapsedTime runtime = new ElapsedTime();
-    
-    @Override
-    public boolean run(@NonNull TelemetryPacket packet)
-    {
-      if (currentState == States.None)
-      {
-        runtime.reset();
-        startIntaking();
-        currentState = States.Init;
-      }
-      if (runtime.seconds() > 7)
-      {
-        stopIntaking();
-        return false;
-      }
-      return true;
-    }
-  }
   
   public enum States
   {
     Init,
     Charging,
     Launching,
-    Stopping,
-    None
+    Stopping
     
   }
   
@@ -137,9 +112,9 @@ public class Shooter
   {
     ElapsedTime runtime = new ElapsedTime();
     States currentState = States.Init;
-    List<String> colours;
+    ArrayList<String> colours;
     
-    Shoot(List<String> coloursPara)
+    Shoot(ArrayList<String> coloursPara)
     {
       colours = coloursPara;
     }
@@ -155,6 +130,7 @@ public class Shooter
       }
       launchWheel.printOutputSpeed();
       telemetry.update();
+      
       if (currentState == States.Init)
       {
         runtime.reset();
@@ -207,23 +183,23 @@ public class Shooter
     }
   }
   
-  public Action intakingAction()
-  {
-    return new IntakingAction();
-  }
+  //public Action intakingAction()
+  //{
+  //  return new IntakingAction();
+  //}
   
   
   public Action shootMotif(Motif pattern)
   {
     if (pattern == Motif.GPP)
     {
-      return new Shoot(Arrays.asList("Green", "Purple", "Purple"));
+      return new Shoot(new ArrayList<>(Arrays.asList("Green", "Purple", "Purple")));
     } else if (pattern == Motif.PGP)
     {
-      return new Shoot(Arrays.asList("Purple", "Green", "Purple"));
+      return new Shoot(new ArrayList<>(Arrays.asList("Purple", "Green", "Purple")));
     } else
     {
-      return new Shoot(Arrays.asList("Purple", "Purple", "Green"));
+      return new Shoot(new ArrayList<>(Arrays.asList("Purple", "Purple", "Green")));
     }
   }
   
