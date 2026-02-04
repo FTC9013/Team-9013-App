@@ -82,11 +82,15 @@ public class DecodeOpMode extends LinearOpMode
       
       //if (getRuntime() >= 0)
       //{
-      if (gamepad1.x && gamepad1.b)
+      if (gamepad1.x)
       {
-        lift.liftUp();
+        lift.liftUpLeft();
         //telemetry.addLine("lifting");
         //telemetry.update();
+        
+      } else if (gamepad1.b)
+      {
+        lift.liftUpRight();
       } else
       {
         lift.stop();

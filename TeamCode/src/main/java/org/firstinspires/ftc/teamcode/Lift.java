@@ -29,9 +29,14 @@ public class Lift
     liftMotorRight.setDirection(DcMotorSimple.Direction.REVERSE);
   }
   
-  public void liftUp()
+  public void liftUpLeft()
   {
     liftMotorLeft.setPower(0.5);
+    telemetry.addLine("lifting yo");
+  }
+  
+  public void liftUpRight()
+  {
     liftMotorRight.setPower(0.5);
     telemetry.addLine("lifting yo");
   }

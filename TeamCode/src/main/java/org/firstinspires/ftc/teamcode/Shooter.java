@@ -98,6 +98,27 @@ public class Shooter
     }
   }
   
+  public class ConveyorActionBackwards implements Action
+  {
+    ElapsedTime runtime = new ElapsedTime();
+    
+    @Override
+    public boolean run(@NonNull TelemetryPacket packet)
+    {
+      conveyorBeltG.conveyBackward();
+      conveyorBeltP.conveyBackward();
+      if (runtime.seconds() > 0.75)
+      {
+        conveyorBeltG.stopConveying();
+        conveyorBeltP.stopConveying();
+        return false;
+      } else
+      {
+        return true;
+      }
+    }
+  }
+  
   
   public enum States
   {
@@ -142,6 +163,7 @@ public class Shooter
       {
         if (launchWheel.reachedDesiredSpeed() || runtime.seconds() > 5)
         {
+          
           if (colours.get(0).equals("Green"))
           {
             conveyorBeltG.conveyForward();
@@ -206,6 +228,11 @@ public class Shooter
   public Action conveyorAction()
   {
     return new ConveyorAction();
+  }
+  
+  public Action conveyorActionBackwards()
+  {
+    return new ConveyorActionBackwards();
   }
   
   public Action startIntakingAction()

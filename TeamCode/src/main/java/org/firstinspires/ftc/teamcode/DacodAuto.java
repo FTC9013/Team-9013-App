@@ -13,7 +13,6 @@ public abstract class DacodAuto extends LinearOpMode
   public AprilTagCamera aprilTagCamera;
   public MecanumDrive robot;
   
-  //public ConceptVisionColorSensor conceptVisionColorSensor;
   
   //set convertable constants
   Pose2d LAUNCH_POSITION = new Pose2d(-10, 14.5, Math.toRadians(-43));
@@ -68,9 +67,7 @@ public abstract class DacodAuto extends LinearOpMode
   public void runOpMode()
   {
     
-    //robot2 = new MecanumDriveChassis(hardwareMap, telemetry);
     aprilTagCamera = new AprilTagCamera(this);
-    // conceptVisionColorSensor = new ConceptVisionColorSensor(hardwareMap, telemetry);
     Shooter shooter = new Shooter(hardwareMap, telemetry);
     telemetry.addLine("Initialized");
     telemetry.addLine("running auto yo");
@@ -97,6 +94,7 @@ public abstract class DacodAuto extends LinearOpMode
     Vector2d ACTUAL_OUT_OF_LAUNCH = adjust(OUT_OF_LAUNCH);
     Double ACTUAL_INTAKE = adjust(INTAKE);
     Double ACTUAL_BACK_UP = adjust(BACK_UP);
+    
     
     //4 paths and actions
     Action moveToScanningFront = robot.actionBuilder(ACTUAL_STARTING_POINT)
@@ -144,14 +142,10 @@ public abstract class DacodAuto extends LinearOpMode
     
     Action collectPPG = robot.actionBuilder(ACTUAL_LAUNCH_POSITION)
       
-      //spike PPG
       .splineToLinearHeading(adjust(new Pose2d(-13.75, SPIKE_PPG.position.y, Math.toRadians(90))), ACTUAL_SPIKE_PPG.heading)
-      //.turnTo(0)
       .stopAndAdd(new SequentialAction(shooter.startIntakingAction(), shooter.conveyorAction()))
-      //.strafeToConstantHeading(new Vector2d(-7.75, 36.7))
       .strafeTo(adjust(new Vector2d(-13.75, 36.7)))
       .strafeToConstantHeading(adjust(new Vector2d(-7.75, 36.7)))
-      //.stopAndAdd(new SequentialAction(shooter.startIntakingAction(), shooter.conveyorAction()))
       .strafeToConstantHeading(adjust(new Vector2d(-7.75, INTAKE)))
       .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
       .build();
@@ -163,7 +157,6 @@ public abstract class DacodAuto extends LinearOpMode
       .strafeToConstantHeading(new Vector2d(0, 0)).build();
     waitForStart();
     
-    //Actions.runBlocking(go00);
     
     if (amIFront())
     {
@@ -175,21 +168,30 @@ public abstract class DacodAuto extends LinearOpMode
     }
     
     Motif motifPattern = aprilTagCamera.detectAprilTag();
+    
+    Action runInTireAuto = robot.actionBuilder(ACTUAL_SCANNING_POINT)
+      //going to launch
+      .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, 0)
+      //shoot preloaded
+      .afterTime(1, shooter.shootMotif(motifPattern))
+      //collecting PPG
+      //spike PPG
+      .splineToLinearHeading(adjust(new Pose2d(-13.75, SPIKE_PPG.position.y, Math.toRadians(90))), ACTUAL_SPIKE_PPG.heading)
+      .stopAndAdd(new SequentialAction(shooter.startIntakingAction(), shooter.conveyorAction()))
+      .strafeTo(adjust(new Vector2d(-13.75, 36.7)))
+      .strafeToConstantHeading(adjust(new Vector2d(-7.75, 36.7)))
+      .strafeToConstantHeading(adjust(new Vector2d(-7.75, INTAKE)))
+      .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
+      .stopAndAdd(shooter.stopAllMotorsAction())
+      .stopAndAdd(shooter.conveyorActionBackwards())
+      //.stopAndAdd(shooter.shootMotif(motifPattern))
+      .strafeToLinearHeading(ACTUAL_OUT_OF_LAUNCH, 0)
+      .build();
     telemetry.addData("Found", motifPattern);
+    telemetry.addData("TEST RUN", motifPattern);
     telemetry.update();
-    Actions.runBlocking(new SequentialAction(goToLaunch, shooter.shootMotif(motifPattern), getOut));
+    Actions.runBlocking(runInTireAuto);
     
-    /*
-    Actions.runBlocking(collectPPG);
-    shooter.conveyorBeltP.stopConveying();
-    shooter.conveyorBeltG.stopConveying();
-    Actions.runBlocking(goToLaunch);
-    Actions.runBlocking(shooter.shootMotif(motifPattern));
-    */
-    
-    //Actions.runBlocking();
-    //go to the spike marks with correct motif first and collect artifacts
-//
     
     //record location
     PoseStorage.currentPose = robot.localizer.getPose();
