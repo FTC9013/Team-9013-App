@@ -16,9 +16,9 @@ public class Launcher
   private final LED rpmLEDPurple;
   private final LED rpmLEDGreen;
   private final Telemetry telemetry;
-  private double desiredSpeed = 1250;
+  private double desiredSpeed = 1300;
   private boolean isSpinning = false;
-  
+  private int counter = 0;
   
   Launcher(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry)
   {
@@ -29,6 +29,7 @@ public class Launcher
     rpmLEDPurple.off();
     rpmLEDGreen.off();
     launchMotor.setDirection(DcMotor.Direction.REVERSE);
+    launchMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
   }
   
   public void setSpeed(double speed)
@@ -45,8 +46,18 @@ public class Launcher
   
   public boolean reachedDesiredSpeed()
   {
-    if (desiredSpeed - 15 <= launchMotor.getVelocity() && launchMotor.getVelocity() <= desiredSpeed + 15)
+    if (desiredSpeed - 20 <= launchMotor.getVelocity() && launchMotor.getVelocity() <= desiredSpeed + 20)
     {
+      counter += 1;
+      
+    } else
+    {
+      counter = 0;
+      
+    }
+    if (counter > 10)
+    {
+      counter = 0;
       return true;
     } else
     {
@@ -56,8 +67,16 @@ public class Launcher
   
   public boolean hasSpeedDecreasedQuestionMark()
   {
-    if (desiredSpeed - launchMotor.getVelocity() >= 40)
+    if (desiredSpeed - launchMotor.getVelocity() >= 50)
     {
+      counter += 1;
+    } else
+    {
+      counter = 0;
+    }
+    if (counter > 5)
+    {
+      counter = 0;
       return true;
     } else
     {

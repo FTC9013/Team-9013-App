@@ -82,22 +82,21 @@ public class DecodeOpMode extends LinearOpMode
       
       //if (getRuntime() >= 0)
       //{
-      if (gamepad1.x)
+      if (gamepad1.x && gamepad1.b)
       {
         lift.liftUpLeft();
-        //telemetry.addLine("lifting");
-        //telemetry.update();
-        
-      } else if (gamepad1.b)
-      {
         lift.liftUpRight();
+        telemetry.addLine("lifting yo");
+      } else if (gamepad2.left_stick_y > 0.5 && gamepad2.right_stick_y > 0.5)
+      {
+        lift.liftDown();
+        telemetry.addLine("lifting down yo");
       } else
       {
         lift.stop();
-        //telemetry.addLine("NOT lifting");
-        //telemetry.update();
+        telemetry.addLine("NOT lifting yo");
       }
-      //}
+      
       //flips to the opposite setting
       if (toggleDirection)
       {

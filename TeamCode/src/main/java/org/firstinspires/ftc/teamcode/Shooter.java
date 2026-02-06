@@ -102,6 +102,11 @@ public class Shooter
   {
     ElapsedTime runtime = new ElapsedTime();
     
+    ConveyorActionBackwards()
+    {
+      runtime.reset();
+    }
+    
     @Override
     public boolean run(@NonNull TelemetryPacket packet)
     {
@@ -161,18 +166,22 @@ public class Shooter
         
       } else if (currentState == States.Charging)
       {
-        if (launchWheel.reachedDesiredSpeed() || runtime.seconds() > 5)
+        if (launchWheel.reachedDesiredSpeed() || runtime.seconds() > 9)
         {
+          
           
           if (colours.get(0).equals("Green"))
           {
             conveyorBeltG.conveyForward();
+            intake.startIntaking();
           } else
           {
             conveyorBeltP.conveyForward();
+            intake.startIntaking();
           }
           runtime.reset();
           currentState = States.Launching;
+          
         }
         
         
@@ -183,6 +192,7 @@ public class Shooter
           colours.remove(0);
           conveyorBeltG.stopConveying();
           conveyorBeltP.stopConveying();
+          intake.stopIntaking();
           if (colours.isEmpty())
           {
             runtime.reset();
@@ -198,8 +208,11 @@ public class Shooter
       } else if (currentState == States.Stopping)
       {
         stopLaunchMotor();
-        
-        return false;
+        if (runtime.seconds() > 2)
+        {
+          return false;
+        }
+        //return false;
       }
       return true;
     }

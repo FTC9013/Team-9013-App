@@ -4,7 +4,9 @@ import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.VelConstraint;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -72,6 +74,7 @@ public abstract class DacodAuto extends LinearOpMode
     telemetry.addLine("Initialized");
     telemetry.addLine("running auto yo");
     telemetry.update();
+    VelConstraint velConstraint = new TranslationalVelConstraint(10);
     
     //adjust all constants to usable values
     Pose2d ACTUAL_LAUNCH_POSITION = adjust(LAUNCH_POSITION);
@@ -172,19 +175,22 @@ public abstract class DacodAuto extends LinearOpMode
     Action runInTireAuto = robot.actionBuilder(ACTUAL_SCANNING_POINT)
       //going to launch
       .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, 0)
+      
       //shoot preloaded
-      .afterTime(1, shooter.shootMotif(motifPattern))
+      .stopAndAdd(shooter.shootMotif(motifPattern))
       //collecting PPG
       //spike PPG
+      .waitSeconds(0.5)
       .splineToLinearHeading(adjust(new Pose2d(-13.75, SPIKE_PPG.position.y, Math.toRadians(90))), ACTUAL_SPIKE_PPG.heading)
       .stopAndAdd(new SequentialAction(shooter.startIntakingAction(), shooter.conveyorAction()))
-      .strafeTo(adjust(new Vector2d(-13.75, 36.7)))
-      .strafeToConstantHeading(adjust(new Vector2d(-7.75, 36.7)))
-      .strafeToConstantHeading(adjust(new Vector2d(-7.75, INTAKE)))
+      .strafeTo(adjust(new Vector2d(-13.75, 36.7)), velConstraint)
+      .strafeToConstantHeading(adjust(new Vector2d(-7.75, 36.7)), velConstraint)
+      .strafeToConstantHeading(adjust(new Vector2d(-7.75, INTAKE)), velConstraint)
       .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
       .stopAndAdd(shooter.stopAllMotorsAction())
       .stopAndAdd(shooter.conveyorActionBackwards())
-      //.stopAndAdd(shooter.shootMotif(motifPattern))
+      
+      .stopAndAdd(shooter.shootMotif(motifPattern))
       .strafeToLinearHeading(ACTUAL_OUT_OF_LAUNCH, 0)
       .build();
     telemetry.addData("Found", motifPattern);
