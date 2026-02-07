@@ -70,7 +70,7 @@ public abstract class DacodAuto extends LinearOpMode
   {
     
     aprilTagCamera = new AprilTagCamera(this);
-    Shooter shooter = new Shooter(hardwareMap, telemetry);
+    Shooter shooter = new Shooter(this);
     telemetry.addLine("Initialized");
     telemetry.addLine("running auto yo");
     telemetry.update();
@@ -177,10 +177,18 @@ public abstract class DacodAuto extends LinearOpMode
       .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, 0)
       
       //shoot preloaded
+      .stopAndAdd(() -> {
+        ((OTOSLocalizer) robot.localizer).pauseOTOS(true);
+      })
       .stopAndAdd(shooter.shootMotif(motifPattern))
+      .stopAndAdd(() -> {
+        ((OTOSLocalizer) robot.localizer).pauseOTOS(false);
+        robot.localizer.setPose(ACTUAL_LAUNCH_POSITION);
+      })
       //collecting PPG
       //spike PPG
-      .waitSeconds(0.5)
+      
+      
       .splineToLinearHeading(adjust(new Pose2d(-13.75, SPIKE_PPG.position.y, Math.toRadians(90))), ACTUAL_SPIKE_PPG.heading)
       .stopAndAdd(new SequentialAction(shooter.startIntakingAction(), shooter.conveyorAction()))
       .strafeTo(adjust(new Vector2d(-13.75, 36.7)), velConstraint)
@@ -189,12 +197,23 @@ public abstract class DacodAuto extends LinearOpMode
       .splineToLinearHeading(ACTUAL_LAUNCH_POSITION, ACTUAL_LAUNCH_POSITION.heading)
       .stopAndAdd(shooter.stopAllMotorsAction())
       .stopAndAdd(shooter.conveyorActionBackwards())
-      
+      .stopAndAdd(() -> {
+        ((OTOSLocalizer) robot.localizer).pauseOTOS(true);
+      })
       .stopAndAdd(shooter.shootMotif(motifPattern))
+      .stopAndAdd(() -> {
+        robot.localizer.setPose(ACTUAL_LAUNCH_POSITION);
+        ((OTOSLocalizer) robot.localizer).pauseOTOS(false);
+      })
+      
       .strafeToLinearHeading(ACTUAL_OUT_OF_LAUNCH, 0)
+      
+      
       .build();
+    
+    
     telemetry.addData("Found", motifPattern);
-    telemetry.addData("TEST RUN", motifPattern);
+    telemetry.addData("TEST RUN 1", motifPattern);
     telemetry.update();
     Actions.runBlocking(runInTireAuto);
     

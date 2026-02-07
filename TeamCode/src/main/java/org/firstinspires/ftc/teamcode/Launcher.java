@@ -67,7 +67,7 @@ public class Launcher
   
   public boolean hasSpeedDecreasedQuestionMark()
   {
-    if (desiredSpeed - launchMotor.getVelocity() >= 50)
+    if (desiredSpeed - launchMotor.getVelocity() >= 40)
     {
       counter += 1;
     } else

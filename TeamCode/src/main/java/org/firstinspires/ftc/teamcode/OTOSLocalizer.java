@@ -28,6 +28,7 @@ public class OTOSLocalizer implements Localizer
   
   public final SparkFunOTOS otos;
   private Pose2d currentPose;
+  private boolean isPaused = false;
   
   public OTOSLocalizer(HardwareMap hardwareMap, Pose2d initialPose)
   {
@@ -45,6 +46,12 @@ public class OTOSLocalizer implements Localizer
     otos.setOffset(PARAMS.offset);
   }
   
+  public void pauseOTOS(boolean pausedQuestionMark)
+  {
+    isPaused = pausedQuestionMark;
+    
+  }
+  
   @Override
   public Pose2d getPose()
   {
@@ -54,8 +61,11 @@ public class OTOSLocalizer implements Localizer
   @Override
   public void setPose(Pose2d pose)
   {
-    currentPose = pose;
-    otos.setPosition(OTOSKt.toOTOSPose(currentPose));
+    if (!isPaused)
+    {
+      currentPose = pose;
+      otos.setPosition(OTOSKt.toOTOSPose(currentPose));
+    }
   }
   
   @Override

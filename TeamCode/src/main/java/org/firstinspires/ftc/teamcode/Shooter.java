@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;//
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -15,19 +15,21 @@ import androidx.annotation.NonNull;
 
 public class Shooter
 {
+  private final LinearOpMode opMode;
   public final Launcher launchWheel;
   private final Telemetry telemetry;
   public final ConveyorBelt conveyorBeltG;
   public final ConveyorBelt conveyorBeltP;
   public final Intake intake;
   
-  Shooter(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry)
+  Shooter(@NonNull LinearOpMode opModed)
   {
-    telemetry = theTelemetry;
-    launchWheel = new Launcher(hardwareMap, telemetry);
-    conveyorBeltG = new ConveyorBelt(hardwareMap, telemetry, "green");
-    conveyorBeltP = new ConveyorBelt(hardwareMap, telemetry, "purple");
-    intake = new Intake(hardwareMap, telemetry);
+    opMode = opModed;
+    telemetry = opModed.telemetry;
+    launchWheel = new Launcher(opModed.hardwareMap, telemetry);
+    conveyorBeltG = new ConveyorBelt(opModed.hardwareMap, telemetry, "green");
+    conveyorBeltP = new ConveyorBelt(opModed.hardwareMap, telemetry, "purple");
+    intake = new Intake(opModed.hardwareMap, telemetry);
   }
   
   public void startLaunchMotor()
@@ -82,6 +84,8 @@ public class Shooter
     public boolean run(@NonNull TelemetryPacket packet)
     {
       stopIntaking();
+      conveyorBeltG.stopConveying();
+      conveyorBeltP.stopConveying();
       stopLaunchMotor();
       return false;
     }
@@ -136,6 +140,7 @@ public class Shooter
   
   public class Shoot implements Action
   {
+    
     ElapsedTime runtime = new ElapsedTime();
     States currentState = States.Init;
     ArrayList<String> colours;
@@ -148,6 +153,11 @@ public class Shooter
     @Override
     public boolean run(@NonNull TelemetryPacket packet)
     {
+      if (opMode.getRuntime() > 25 && currentState != States.Stopping)
+      {
+        runtime.reset();
+        currentState = States.Stopping;
+      }
       telemetry.addData("Current state is:", currentState);
       telemetry.addData("Time in state", runtime.seconds());
       if (!colours.isEmpty())
@@ -207,8 +217,11 @@ public class Shooter
         
       } else if (currentState == States.Stopping)
       {
+        stopIntaking();
+        conveyorBeltG.stopConveying();
+        conveyorBeltP.stopConveying();
         stopLaunchMotor();
-        if (runtime.seconds() > 2)
+        if (runtime.seconds() > 0.1)
         {
           return false;
         }

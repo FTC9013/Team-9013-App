@@ -37,6 +37,16 @@ public class Lift
     liftMotorRight.setPower(-1);
   }
   
+  public void liftDownLeft()
+  {
+    liftMotorLeft.setPower(-1);
+  }
+  
+  public void liftDownRight()
+  {
+    liftMotorRight.setPower(-1);
+  }
+  
   public void liftUpLeft()
   {
     liftMotorLeft.setPower(1);

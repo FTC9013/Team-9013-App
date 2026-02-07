@@ -20,7 +20,7 @@ public class DecodeOpMode extends LinearOpMode
   public void runOpMode() throws InterruptedException
   {
     //telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-    Shooter shooter = new Shooter(hardwareMap, telemetry);
+    Shooter shooter = new Shooter(this);
     Action goToLaunchPos = null;
     Lift lift = new Lift(hardwareMap, telemetry);
     //define button pressing
@@ -82,15 +82,37 @@ public class DecodeOpMode extends LinearOpMode
       
       //if (getRuntime() >= 0)
       //{
-      if (gamepad1.x && gamepad1.b)
+      if (gamepad1.b || gamepad1.x)
       {
-        lift.liftUpLeft();
-        lift.liftUpRight();
-        telemetry.addLine("lifting yo");
-      } else if (gamepad2.left_stick_y > 0.5 && gamepad2.right_stick_y > 0.5)
+        if (gamepad1.x && gamepad1.b)
+        {
+          lift.liftUpRight();
+          lift.liftUpLeft();
+          telemetry.addLine("lifting both yo");
+        } else if (gamepad1.b)
+        {
+          lift.liftUpRight();
+          telemetry.addLine("lifting right yo");
+        } else if (gamepad1.x)
+        {
+          lift.liftUpLeft();
+          telemetry.addLine("lifting left yo");
+        }
+      } else if (gamepad2.left_stick_y > 0.5 || gamepad2.right_stick_y > 0.5)
       {
-        lift.liftDown();
-        telemetry.addLine("lifting down yo");
+        if (gamepad2.left_stick_y > 0.5 && gamepad2.right_stick_y > 0.5)
+        {
+          lift.liftDown();
+          telemetry.addLine("lifting down yo");
+        } else if (gamepad2.left_stick_y > 0.5)
+        {
+          lift.liftDownLeft();
+          telemetry.addLine("lifting down Left yo");
+        } else if (gamepad2.right_stick_y > 0.5)
+        {
+          lift.liftDownRight();
+          telemetry.addLine("lifting down Right yo");
+        }
       } else
       {
         lift.stop();
