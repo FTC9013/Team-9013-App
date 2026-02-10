@@ -3,7 +3,9 @@ package com.example.meepmeeptesting;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
+import com.acmerobotics.roadrunner.VelConstraint;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
@@ -13,6 +15,7 @@ public class MeepMeepTesting
   public static void main(String[] args)
   {
     MeepMeep meepMeep = new MeepMeep(800);
+    VelConstraint velConstraint = new TranslationalVelConstraint(10);
     
     Pose2d LAUNCH_POSITION = new Pose2d(-10, 14.5, Math.toRadians(-43));
     Pose2d SPIKE_PPG = new Pose2d(-15.75, 31, Math.toRadians(90));
@@ -100,8 +103,29 @@ public class MeepMeepTesting
     Action strafe = myBot.getDrive().actionBuilder(STARTING1)
       .splineToLinearHeading(LAUNCH_POSITION, Math.toRadians(0))
       .build();
-    
-    myBot.runAction(new SequentialAction(moveToScanningSecond, goToLaunch, collectPPG, getOut));
+    Action runInTireAuto = myBot.getDrive().actionBuilder(SCANNING_POINT)
+      //going to launch
+      .splineToLinearHeading(LAUNCH_POSITION, 0)
+      
+      //shoot preloaded
+      
+      //collecting PPG
+      //spike PPG
+      
+      
+      .splineToLinearHeading((new Pose2d(39, SPIKE_GPP.position.y, Math.toRadians(90))), SPIKE_GPP.heading)
+      
+      .strafeTo((new Vector2d(39, 38)), velConstraint)
+      .strafeToConstantHeading((new Vector2d(32, 38)), velConstraint)
+      .strafeToConstantHeading((new Vector2d(32, INTAKE)), velConstraint)
+      .splineToLinearHeading(LAUNCH_POSITION, Math.toRadians(-180))
+      
+      
+      .strafeToLinearHeading(OUT_OF_LAUNCH, 0)
+      
+      
+      .build();
+    myBot.runAction(new SequentialAction(moveToScanningSecond, runInTireAuto));
     
     
     meepMeep.setBackground(MeepMeep.Background.FIELD_DECODE_OFFICIAL)

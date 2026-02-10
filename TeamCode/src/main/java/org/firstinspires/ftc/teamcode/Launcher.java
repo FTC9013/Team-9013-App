@@ -46,7 +46,7 @@ public class Launcher
   
   public boolean reachedDesiredSpeed()
   {
-    if (desiredSpeed - 20 <= launchMotor.getVelocity() && launchMotor.getVelocity() <= desiredSpeed + 20)
+    if (desiredSpeed - 60 <= launchMotor.getVelocity() && launchMotor.getVelocity() <= desiredSpeed + 60)
     {
       counter += 1;
       

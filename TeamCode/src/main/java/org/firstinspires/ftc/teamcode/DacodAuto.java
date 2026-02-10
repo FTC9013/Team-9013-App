@@ -180,7 +180,9 @@ public abstract class DacodAuto extends LinearOpMode
       .stopAndAdd(() -> {
         ((OTOSLocalizer) robot.localizer).pauseOTOS(true);
       })
+      
       .stopAndAdd(shooter.shootMotif(motifPattern))
+      
       .stopAndAdd(() -> {
         ((OTOSLocalizer) robot.localizer).pauseOTOS(false);
         robot.localizer.setPose(ACTUAL_LAUNCH_POSITION);
