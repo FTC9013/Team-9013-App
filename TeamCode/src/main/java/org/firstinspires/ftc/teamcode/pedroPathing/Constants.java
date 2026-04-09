@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
 import com.pedropathing.control.PIDFCoefficients;
+import com.pedropathing.control.PredictiveBrakingCoefficients;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.follower.FollowerConstants;
 import com.pedropathing.ftc.FollowerBuilder;
@@ -32,13 +33,15 @@ public class Constants
     .IMU_Orientation(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.LEFT));
   public static FollowerConstants followerConstants = new FollowerConstants()
     .mass(5.443)
-    .forwardZeroPowerAcceleration(-27)
-    .lateralZeroPowerAcceleration(-45)
-    .useSecondaryTranslationalPIDF(true)
-    .translationalPIDFCoefficients(new PIDFCoefficients(0.04, 0, 0.0045, 0.01))
-    .secondaryTranslationalPIDFCoefficients(new PIDFCoefficients(0.075, 0, 0.015, 0.015))
+    .forwardZeroPowerAcceleration(-38.28)
+    .lateralZeroPowerAcceleration(-52.47)
+    .predictiveBrakingCoefficients(new PredictiveBrakingCoefficients(0.1, 0.1332963802704294, 0.0004049846018480477))
+    //    .useSecondaryTranslationalPIDF(true)
+    //.translationalPIDFCoefficients(new PIDFCoefficients(0.04, 0, 0.0045, 0.01))
+//    .secondaryTranslationalPIDFCoefficients(new PIDFCoefficients(0.075, 0, 0.015, 0.015))
     .headingPIDFCoefficients(new PIDFCoefficients(0.8, 0, 0.05, 0.01))
-    .secondaryHeadingPIDFCoefficients(new PIDFCoefficients(2.5, 0, 0.08, 0.01));
+    //.secondaryHeadingPIDFCoefficients(new PIDFCoefficients(2.5, 0, 0.08, 0.01));
+    .centripetalScaling(0);
   public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
   
   public static Follower createFollower(HardwareMap hardwareMap)
@@ -51,7 +54,7 @@ public class Constants
   }
   
   public static MecanumConstants driveConstants = new MecanumConstants()
-    .maxPower(1)
+    .maxPower(0.5)
     .xVelocity(64)
     .yVelocity(51)
     .rightFrontMotorName("rightFront")
