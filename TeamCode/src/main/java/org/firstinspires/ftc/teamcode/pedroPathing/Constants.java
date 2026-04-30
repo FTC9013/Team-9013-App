@@ -7,15 +7,21 @@ import com.pedropathing.follower.FollowerConstants;
 import com.pedropathing.ftc.FollowerBuilder;
 import com.pedropathing.ftc.drivetrains.MecanumConstants;
 import com.pedropathing.ftc.localization.Encoder;
+import com.pedropathing.ftc.localization.constants.OTOSConstants;
 import com.pedropathing.ftc.localization.constants.ThreeWheelIMUConstants;
 import com.pedropathing.paths.PathConstraints;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 
 public class Constants
 {
+  
   public static ThreeWheelIMUConstants localizerConstants = new ThreeWheelIMUConstants()
     .forwardTicksToInches(0.00295206882914)
     .strafeTicksToInches(0.0029520688291443)
@@ -23,7 +29,7 @@ public class Constants
     .leftPodY(4.25)
     .rightPodY(-4.25)
     .strafePodX(-3.25)
-    .leftEncoder_HardwareMapName("leftFront")
+    .leftEncoder_HardwareMapName("rightRear")
     .rightEncoder_HardwareMapName("rightFront")
     .strafeEncoder_HardwareMapName("leftRear")
     .leftEncoderDirection(Encoder.REVERSE)
@@ -31,7 +37,17 @@ public class Constants
     .strafeEncoderDirection(Encoder.REVERSE)
     .IMU_HardwareMapName("imu")
     .IMU_Orientation(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP, RevHubOrientationOnRobot.UsbFacingDirection.LEFT));
+  
+  public static OTOSConstants IMUlocalizerConstants = new OTOSConstants()
+    .hardwareMapName("otos")
+    .linearUnit(DistanceUnit.CM)
+    .offset(new SparkFunOTOS.Pose2D(3.125, -4.25, 0))
+    
+    
+    .angleUnit(AngleUnit.RADIANS);
+  
   public static FollowerConstants followerConstants = new FollowerConstants()
+    
     .mass(5.443)
     .forwardZeroPowerAcceleration(-38.28)
     .lateralZeroPowerAcceleration(-52.47)
@@ -47,6 +63,7 @@ public class Constants
   public static Follower createFollower(HardwareMap hardwareMap)
   {
     return new FollowerBuilder(followerConstants, hardwareMap)
+      //.OTOSLocalizer(localizerConstants)
       .threeWheelIMULocalizer(localizerConstants)
       .pathConstraints(pathConstraints)
       .mecanumDrivetrain(driveConstants)
