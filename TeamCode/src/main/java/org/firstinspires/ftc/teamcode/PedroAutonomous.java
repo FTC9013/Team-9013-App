@@ -24,6 +24,7 @@ import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 public class PedroAutonomous extends OpMode
 {
   private TelemetryManager panelsTelemetry; // Panels Telemetry instance
+  public ServoTest servoMotor;
   public Follower follower; // Pedro Pathing follower instance
   private int pathState; // Current autonomous path state (state machine)
   private Paths paths; // Paths defined in the Paths class
@@ -33,7 +34,7 @@ public class PedroAutonomous extends OpMode
   {
     Scheduler.reset();
     panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
-    
+    servoMotor = new ServoTest(hardwareMap, telemetry);
     follower = Constants.createFollower(hardwareMap);
     follower.setStartingPose(new Pose(72, 8, Math.toRadians(90)));
     
@@ -41,6 +42,7 @@ public class PedroAutonomous extends OpMode
     
     panelsTelemetry.debug("Status", "Initialized");
     panelsTelemetry.update(telemetry);
+    
   }
   
   @Override
@@ -106,10 +108,26 @@ public class PedroAutonomous extends OpMode
   
   public Command autoRoutine()
   {
+    int counter = 0;
+    Command runServo = Command.build().setExecute(() -> {
+        servoMotor.conveyForward();
+        counter += 1;
+      })
+      .setDone(() -> counter > 1);
     return sequential(
-      follow(follower, paths.Path1),
+      follow(follower
+        ,
+        paths.Path1
+      )
+      ,
+      runServo
+      ,
       /* Score Preload Command*/
-      follow(follower, paths.Path2, true),
+      follow(follower
+        ,
+        paths
+          .
+          Path2, true),
       /* Grab Sample Command*/
       follow(follower, paths.Path3, true)
     
