@@ -105,29 +105,21 @@ public class PedroAutonomous extends OpMode
     }
   }
   
+  int counter = 0;
+  
   
   public Command autoRoutine()
   {
-    int counter = 0;
     Command runServo = Command.build().setExecute(() -> {
         servoMotor.conveyForward();
         counter += 1;
       })
       .setDone(() -> counter > 1);
     return sequential(
-      follow(follower
-        ,
-        paths.Path1
-      )
-      ,
-      runServo
-      ,
+      follow(follower, paths.Path1),
+      runServo,
       /* Score Preload Command*/
-      follow(follower
-        ,
-        paths
-          .
-          Path2, true),
+      follow(follower, paths.Path2, true),
       /* Grab Sample Command*/
       follow(follower, paths.Path3, true)
     

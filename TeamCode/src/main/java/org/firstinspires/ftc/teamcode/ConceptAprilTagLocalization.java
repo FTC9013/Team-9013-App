@@ -95,7 +95,7 @@ public class ConceptAprilTagLocalization extends LinearOpMode
    * to +/-90 degrees if it's vertical, or 180 degrees if it's upside-down.
    */
   private Position cameraPosition = new Position(DistanceUnit.INCH,
-    0, 6.5, 3.75, 0);
+    -1, 6.5, 3.75, 0);
   private YawPitchRollAngles cameraOrientation = new YawPitchRollAngles(AngleUnit.DEGREES,
     0, -60, 0, 0);
   
