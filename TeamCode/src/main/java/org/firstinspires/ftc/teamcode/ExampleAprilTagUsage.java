@@ -60,7 +60,7 @@ public class ExampleAprilTagUsage extends OpMode
       // ... these parameters are fx, fy, cx, cy.
       
       .build();
-    
+    PedroDrawing.init();
     // Adjust Image Decimation to trade-off detection-range for detection-rate.
     // eg: Some typical detection data using a Logitech C920 WebCam
     // Decimation = 1 ..  Detect 2" Tag from 10 feet away at 10 Frames per second
@@ -109,14 +109,34 @@ public class ExampleAprilTagUsage extends OpMode
     initAprilTag();
     
     follower = Constants.createFollower(hardwareMap);
-    follower.setStartingPose(new Pose()); //set your starting pose
+    
+    Pose startingPose = getRobotPoseFromCamera();
+    if (startingPose != null)
+    {
+      follower.setStartingPose(startingPose); //set your starting pose
+    } else
+    {
+      follower.setStartingPose(new Pose(0, 0, 0));
+    }
     
   }
   
+  public void drawOnlyCurrent()
+  {
+    try
+    {
+      PedroDrawing.drawRobot(follower.getPose());
+      PedroDrawing.sendPacket();
+    } catch (Exception e)
+    {
+      throw new RuntimeException("Drawing failed " + e);
+    }
+  }
   
   @Override
   public void loop()
   {
+    drawOnlyCurrent();
     follower.update();
     
     //if you're not using limelight you can follow the same steps: build an offset pose, put your heading offset, and generate a path etc
@@ -130,6 +150,8 @@ public class ExampleAprilTagUsage extends OpMode
           .build()
       );
     }
+    
+    
     Pose pose = getRobotPoseFromCamera();
     if (gamepad1.dpad_down)
     {

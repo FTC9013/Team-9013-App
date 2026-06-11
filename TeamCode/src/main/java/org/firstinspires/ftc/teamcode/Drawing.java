@@ -8,6 +8,7 @@ public final class Drawing
 {
   private Drawing()
   {
+  
   }
   
   
