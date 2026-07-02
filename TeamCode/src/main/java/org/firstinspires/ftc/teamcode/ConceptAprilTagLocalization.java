@@ -97,7 +97,7 @@ public class ConceptAprilTagLocalization extends LinearOpMode
   private Position cameraPosition = new Position(DistanceUnit.INCH,
     -1, 6.5, 3.75, 0);
   private YawPitchRollAngles cameraOrientation = new YawPitchRollAngles(AngleUnit.DEGREES,
-    0, -60, 0, 0);
+    0, -75, 0, 0);
   
   /**
    * The variable to store our instance of the AprilTag processor.
@@ -180,7 +180,7 @@ public class ConceptAprilTagLocalization extends LinearOpMode
     // Decimation = 3 ..  Detect 2" Tag from 4  feet away at 30 Frames Per Second (default)
     // Decimation = 3 ..  Detect 5" Tag from 10 feet away at 30 Frames Per Second (default)
     // Note: Decimation can be changed on-the-fly to adapt during a match.
-    //aprilTag.setDecimation(3);
+    aprilTag.setDecimation(2);
     
     // Create the vision portal by using a builder.
     VisionPortal.Builder builder = new VisionPortal.Builder();

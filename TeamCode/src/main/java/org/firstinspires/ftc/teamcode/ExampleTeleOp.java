@@ -1,10 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.bylazar.configurables.annotations.Configurable;
+import com.bylazar.telemetry.PanelsTelemetry;
+import com.bylazar.telemetry.TelemetryManager;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ftc.FTCCoordinates;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.PedroCoordinates;
 import com.pedropathing.geometry.Pose;
+import com.pedropathing.paths.HeadingInterpolator;
+import com.pedropathing.paths.Path;
+import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -19,11 +25,20 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
+import java.util.function.Supplier;
 
+@Configurable
 @TeleOp
-public class ExampleAprilTagUsage extends OpMode
+public class ExampleTeleOp extends OpMode
 {
   private Follower follower;
+  public static Pose startingPose; //See ExampleAuto to understand how to use this
+  private boolean automatedDrive;
+  private Supplier<PathChain> pathChain;
+  private TelemetryManager telemetryM;
+  private boolean fieldCentric = true;
+  private boolean slowMode = false;
+  private double slowModeMultiplier = 0.5;
   private boolean following = false;
   private final Pose TARGET_LOCATION = new Pose(36, 36, 0); //Put the target location here
   private Position cameraPosition = new Position(DistanceUnit.INCH,
@@ -117,7 +132,17 @@ public class ExampleAprilTagUsage extends OpMode
     {
       follower.setStartingPose(new Pose(0, 0, 0));
     }
+    follower = Constants.createFollower(hardwareMap);
+    follower.update();
+    telemetryM = PanelsTelemetry.INSTANCE.getTelemetry();
     
+    pathChain = () -> follower.pathBuilder() //Lazy Curve Generation
+      .addPath(new Path(new BezierLine(follower::getPose, new Pose(16, 16))))
+      .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(135), 0.8))
+      .build();
+    //Lazy curve generation might look a little different to how we usually make paths,
+    //This is because we are using a Lambda expression instead of calling follower.pathbuilder()
+    //To use this though, we declare this as a Supplier<PathChain>. And we to call the path chain we instead do pathChain.get()
   }
   
   public void drawOnlyCurrent()
@@ -130,43 +155,6 @@ public class ExampleAprilTagUsage extends OpMode
     {
       throw new RuntimeException("Drawing failed " + e);
     }
-  }
-  
-  @Override
-  public void loop()
-  {
-    drawOnlyCurrent();
-    follower.update();
-    
-    //if you're not using limelight you can follow the same steps: build an offset pose, put your heading offset, and generate a path etc
-    
-    if (!following)
-    {
-      follower.followPath(
-        follower.pathBuilder()
-          .addPath(new BezierLine(follower.getPose(), TARGET_LOCATION))
-          .setLinearHeadingInterpolation(follower.getHeading(), TARGET_LOCATION.minus(follower.getPose()).getAsVector().getTheta())
-          .build()
-      );
-    }
-    
-    
-    Pose pose = getRobotPoseFromCamera();
-    if (gamepad1.dpad_down)
-    {
-      visionPortal.stopStreaming();
-    } else if (gamepad1.dpad_up)
-    {
-      visionPortal.resumeStreaming();
-    }
-    //This uses the aprilTag to relocalize your robot
-    //You can also create a custom AprilTag fusion Localizer for the follower if you want to use this by default for all your autos
-    if (pose != null)
-    {
-      follower.setPose(pose);
-    }
-    if (following && !follower.isBusy()) following = false;
-    
   }
   
   
@@ -229,4 +217,107 @@ public class ExampleAprilTagUsage extends OpMode
     
   }   // end method telemetryAprilTag()
   
+  @Override
+  public void start()
+  {
+    //The parameter controls whether the Follower should use break mode on the motors (using it is recommended).
+    //In order to use float mode, add .useBrakeModeInTeleOp(true); to your Drivetrain Constants in Constant.java (for Mecanum)
+    //If you don't pass anything in, it uses the default (false)
+    follower.startTeleopDrive();
+  }
+  
+  @Override
+  public void loop()
+  {
+    if (gamepad1.dpad_down)
+    {
+      visionPortal.stopStreaming();
+    } else if (gamepad1.dpad_up)
+    {
+      visionPortal.resumeStreaming();
+    }
+    //This uses the aprilTag to relocalize your robot
+    //You can also create a custom AprilTag fusion Localizer for the follower if you want to use this by default for all your autos
+    
+    //if (following && !follower.isBusy()) following = false;
+    
+    drawOnlyCurrent();
+    
+    //if you're not using limelight you can follow the same steps: build an offset pose, put your heading offset, and generate a path etc
+    
+    /*if (!following)
+    {
+      follower.followPath(
+        follower.pathBuilder()
+          .addPath(new BezierLine(follower.getPose(), TARGET_LOCATION))
+          .setLinearHeadingInterpolation(follower.getHeading(), TARGET_LOCATION.minus(follower.getPose()).getAsVector().getTheta())
+          .build()
+      );*/
+    //Call this once per loop
+    follower.update();
+    telemetryM.update();
+    
+    if (!automatedDrive)
+    {
+      //Make the last parameter false for field-centric
+      //In case the drivers want to use a "slowMode" you can scale the vectors
+      
+      //This is the normal version to use in the TeleOp
+      if (!slowMode) follower.setTeleOpDrive(
+        -gamepad1.left_stick_y,
+        -gamepad1.left_stick_x,
+        -gamepad1.right_stick_x,
+        !fieldCentric // Robot Centric
+      );
+        
+        //This is how it looks with slowMode on
+      else follower.setTeleOpDrive(
+        -gamepad1.left_stick_y * slowModeMultiplier,
+        -gamepad1.left_stick_x * slowModeMultiplier,
+        -gamepad1.right_stick_x * slowModeMultiplier,
+        !fieldCentric // Robot Centric
+      );
+    }
+    if (gamepad1.leftBumperWasPressed())
+    {
+      fieldCentric = !fieldCentric;
+    }
+    
+    //Automated PathFollowing
+    if (gamepad1.aWasPressed())
+    {
+      follower.followPath(pathChain.get());
+      automatedDrive = true;
+    }
+    
+    //Stop automated following if the follower is done
+    if (automatedDrive && (gamepad1.bWasPressed() || !follower.isBusy()))
+    {
+      follower.startTeleopDrive();
+      automatedDrive = false;
+    }
+    
+    //Slow Mode
+    if (gamepad1.rightBumperWasPressed())
+    {
+      slowMode = !slowMode;
+    }
+    
+    //Optional way to change slow mode strength
+    if (gamepad1.xWasPressed())
+    {
+      slowModeMultiplier += 0.25;
+    }
+    
+    //Optional way to change slow mode strength
+    if (gamepad2.yWasPressed())
+    {
+      slowModeMultiplier -= 0.25;
+    }
+    
+    telemetryM.debug("position", follower.getPose());
+    telemetryM.debug("velocity", follower.getVelocity());
+    telemetryM.debug("automatedDrive", automatedDrive);
+  }
 }
+
