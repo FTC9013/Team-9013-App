@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.OldRobotsParts.Motif;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
@@ -81,7 +82,7 @@ public class AprilTagCamera
   private VisionPortal visionPortal;
   private LinearOpMode opMode;
   
-  AprilTagCamera(@NonNull LinearOpMode linearOpMode)
+  public AprilTagCamera(@NonNull LinearOpMode linearOpMode)
   {
     opMode = linearOpMode;
     telemetry = opMode.telemetry;

@@ -1,0 +1,150 @@
+package org.firstinspires.ftc.teamcode.OldRobotsParts;
+
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.LED;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
+import androidx.annotation.NonNull;
+
+
+public class Launcher
+{
+  private final DcMotorEx launchMotor;
+  private final LED rpmLEDPurple;
+  private final LED rpmLEDGreen;
+  private final Telemetry telemetry;
+  private double desiredSpeed = 1300;
+  private boolean isSpinning = false;
+  private int counter = 0;
+  
+  Launcher(@NonNull HardwareMap hardwareMap, Telemetry theTelemetry)
+  {
+    telemetry = theTelemetry;
+    launchMotor = hardwareMap.get(DcMotorEx.class, "Launcher");
+    rpmLEDPurple = hardwareMap.get(LED.class, "LED_Purple");
+    rpmLEDGreen = hardwareMap.get(LED.class, "LED_Green");
+    rpmLEDPurple.off();
+    rpmLEDGreen.off();
+    launchMotor.setDirection(DcMotor.Direction.REVERSE);
+    launchMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+  }
+  
+  public void setSpeed(double speed)
+  {
+    desiredSpeed = speed;
+  }
+  
+  public void startLaunching()
+  {
+    launchMotor.setVelocity(desiredSpeed);
+    isSpinning = true;
+    telemetry.addData("Launching artifacts", "True");
+  }
+  
+  public boolean reachedDesiredSpeed()
+  {
+    if (desiredSpeed - 60 <= launchMotor.getVelocity() && launchMotor.getVelocity() <= desiredSpeed + 60)
+    {
+      counter += 1;
+      
+    } else
+    {
+      counter = 0;
+      
+    }
+    if (counter > 10)
+    {
+      counter = 0;
+      return true;
+    } else
+    {
+      return false;
+    }
+  }
+  
+  public boolean hasSpeedDecreasedQuestionMark()
+  {
+    if (desiredSpeed - launchMotor.getVelocity() >= 40)
+    {
+      counter += 1;
+    } else
+    {
+      counter = 0;
+    }
+    if (counter > 5)
+    {
+      counter = 0;
+      return true;
+    } else
+    {
+      return false;
+    }
+  }
+  
+  public void startLaunchingBackward()
+  {
+    launchMotor.setVelocity(-desiredSpeed / 2);
+    telemetry.addData("Launching artifacts", "True");
+  }
+  
+  public void stopLaunching()
+  {
+    launchMotor.setPower(0);
+    isSpinning = false;
+    telemetry.addData("No more launch", "True");
+    
+  }
+  
+  public void launchSpeedIncreasing()
+  {
+    desiredSpeed += 160;
+    isSpinning = true;
+    
+    launchMotor.setVelocity(desiredSpeed);
+    telemetry.addData("Intake speed in artifacts. Speed is ", desiredSpeed);
+    telemetry.update();
+  }
+  
+  public void launchSpeedDecreasing()
+  {
+    desiredSpeed -= 160;
+    isSpinning = true;
+    if (desiredSpeed < 0)
+    {
+      desiredSpeed = 0;
+      isSpinning = false;
+    }
+    launchMotor.setVelocity(desiredSpeed);
+    telemetry.addData("Intake speed in artifacts. Speed is ", desiredSpeed);
+    telemetry.update();
+  }
+  
+  public void printOutputSpeed()
+  {
+    telemetry.addData("Launch speed: ", desiredSpeed);
+    telemetry.addData("Current speed yo: ", launchMotor.getVelocity());
+    if (desiredSpeed - 15 <= launchMotor.getVelocity() && launchMotor.getVelocity() <= desiredSpeed + 15)
+    {
+      rpmLEDPurple.on();
+      rpmLEDGreen.on();
+    } else
+    {
+      rpmLEDPurple.off();
+      rpmLEDGreen.off();
+    }
+  }
+  
+  public void toggle()
+  {
+    if (isSpinning)
+    {
+      stopLaunching();
+    } else
+    {
+      startLaunching();
+    }
+  }
+}
