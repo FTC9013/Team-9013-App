@@ -310,10 +310,14 @@ public class PedroPathingExTeleOp extends OpMode
     }
     
     //Optional way to change slow mode strength
-    if (gamepad2.yWasPressed())
+    if (gamepad1.yWasPressed())
     {
       slowModeMultiplier -= 0.25;
     }
+    //robots settings
+    telemetry.addData("Strafe Direction", gamepad1.left_stick_x);
+    telemetry.addData("SlOw mOdE Enabled", slowMode);
+    telemetry.addData("Custom speed is", slowModeMultiplier);
     
     telemetryM.debug("position", follower.getPose());
     telemetryM.debug("velocity", follower.getVelocity());
