@@ -231,7 +231,7 @@ public class ConceptAprilTagLocalization extends LinearOpMode
     // Step through the list of detections and display info for each one.
     for (AprilTagDetection detection : currentDetections)
     {
-      if (detection.metadata != null)
+      /*if (detection.metadata != null)
       {
         telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
         // Only use tags that don't have Obelisk in them
@@ -256,7 +256,8 @@ public class ConceptAprilTagLocalization extends LinearOpMode
     // Add "key" information to telemetry
     telemetry.addLine("\nkey:\nXYZ = X (Right), Y (Forward), Z (Up) dist.");
     telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
+    */
+    }   // end method telemetryAprilTag()
     
-  }   // end method telemetryAprilTag()
-  
-}   // end class
+  }   // end class
+}

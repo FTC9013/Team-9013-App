@@ -37,7 +37,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.OldRobotsParts.Motif;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
@@ -145,7 +144,7 @@ public class AprilTagCamera
     
   }
   
-  public Motif detectAprilTag()
+  public void detectAprilTag()
   {
     
     ElapsedTime timer = new ElapsedTime();
@@ -159,7 +158,7 @@ public class AprilTagCamera
       
       for (AprilTagDetection detection : currentDetections)
       {
-        if (detection.metadata != null)
+       /* if (detection.metadata != null)
         {
           telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
           telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
@@ -190,6 +189,8 @@ public class AprilTagCamera
     telemetry.addLine("Didn't detect apriltag");
     telemetry.update();
     return Motif.GPP;
-    
+    */
+      }
+    }   // end class
   }
-}   // end class
+}

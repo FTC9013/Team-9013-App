@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.OldRobotsParts;
 
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
@@ -67,6 +66,8 @@ public abstract class DacodAuto extends LinearOpMode
   }
   
   public abstract boolean amIBlue();
+  
+  public abstract boolean amIFront();
   
   public void runOpMode()
   {
@@ -172,7 +173,7 @@ public abstract class DacodAuto extends LinearOpMode
       Actions.runBlocking(moveToScanningBack);
     }
     
-    Motif motifPattern = aprilTagCamera.detectAprilTag();
+    /*Motif motifPattern = aprilTagCamera.detectAprilTag();
     
     Action runInTireAuto = robot.actionBuilder(ACTUAL_SCANNING_POINT)
       //going to launch
@@ -228,7 +229,7 @@ public abstract class DacodAuto extends LinearOpMode
   }
   
   
-  public abstract boolean amIFront();
+ 
   
   private void moveForward(int timeDrivenMs)
   {
@@ -264,5 +265,6 @@ public abstract class DacodAuto extends LinearOpMode
   private void stopMoving()
   {
     robot.setDrivePowers(new PoseVelocity2d(new Vector2d(0, 0), 0));
+  */
   }
 }

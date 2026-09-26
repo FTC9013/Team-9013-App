@@ -1,19 +1,15 @@
 package org.firstinspires.ftc.teamcode.pedroPathing;
 
-import com.pedropathing.control.PIDFCoefficients;
-import com.pedropathing.control.PredictiveBrakingCoefficients;
-import com.pedropathing.follower.Follower;
-import com.pedropathing.follower.FollowerConstants;
-import com.pedropathing.ftc.FollowerBuilder;
+//import com.pedropathing.control.PIDFCoefficients;
+//import com.pedropathing.control.PredictiveBrakingCoefficients;
+
 import com.pedropathing.ftc.drivetrains.MecanumConstants;
 import com.pedropathing.ftc.localization.Encoder;
 import com.pedropathing.ftc.localization.constants.OTOSConstants;
 import com.pedropathing.ftc.localization.constants.ThreeWheelIMUConstants;
-import com.pedropathing.paths.PathConstraints;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -46,7 +42,7 @@ public class Constants
     
     .angleUnit(AngleUnit.RADIANS);
   
-  public static FollowerConstants followerConstants = new FollowerConstants()
+  /*public static FollowerConstants followerConstants = new FollowerConstants()
     
     .mass(5.443)
     .forwardZeroPowerAcceleration(-38.28)
@@ -59,8 +55,8 @@ public class Constants
     //.secondaryHeadingPIDFCoefficients(new PIDFCoefficients(2.5, 0, 0.08, 0.01));
     .centripetalScaling(0);
   public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 1, 1);
-  
-  public static Follower createFollower(HardwareMap hardwareMap)
+  */
+  /*public static Follower createFollower(HardwareMap hardwareMap)
   {
     return new FollowerBuilder(followerConstants, hardwareMap)
       //.OTOSLocalizer(localizerConstants)
@@ -68,7 +64,7 @@ public class Constants
       .pathConstraints(pathConstraints)
       .mecanumDrivetrain(driveConstants)
       .build();
-  }
+  }*/
   
   public static MecanumConstants driveConstants = new MecanumConstants()
     .maxPower(0.5)
