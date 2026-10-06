@@ -26,7 +26,7 @@ git remote add ftc https://github.com/FIRST-Tech-Challenge/FtcRobotController
 git remote add upstream https://github.com/Pedro-Pathing/Quickstart
 ```
 
-Assuming the roadrunner repo is already up to date with the latest FTC, run:
+Assuming the pedropathing repo is already up to date with the latest FTC, run:
 
 ```
 git fetch upstream
