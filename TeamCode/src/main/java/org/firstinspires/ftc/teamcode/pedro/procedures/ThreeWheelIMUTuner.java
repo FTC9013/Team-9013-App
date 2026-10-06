@@ -20,14 +20,14 @@ import java.util.List;
 public class ThreeWheelIMUTuner extends Procedure
 {
   
-  private static String leftEncoderName = "rightRear";
-  private static String rightEncoderName = "leftRear";
-  private static String strafeEncoderName = "rightFront";
+  private static String leftEncoderName = "lf";
+  private static String rightEncoderName = "rr";
+  private static String strafeEncoderName = "lr";
   private static String imuName = "imu";
   private static RevHubOrientationOnRobot.LogoFacingDirection logoDirection =
     RevHubOrientationOnRobot.LogoFacingDirection.UP;
   private static RevHubOrientationOnRobot.UsbFacingDirection usbDirection =
-    RevHubOrientationOnRobot.UsbFacingDirection.RIGHT;
+    RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD;
   
   public ThreeWheelIMUTuner()
   {
@@ -39,16 +39,16 @@ public class ThreeWheelIMUTuner extends Procedure
   {
     Inputs setup = inputs("Encoder + IMU Setup",
       "Set encoder motor ports, IMU HardwareMap name, and Control Hub orientation.");
-    Inputs.Field<String> leftEncoder = setup.s("Left Encoder Motor Name").withDefault("rightRear");
-    Inputs.Field<String> rightEncoder = setup.s("Right Encoder Motor Name").withDefault("rightFront");
-    Inputs.Field<String> strafeEncoder = setup.s("Strafe Encoder Motor Name").withDefault("leftRear");
+    Inputs.Field<String> leftEncoder = setup.s("Left Encoder Motor Name").withDefault("lf");
+    Inputs.Field<String> rightEncoder = setup.s("Right Encoder Motor Name").withDefault("rr");
+    Inputs.Field<String> strafeEncoder = setup.s("Strafe Encoder Motor Name").withDefault("lr");
     Inputs.Field<String> imu = setup.s("IMU HardwareMap Name").withDefault("imu");
     Inputs.Field<RevHubOrientationOnRobot.LogoFacingDirection> logo =
       setup.e("Logo Facing Direction", RevHubOrientationOnRobot.LogoFacingDirection.class)
         .withDefault(RevHubOrientationOnRobot.LogoFacingDirection.UP);
     Inputs.Field<RevHubOrientationOnRobot.UsbFacingDirection> usb =
       setup.e("USB Facing Direction", RevHubOrientationOnRobot.UsbFacingDirection.class)
-        .withDefault(RevHubOrientationOnRobot.UsbFacingDirection.RIGHT);
+        .withDefault(RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD);
     awaitInputs(setup);
     leftEncoderName = leftEncoder.get();
     rightEncoderName = rightEncoder.get();
@@ -147,9 +147,9 @@ public class ThreeWheelIMUTuner extends Procedure
         "    c.strafeEncoderName.set(\"" + strafeEncoderName + "\");\n" +
         "    c.imuName.set(\"" + imuName + "\");\n" +
         "    c.imu.set(new RevHubIMU(new RevHubOrientationOnRobot(\n" +
-        "            RevHubOrientationOnRobot.LogoFacingDirection." + logoDirection.name() + ",\n" +
-        "            RevHubOrientationOnRobot.UsbFacingDirection." + usbDirection.name() + "\n" +
-        "    ));\n" +
+        "            RevHubOrientationOnRobot.LogoFacingDirection." + logoDirection + ",\n" +
+        "            RevHubOrientationOnRobot.UsbFacingDirection." + usbDirection + "\n" +
+        "    )));\n" +
         "    c.leftPodY.set(" + leftOffsets.get(0) + ");\n" +
         "    c.rightPodY.set(" + rightOffsets.get(0) + ");\n" +
         "    c.strafePodX.set(" + strafeX + ");\n" +
