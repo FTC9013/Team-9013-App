@@ -39,16 +39,16 @@ public class ThreeWheelIMUTuner extends Procedure
   {
     Inputs setup = inputs("Encoder + IMU Setup",
       "Set encoder motor ports, IMU HardwareMap name, and Control Hub orientation.");
-    Inputs.Field<String> leftEncoder = setup.s("Left Encoder Motor Name").withDefault("lf");
-    Inputs.Field<String> rightEncoder = setup.s("Right Encoder Motor Name").withDefault("rr");
-    Inputs.Field<String> strafeEncoder = setup.s("Strafe Encoder Motor Name").withDefault("lr");
+    Inputs.Field<String> leftEncoder = setup.s("Left Encoder Motor Name").withDefault("rightRear");
+    Inputs.Field<String> rightEncoder = setup.s("Right Encoder Motor Name").withDefault("rightFront");
+    Inputs.Field<String> strafeEncoder = setup.s("Strafe Encoder Motor Name").withDefault("leftRear");
     Inputs.Field<String> imu = setup.s("IMU HardwareMap Name").withDefault("imu");
     Inputs.Field<RevHubOrientationOnRobot.LogoFacingDirection> logo =
       setup.e("Logo Facing Direction", RevHubOrientationOnRobot.LogoFacingDirection.class)
         .withDefault(RevHubOrientationOnRobot.LogoFacingDirection.UP);
     Inputs.Field<RevHubOrientationOnRobot.UsbFacingDirection> usb =
       setup.e("USB Facing Direction", RevHubOrientationOnRobot.UsbFacingDirection.class)
-        .withDefault(RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD);
+        .withDefault(RevHubOrientationOnRobot.UsbFacingDirection.RIGHT);
     awaitInputs(setup);
     leftEncoderName = leftEncoder.get();
     rightEncoderName = rightEncoder.get();

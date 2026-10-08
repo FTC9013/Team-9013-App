@@ -38,12 +38,12 @@ public class Constants
       RevHubOrientationOnRobot.LogoFacingDirection.UP,
       RevHubOrientationOnRobot.UsbFacingDirection.RIGHT
     )));
-    c.leftPodY.set(3.4562259263278623);
-    c.rightPodY.set(-4.933915440183741);
-    c.strafePodX.set(-1.523284933800231);
-    c.forwardTicksToInches.set(0.003002780414628922);
-    c.strafeTicksToInches.set(0.003035176982602847);
-    c.turnTicksToRadians.set(0.0030345851346549263);
+    c.leftPodY.set(4.0354435727402995);
+    c.rightPodY.set(-3.959267639533125);
+    c.strafePodX.set(-1.5807891983235547);
+    c.forwardTicksToInches.set(0.0029544907672097616);
+    c.strafeTicksToInches.set(0.002891551881823767);
+    c.turnTicksToRadians.set(0.0028948969585120125);
     c.leftEncoderDirection.set(Encoder.REVERSE);
     c.rightEncoderDirection.set(Encoder.FORWARD);
     c.strafeEncoderDirection.set(Encoder.REVERSE);
