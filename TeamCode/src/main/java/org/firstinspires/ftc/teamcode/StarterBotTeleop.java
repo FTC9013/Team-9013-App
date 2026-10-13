@@ -103,15 +103,15 @@ public class StarterBotTeleop extends OpMode
      * to 'get' must correspond to the names assigned during the robot configuration
      * step.
      */
-    leftFrontDrive = hardwareMap.get(DcMotor.class, "left_front_drive");
-    rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
-    leftBackDrive = hardwareMap.get(DcMotor.class, "left_back_drive");
-    rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
+    leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFront");
+    rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFront");
+    leftBackDrive = hardwareMap.get(DcMotor.class, "leftRear");
+    rightBackDrive = hardwareMap.get(DcMotor.class, "rightRear");
     intake = hardwareMap.get(DcMotor.class, "intake");
     launcher = hardwareMap.get(DcMotorEx.class, "launcher");
     windmillServo = hardwareMap.get(CRServo.class, "windmillServo");
-    leftIntakeServo = hardwareMap.get(CRServo.class, "left_intake_servo");
-    rightIntakeServo = hardwareMap.get(CRServo.class, "right_intake_servo");
+    leftIntakeServo = hardwareMap.get(CRServo.class, "leftIntakeServo");
+    rightIntakeServo = hardwareMap.get(CRServo.class, "rightIntakeServo");
     
     /*
      * To drive forward, most robots need the motor on one side to be reversed,
@@ -300,7 +300,7 @@ public class StarterBotTeleop extends OpMode
      */
     if (gamepad1.right_bumper && launcher.getVelocity() > LAUNCHER_MIN_VELOCITY)
     {
-      windmillServo.setPower(1);
+      //windmillServo.setPower(1);
       intakePower += 0.5;
     } else
     {
