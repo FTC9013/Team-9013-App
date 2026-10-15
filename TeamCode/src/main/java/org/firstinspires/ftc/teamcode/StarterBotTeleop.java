@@ -229,7 +229,11 @@ public class StarterBotTeleop extends OpMode
     intake.setPower(intakePower);
     leftIntakeServo.setPower(intakePower);
     rightIntakeServo.setPower(intakePower);
-    
+    // powers the windmill to go backwards when you don't want to launch
+    if (intakePower < 0 && !gamepad1.right_bumper)
+    {
+      windmillServo.setPower(-1);
+    }
     /*
      * Show motor powers on the Driver Station via telemetry.
      */
@@ -300,7 +304,7 @@ public class StarterBotTeleop extends OpMode
      */
     if (gamepad1.right_bumper && launcher.getVelocity() > LAUNCHER_MIN_VELOCITY)
     {
-      //windmillServo.setPower(1);
+      windmillServo.setPower(1);
       intakePower += 0.5;
     } else
     {
