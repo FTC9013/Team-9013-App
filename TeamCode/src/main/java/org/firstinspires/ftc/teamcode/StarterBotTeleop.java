@@ -124,6 +124,7 @@ public class StarterBotTeleop extends OpMode
     rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
     leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
     rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+    launcher.setDirection(DcMotor.Direction.REVERSE);
     
     /*
      * Setting zeroPowerBehavior to BRAKE enables a "brake mode". This causes the motor to
@@ -214,7 +215,7 @@ public class StarterBotTeleop extends OpMode
      * allow us to avoid setting the same motors/servos power more than once per loop. That can
      * create erratic behavior.
      */
-    intakePower = gamepad1.right_trigger - gamepad1.left_trigger;
+    intakePower = gamepad2.right_trigger - gamepad2.left_trigger;
     
     launch();
     
@@ -230,7 +231,7 @@ public class StarterBotTeleop extends OpMode
     leftIntakeServo.setPower(intakePower);
     rightIntakeServo.setPower(intakePower);
     // powers the windmill to go backwards when you don't want to launch
-    if (intakePower < 0 && !gamepad1.right_bumper)
+    if (intakePower < 0 && !gamepad2.right_bumper)
     {
       windmillServo.setPower(-1);
     }
@@ -238,7 +239,7 @@ public class StarterBotTeleop extends OpMode
      * Show motor powers on the Driver Station via telemetry.
      */
     telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftFrontPower, rightFrontPower);
-    telemetry.addData("Triggers", "left (%.2f, right (%.2f)", gamepad1.left_trigger, gamepad1.right_trigger);
+    telemetry.addData("Triggers", "left (%.2f, right (%.2f)", gamepad2.left_trigger, gamepad2.right_trigger);
   }
   
   /*
@@ -280,14 +281,14 @@ public class StarterBotTeleop extends OpMode
   void launch()
   {
     /*
-     * Calling gamepad1.right_bumper returns a boolean which will be true if the bumper is
+     * Calling gamepad2.right_bumper returns a boolean which will be true if the bumper is
      * held down, and false if it is not. Notably, this will continue to be true for every
      * cycle of our code that the driver holds down that bumper.
      * The first step of our launch() function is checking to see if the user is currently
      * holding down the right gamepad. If they are, then we want to start spinning up the launcher.
      * Otherwise, we start spinning the launcher down.
      */
-    if (gamepad1.right_bumper)
+    if (gamepad2.right_bumper)
     {
       launcher.setVelocity(LAUNCHER_TARGET_VELOCITY);
     } else
@@ -302,7 +303,7 @@ public class StarterBotTeleop extends OpMode
      * add some power to the intake power. This can sometimes help dislodge stuck elements from
      * inside the hopper.
      */
-    if (gamepad1.right_bumper && launcher.getVelocity() > LAUNCHER_MIN_VELOCITY)
+    if (gamepad2.right_bumper && launcher.getVelocity() > LAUNCHER_MIN_VELOCITY)
     {
       windmillServo.setPower(1);
       intakePower += 0.5;
